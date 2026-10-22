@@ -1,0 +1,37 @@
+{
+  "name": "translation",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "dat.gui": "^0.7.9",
+    "@cesium-china/cesium-map": "^1.0.0",
+    "@videojs-player/vue": "^1.0.0",
+    "axios": "^1.6.8",
+    "cesium": "1.97",
+    "cesium-heatmap-es6": "^0.8.0",
+    "dayjs": "^1.11.11",
+    "flv.js": "^1.6.2",
+    "heatmap.js-fixed": "^2.0.2",
+    "lodash": "^4.17.21",
+    "pinia": "^4.0.3",
+    "turf": "^3.0.14",
+    "video.js": "^8.12.0",
+    "vue": "^3.5.42",
+    "vue-router": "^5.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.8",
+    "vite": "^8.2.2",
+    "vite-plugin-cesium": "^1.2.23",
+    "vite-plugin-vue-devtools": "^8.2.1"
+  },
+  "engines": {
+    "node": "^22.18.0 || >=24.12.0"
+  }
+}

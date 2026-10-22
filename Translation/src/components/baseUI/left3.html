@@ -1,0 +1,1069 @@
+<!DOCTYPE html><html lang="zh-CN" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>客流指标监控组件 - 运营大屏版</title>
+<style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #050b14;
+      background-image: 
+        radial-gradient(circle at 50% 30%, rgba(13, 33, 64, 0.45) 0%, rgba(4, 9, 18, 0.98) 100%),
+        linear-gradient(rgba(24, 48, 82, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(24, 48, 82, 0.15) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    /* 主监控面板：大气舒展 880px，微透磨砂深海蓝工程玻璃质感 */
+    .dashboard-panel {
+      position: relative;
+      width: 880px;
+      background: linear-gradient(145deg, rgba(13, 24, 48, 0.88) 0%, rgba(8, 15, 30, 0.94) 100%);
+      border-radius: 10px;
+      padding: 28px 34px 28px 34px;
+      border: 1px solid rgba(48, 120, 220, 0.22);
+      border-top: 1.5px solid rgba(75, 185, 255, 0.65);
+      border-bottom: 1px solid rgba(20, 48, 90, 0.35);
+      box-shadow: 
+        0 24px 60px rgba(0, 0, 0, 0.75),
+        inset 0 1.5px 0 rgba(130, 215, 255, 0.22),
+        inset 0 -1px 0 rgba(10, 25, 55, 0.5),
+        0 0 35px rgba(22, 115, 230, 0.14);
+      backdrop-filter: blur(18px);
+    }
+
+    /* 顶部掠光细线 */
+    .dashboard-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 12%;
+      right: 12%;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.9), transparent);
+      filter: blur(0.5px);
+      pointer-events: none;
+    }
+
+    /* 头部栏结构 */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(45, 95, 160, 0.22);
+      position: relative;
+    }
+
+    .header-bar::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 160px;
+      height: 1.5px;
+      background: linear-gradient(90deg, #38bdf8, transparent);
+    }
+
+    /* 标题区域 */
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .title-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.22), rgba(30, 64, 140, 0.45));
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+    }
+
+    .title-icon svg {
+      width: 19px;
+      height: 19px;
+      fill: none;
+      stroke: #38bdf8;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .title-text {
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+      white-space: nowrap;
+    }
+
+    .matrix-dots {
+      display: grid;
+      grid-template-columns: repeat(10, 3px);
+      gap: 3px;
+      margin-left: 6px;
+      opacity: 0.5;
+    }
+
+    .matrix-dots span {
+      width: 3px;
+      height: 3px;
+      background-color: #38bdf8;
+      border-radius: 50%;
+    }
+
+    /* 右上角数据指标区 */
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .total-stat-box {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(10, 26, 52, 0.6);
+      border-radius: 6px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: #94a3b8;
+      letter-spacing: 1px;
+    }
+
+    .stat-num {
+      font-family: "DIN Alternate", "SF Pro Display", "Segoe UI", sans-serif;
+      font-size: 27px;
+      font-weight: 800;
+      color: #38bdf8;
+      text-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+      letter-spacing: 1px;
+      font-feature-settings: "tnum";
+      display: inline-block;
+      min-width: 72px;
+      text-align: right;
+      transition: filter 0.5s ease, opacity 0.5s ease;
+    }
+
+    .stat-unit {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    /* 副标题栏 + 5段充能流光指示器 */
+    .sub-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      margin-bottom: 16px;
+    }
+
+    .sub-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sub-badge {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background-color: #38bdf8;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #38bdf8;
+    }
+
+    .sub-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #cbd5e1;
+      letter-spacing: 0.6px;
+    }
+
+    /* 5段进度分段指示条 */
+    .carousel-bar-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .bar-seg {
+      position: relative;
+      width: 26px;
+      height: 3px;
+      background: rgba(148, 163, 184, 0.22);
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .bar-seg.active {
+      background: rgba(56, 189, 248, 0.3);
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.35);
+    }
+
+    .bar-seg-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: #38bdf8;
+      border-radius: 2px;
+      box-shadow: 0 0 6px #38bdf8;
+    }
+
+    .bar-seg.active .bar-seg-fill {
+      animation: seg-charging 5s linear forwards;
+    }
+
+    @keyframes seg-charging {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    .group-num-tag {
+      font-size: 11px;
+      font-family: monospace;
+      color: #64748b;
+      margin-left: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .group-num-tag span {
+      color: #38bdf8;
+      font-weight: 700;
+      transition: opacity 0.3s ease;
+    }
+
+    /* 线路列表容器 */
+    .lines-container {
+      position: relative;
+      height: 296px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    /* 纯粹优雅的交叉淡入淡出（Cross-fade）核心容器 */
+    .lines-group {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.7s ease;
+      will-change: opacity;
+    }
+
+    .lines-group.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    /* 单条线路行：保持平整静态几何，纯粹透明度过渡 */
+    .line-row {
+      display: flex;
+      align-items: center;
+      background: rgba(14, 26, 48, 0.42);
+      border: 1px solid rgba(40, 75, 130, 0.2);
+      border-radius: 6px;
+      padding: 13px 20px;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .line-row:hover {
+      background: rgba(18, 36, 68, 0.6);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    /* 左侧线路标识 */
+    .line-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 140px;
+      flex-shrink: 0;
+    }
+
+    .route-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 4px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.45);
+      flex-shrink: 0;
+      letter-spacing: 0;
+    }
+
+    .line-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #f1f5f9;
+      letter-spacing: 0.6px;
+    }
+
+    /* 中间：真实工程感细轨道光槽 */
+    .line-track-box {
+      flex: 1;
+      margin: 0 24px;
+      position: relative;
+    }
+
+    .track-bg {
+      width: 100%;
+      height: 6px;
+      background: rgba(13, 27, 48, 0.85);
+      border-radius: 3px;
+      position: relative;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7);
+    }
+
+    /* 进度条宽度直接稳定显示，无需剧烈缩放抖动 */
+    .track-fill {
+      height: 100%;
+      border-radius: 3px;
+      position: relative;
+    }
+
+    .track-head {
+      position: absolute;
+      right: -3px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 0 8px 2px currentColor;
+    }
+
+    /* 右侧客流数据列与微型工程状态徽章 */
+    .line-data-col {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 16px;
+      width: 220px;
+      flex-shrink: 0;
+    }
+
+    .line-val-box {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+
+    .line-val {
+      font-family: "DIN Alternate", "SF Pro Display", sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 0.5px;
+      font-feature-settings: "tnum";
+    }
+
+    .line-val-unit {
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    /* 微型客流负荷状态标签 */
+    .load-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 3px;
+      white-space: nowrap;
+      letter-spacing: 0.4px;
+      width: 68px;
+      text-align: center;
+    }
+
+    .load-tag.smooth {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+
+    .load-tag.busy {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+    }
+
+    .load-tag.heavy {
+      background: rgba(244, 63, 94, 0.14);
+      border: 1px solid rgba(244, 63, 94, 0.35);
+      color: #f87171;
+    }
+
+    /* 底部极简工业参数栏 */
+    .footer-spec-bar {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(45, 95, 160, 0.18);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #64748b;
+      letter-spacing: 0.5px;
+    }
+
+    .spec-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .spec-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .spec-item span.spec-val {
+      color: #94a3b8;
+      font-weight: 600;
+      font-family: monospace;
+    }
+
+    .spec-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #64748b;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+<div class="dashboard-panel">
+<!-- 头部栏：标题组 + 全网实时客流 -->
+<div class="header-bar">
+<div class="title-group">
+<div class="title-icon">
+<svg viewBox="0 0 24 24">
+<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V5s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+<line x1="4" x2="4" y1="22" y2="15"></line>
+<circle cx="12" cy="11" r="2"></circle>
+</svg>
+</div>
+<div class="title-text">客流指标</div>
+<div class="matrix-dots">
+<span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+<span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+</div>
+</div>
+<div class="header-meta">
+<div class="total-stat-box" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none; padding: 0px;">
+<span class="stat-label">全网实时客流</span>
+<span class="stat-num" id="totalPassengerFlow">4,800</span>
+<span class="stat-unit">人次/小时</span>
+</div>
+</div>
+</div>
+<!-- 副标题栏 + 5段细长充能流光指示器 -->
+<div class="sub-bar">
+<div class="sub-title-wrap">
+<span class="sub-badge"></span>
+<span class="sub-title">线路实时客流量</span>
+</div>
+<div class="carousel-bar-indicator">
+<div class="bar-seg" data-page="0"><div class="bar-seg-fill" style="animation: 5s linear 0s 1 normal forwards running seg-charging;"></div></div>
+<div class="bar-seg active" data-page="1"><div class="bar-seg-fill" style="animation: 5s linear 0s 1 normal forwards running seg-charging;"></div></div>
+<div class="bar-seg" data-page="2"><div class="bar-seg-fill" style="animation: 5s linear 0s 1 normal forwards running seg-charging;"></div></div>
+<div class="bar-seg" data-page="3"><div class="bar-seg-fill" style="animation: 5s linear 0s 1 normal forwards running seg-charging;"></div></div>
+<div class="bar-seg" data-page="4"><div class="bar-seg-fill" style="animation: 5s linear 0s 1 normal forwards running seg-charging;"></div></div>
+<div class="group-num-tag" id="groupPageTag">GROUP <span id="currentGroupNum" class="">02</span> / 05</div>
+</div>
+</div>
+<!-- 线路列表容器（18条线分5组，每组满4条保持对称） -->
+<div class="lines-container" id="linesContainer" style="--line-row-bg: transparent; --line-row-border: none;"><div class="lines-group" id="group-0"><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(37, 99, 235);">1</span>
+            <span class="line-name">一号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 84%; background: linear-gradient(90deg, #2563eb55 0%, #2563eb 100%);">
+                <div class="track-head" style="color: #2563eb"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,682</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag heavy">高峰 84%</span>
+          </div>
+        </div><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(236, 72, 153);">2</span>
+            <span class="line-name">二号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 77%; background: linear-gradient(90deg, #ec489955 0%, #ec4899 100%);">
+                <div class="track-head" style="color: #ec4899"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,540</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag busy">平稳 77%</span>
+          </div>
+        </div><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(234, 179, 8);">3</span>
+            <span class="line-name">三号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 46%; background: linear-gradient(90deg, #eab30855 0%, #eab308 100%);">
+                <div class="track-head" style="color: #eab308"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">920</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag smooth">畅通 46%</span>
+          </div>
+        </div><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(132, 204, 22);">4</span>
+            <span class="line-name">四号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 66%; background: linear-gradient(90deg, #84cc1655 0%, #84cc16 100%);">
+                <div class="track-head" style="color: #84cc16"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,315</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag busy">平稳 66%</span>
+          </div>
+        </div></div><div class="lines-group active" id="group-1"><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(148, 163, 184);">5</span>
+            <span class="line-name">五号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 43%; background: linear-gradient(90deg, #94a3b855 0%, #94a3b8 100%);">
+                <div class="track-head" style="color: #94a3b8"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">860</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag smooth">畅通 43%</span>
+          </div>
+        </div><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(16, 185, 129);">6</span>
+            <span class="line-name">六号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 57%; background: linear-gradient(90deg, #10b98155 0%, #10b981 100%);">
+                <div class="track-head" style="color: #10b981"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,140</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag busy">平稳 57%</span>
+          </div>
+        </div><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(249, 115, 22);">7</span>
+            <span class="line-name">七号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 89%; background: linear-gradient(90deg, #f9731655 0%, #f97316 100%);">
+                <div class="track-head" style="color: #f97316"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,780</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag heavy">高峰 89%</span>
+          </div>
+        </div><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(14, 165, 233);">8</span>
+            <span class="line-name">八号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 51%; background: linear-gradient(90deg, #0ea5e955 0%, #0ea5e9 100%);">
+                <div class="track-head" style="color: #0ea5e9"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,020</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag smooth">畅通 51%</span>
+          </div>
+        </div></div><div class="lines-group" id="group-2"><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(168, 85, 247);">9</span>
+            <span class="line-name">九号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 62%; background: linear-gradient(90deg, #a855f755 0%, #a855f7 100%);">
+                <div class="track-head" style="color: #a855f7"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,240</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag busy">平稳 62%</span>
+          </div>
+        </div><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(6, 182, 212);">10</span>
+            <span class="line-name">十号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 75%; background: linear-gradient(90deg, #06b6d455 0%, #06b6d4 100%);">
+                <div class="track-head" style="color: #06b6d4"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,490</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag busy">平稳 75%</span>
+          </div>
+        </div><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(139, 92, 246);">11</span>
+            <span class="line-name">十一号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 70%; background: linear-gradient(90deg, #8b5cf655 0%, #8b5cf6 100%);">
+                <div class="track-head" style="color: #8b5cf6"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,395</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag busy">平稳 70%</span>
+          </div>
+        </div><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(20, 184, 166);">12</span>
+            <span class="line-name">十二号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 54%; background: linear-gradient(90deg, #14b8a655 0%, #14b8a6 100%);">
+                <div class="track-head" style="color: #14b8a6"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,080</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag smooth">畅通 54%</span>
+          </div>
+        </div></div><div class="lines-group" id="group-3"><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(245, 158, 11);">13</span>
+            <span class="line-name">十三号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 49%; background: linear-gradient(90deg, #f59e0b55 0%, #f59e0b 100%);">
+                <div class="track-head" style="color: #f59e0b"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">970</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag smooth">畅通 49%</span>
+          </div>
+        </div><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(56, 189, 248);">14</span>
+            <span class="line-name">十四号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 56%; background: linear-gradient(90deg, #38bdf855 0%, #38bdf8 100%);">
+                <div class="track-head" style="color: #38bdf8"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,110</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag busy">平稳 56%</span>
+          </div>
+        </div><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(163, 230, 53);">15</span>
+            <span class="line-name">十五号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 53%; background: linear-gradient(90deg, #a3e63555 0%, #a3e635 100%);">
+                <div class="track-head" style="color: #a3e635"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,050</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag smooth">畅通 53%</span>
+          </div>
+        </div><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(45, 212, 191);">16</span>
+            <span class="line-name">十六号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 71%; background: linear-gradient(90deg, #2dd4bf55 0%, #2dd4bf 100%);">
+                <div class="track-head" style="color: #2dd4bf"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,420</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag busy">平稳 71%</span>
+          </div>
+        </div></div><div class="lines-group" id="group-4"><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(251, 146, 60);">17</span>
+            <span class="line-name">十七号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 45%; background: linear-gradient(90deg, #fb923c55 0%, #fb923c 100%);">
+                <div class="track-head" style="color: #fb923c"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">890</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag smooth">畅通 45%</span>
+          </div>
+        </div><div class="line-row" style="background: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: none;">
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: rgb(244, 63, 94);">18</span>
+            <span class="line-name">十八号线</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: 58%; background: linear-gradient(90deg, #f43f5e55 0%, #f43f5e 100%);">
+                <div class="track-head" style="color: #f43f5e"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">1,160</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag busy">平稳 58%</span>
+          </div>
+        </div></div></div>
+<!-- 底部工程参数信息栏 -->
+<div class="footer-spec-bar">
+<div class="spec-left">
+<div class="spec-item">
+
+
+</div>
+<div class="spec-item">
+
+
+</div>
+<div class="spec-item">
+
+
+</div>
+</div>
+<div class="spec-right">
+
+</div>
+</div>
+</div>
+<script>
+  // 完整的18条地铁线路真实模拟数据集（补足第5组满4条以保持视觉严密平衡）
+  const routeData = [
+    { id: "1",  name: "一号线",   flow: 1682, max: 2000, color: "#2563eb" },
+    { id: "2",  name: "二号线",   flow: 1540, max: 2000, color: "#ec4899" },
+    { id: "3",  name: "三号线",   flow: 920,  max: 2000, color: "#eab308" },
+    { id: "4",  name: "四号线",   flow: 1315, max: 2000, color: "#84cc16" },
+
+    { id: "5",  name: "五号线",   flow: 860,  max: 2000, color: "#94a3b8" },
+    { id: "6",  name: "六号线",   flow: 1140, max: 2000, color: "#10b981" },
+    { id: "7",  name: "七号线",   flow: 1780, max: 2000, color: "#f97316" },
+    { id: "8",  name: "八号线",   flow: 1020, max: 2000, color: "#0ea5e9" },
+
+    { id: "9",  name: "九号线",   flow: 1240, max: 2000, color: "#a855f7" },
+    { id: "10", name: "十号线",   flow: 1490, max: 2000, color: "#06b6d4" },
+    { id: "11", name: "十一号线", flow: 1395, max: 2000, color: "#8b5cf6" },
+    { id: "12", name: "十二号线", flow: 1080, max: 2000, color: "#14b8a6" },
+
+    { id: "13", name: "十三号线", flow: 970,  max: 2000, color: "#f59e0b" },
+    { id: "14", name: "十四号线", flow: 1110, max: 2000, color: "#38bdf8" },
+    { id: "15", name: "十五号线", flow: 1050, max: 2000, color: "#a3e635" },
+    { id: "16", name: "十六号线", flow: 1420, max: 2000, color: "#2dd4bf" },
+
+    { id: "17", name: "十七号线", flow: 890,  max: 2000, color: "#fb923c" },
+    { id: "18", name: "十八号线", flow: 1160, max: 2000, color: "#f43f5e" },
+    { id: "AP", name: "机场快线", flow: 1530, max: 2000, color: "#6366f1" },
+    { id: "L9", name: "磁浮备用线", flow: 420,  max: 2000, color: "#64748b" }
+  ];
+
+  const LINES_PER_PAGE = 4;
+  const TOTAL_PAGES = Math.ceil(routeData.length / LINES_PER_PAGE); // 5组
+  const CAROUSEL_INTERVAL = 5000; // 严格5秒轮播切换
+  let currentPage = 0;
+  let timer = null;
+  let currentFlowValue = 5457;
+
+  const container = document.getElementById("linesContainer");
+  const segs = document.querySelectorAll(".bar-seg");
+  const groupNumEl = document.getElementById("currentGroupNum");
+  const totalFlowElement = document.getElementById("totalPassengerFlow");
+
+  function getLoadStatus(pct) {
+    if (pct < 55) {
+      return { label: `畅通 ${pct}%`, className: "smooth" };
+    } else if (pct < 80) {
+      return { label: `平稳 ${pct}%`, className: "busy" };
+    } else {
+      return { label: `高峰 ${pct}%`, className: "heavy" };
+    }
+  }
+
+  // 渲染所有分页组
+  function renderGroups() {
+    container.innerHTML = "";
+
+    for (let p = 0; p < TOTAL_PAGES; p++) {
+      const groupEl = document.createElement("div");
+      groupEl.className = `lines-group ${p === 0 ? "active" : ""}`;
+      groupEl.id = `group-${p}`;
+
+      const startIdx = p * LINES_PER_PAGE;
+      const endIdx = startIdx + LINES_PER_PAGE;
+
+      for (let i = startIdx; i < endIdx && i < routeData.length; i++) {
+        const item = routeData[i];
+        const pct = Math.min(100, Math.round((item.flow / item.max) * 100));
+        const status = getLoadStatus(pct);
+
+        const row = document.createElement("div");
+        row.className = "line-row";
+        row.innerHTML = `
+          <div class="line-meta">
+            <span class="route-pill" style="background-color: ${item.color}">${item.id}</span>
+            <span class="line-name">${item.name}</span>
+          </div>
+          <div class="line-track-box">
+            <div class="track-bg">
+              <div class="track-fill" style="width: ${pct}%; background: linear-gradient(90deg, ${item.color}55 0%, ${item.color} 100%);">
+                <div class="track-head" style="color: ${item.color}"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-data-col">
+            <div class="line-val-box">
+              <span class="line-val">${item.flow.toLocaleString()}</span>
+              <span class="line-val-unit">人次/h</span>
+            </div>
+            <span class="load-tag ${status.className}">${status.label}</span>
+          </div>
+        `;
+        groupEl.appendChild(row);
+      }
+
+      container.appendChild(groupEl);
+    }
+  }
+
+  // 右上角总客流数值的柔和滚动补间动画
+  function animateValue(target, duration = 800) {
+    const start = currentFlowValue;
+    if (start === target) return;
+    const startTime = performance.now();
+
+    function update(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // 平滑 easeInOut 缓动
+      const ease = progress < 0.5 
+        ? 2 * progress * progress 
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+      const val = Math.round(start + (target - start) * ease);
+      totalFlowElement.textContent = val.toLocaleString();
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        currentFlowValue = target;
+        totalFlowElement.textContent = target.toLocaleString();
+      }
+    }
+    requestAnimationFrame(update);
+  }
+
+  function updateTotalFlow() {
+    const start = currentPage * LINES_PER_PAGE;
+    const end = start + LINES_PER_PAGE;
+    let pageSum = 0;
+    for (let i = start; i < end && i < routeData.length; i++) {
+      pageSum += routeData[i].flow;
+    }
+    animateValue(pageSum);
+  }
+
+  // 纯粹丝滑的淡入淡出（Cross-fade）切换
+  function goToPage(pageIndex) {
+    if (pageIndex === currentPage) return;
+
+    const currentGroupEl = document.getElementById(`group-${currentPage}`);
+    const nextGroupEl = document.getElementById(`group-${pageIndex}`);
+
+    if (currentGroupEl) {
+      currentGroupEl.classList.remove("active");
+    }
+
+    if (nextGroupEl) {
+      nextGroupEl.classList.add("active");
+    }
+
+    segs[currentPage].classList.remove("active");
+    segs[pageIndex].classList.add("active");
+
+    const fillEl = segs[pageIndex].querySelector(".bar-seg-fill");
+    if (fillEl) {
+      fillEl.style.animation = "none";
+      void fillEl.offsetWidth;
+      fillEl.style.animation = "seg-charging 5s linear forwards";
+    }
+
+    currentPage = pageIndex;
+    groupNumEl.textContent = String(currentPage + 1).padStart(2, "0");
+    updateTotalFlow();
+  }
+
+  function nextPage() {
+    const next = (currentPage + 1) % TOTAL_PAGES;
+    goToPage(next);
+  }
+
+  function startCarousel() {
+    if (timer) clearInterval(timer);
+    timer = setInterval(() => {
+      nextPage();
+    }, CAROUSEL_INTERVAL);
+  }
+
+  segs.forEach((seg, idx) => {
+    seg.addEventListener("click", () => {
+      goToPage(idx);
+      startCarousel();
+    });
+  });
+
+  renderGroups();
+  startCarousel();
+</script>
+
+
+</body></html>

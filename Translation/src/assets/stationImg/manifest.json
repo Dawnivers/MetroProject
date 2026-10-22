@@ -1,0 +1,2372 @@
+{
+  "富锦路": {
+    "file": "富锦路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Fujin%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "友谊西路": {
+    "file": "友谊西路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:West%20Youyi%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "宝安公路": {
+    "file": "宝安公路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Baoan%20Highway%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "共富新村": {
+    "file": "共富新村.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:GongfuxincunStation.JPG",
+    "author": "Tnds",
+    "license": "CC BY-SA 4.0"
+  },
+  "呼兰路": {
+    "file": "呼兰路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%201%20Platform%20of%20Hulan%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "通河新村": {
+    "file": "通河新村.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Tonghe%20Xincun%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "共康路": {
+    "file": "共康路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Station%20Building%20of%20Gongkang%20Road%20Station%20in%20Shanghai%202026.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "彭浦新村": {
+    "file": "彭浦新村.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Pengpu%20Xincun%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "汶水路": {
+    "file": "汶水路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Station%20Building%20of%20Wenshui%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "上海马戏城": {
+    "file": "上海马戏城.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%201%20Platform%20of%20Shanghai%20Circus%20World%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "延长路": {
+    "file": "延长路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Yanchang%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "中山北路": {
+    "file": "中山北路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20North%20Zhongshan%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "上海火车站": {
+    "file": "上海火车站.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20Railway%20Station%20Station%20Line%201%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "汉中路": {
+    "file": "汉中路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Hanzhong%20Road%20Station%20Line%2012%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "新闸路": {
+    "file": "新闸路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Xinzha%20Road%20Station%202008.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "人民广场": {
+    "file": "人民广场.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Peoples%20Square%20Station%20Line%201%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "一大会址·黄陂南路": {
+    "file": "一大会址·黄陂南路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%201%20Platform%20of%20Site%20of%20the%20First%20CPC%20National%20Congress%C2%B7South%20Huangpi%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "陕西南路": {
+    "file": "陕西南路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:South%20Shaanxi%20Road%20Station%20Line%2012%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "常熟路": {
+    "file": "常熟路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%201%20Platform%20of%20Changshu%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "衡山路": {
+    "file": "衡山路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Hengshan%20Road%20Station%202.jpg",
+    "author": "そらみみ",
+    "license": "CC BY-SA 4.0"
+  },
+  "徐家汇": {
+    "file": "徐家汇.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Full%20Platform%20of%20Xujiahui%20Station%20of%20Shanghai%20Metro%20Line%201%2020250831.jpg",
+    "author": "4084470 0.smil",
+    "license": "CC BY 4.0"
+  },
+  "上海体育馆": {
+    "file": "上海体育馆.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:L01L04ShangHaiIndoorStadiumL04Platform(1).jpg",
+    "author": "LenKi4312",
+    "license": "CC0"
+  },
+  "漕宝路": {
+    "file": "漕宝路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%201%20Platform%20of%20Caobao%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "上海南站": {
+    "file": "上海南站.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20South%20Railway%20Station%20(to%20Gucun%20Park).jpg",
+    "author": "YuDiao1118",
+    "license": "CC BY-SA 4.0"
+  },
+  "锦江乐园": {
+    "file": "锦江乐园.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Jinjiang%20Park%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "莲花路": {
+    "file": "莲花路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:LHRSNorthB.jpg",
+    "author": "JACK728",
+    "license": "CC BY-SA 4.0"
+  },
+  "外环路": {
+    "file": "外环路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Waihuanlu%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "莘庄": {
+    "file": "莘庄.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Xinzhuang%20Station%202.jpg",
+    "author": "Camphora",
+    "license": "Public domain"
+  },
+  "蟠祥路・国家会计学院": {
+    "file": "蟠祥路・国家会计学院.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%201st%20Platform%20of%20Panxiang%20Road%20%C2%B7%20Shanghai%20National%20Accounting%20Institute%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "国家会展中心": {
+    "file": "国家会展中心.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2017%20Concourse%20of%20National%20Exhibition%20and%20Convention%20Center%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "虹桥火车站": {
+    "file": "虹桥火车站.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%202%2617%20North%20Platform%20of%20Metro%20Hongqiao%20Railway%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "虹桥2号航站楼": {
+    "file": "虹桥2号航站楼.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Inbound%20platform%20of%20L2-L10%20Hongqiao%20Airport%20Terminal%202%20Station%20(20250610180818).jpg",
+    "author": "N509FZ",
+    "license": "CC BY-SA 4.0"
+  },
+  "淞虹路": {
+    "file": "淞虹路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Songhong%20Road%20Station%20Line%202%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "北新泾": {
+    "file": "北新泾.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Beixinjing%20Station%20(20191112152155).jpg",
+    "author": "N509FZ",
+    "license": "CC BY-SA 4.0"
+  },
+  "威宁路": {
+    "file": "威宁路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Weining%20Road%20Station%20(20191112152430).jpg",
+    "author": "N509FZ",
+    "license": "CC BY-SA 4.0"
+  },
+  "娄山关路": {
+    "file": "娄山关路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2015%20Platform%20of%20Loushanguan%20Road%20Station%20in%20Shanghai%202026.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "中山公园": {
+    "file": "中山公园.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%202%20Platform%20of%20Zhongshan%20Park%20Station%20in%20Shanghai%202026.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "江苏路": {
+    "file": "江苏路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201805%20L11%20Nameboard%20of%20Jiangsu%20Road%20Station.jpg",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "静安寺": {
+    "file": "静安寺.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Jing'an%20Temple%2C%20Line%2014.jpg",
+    "author": "SolidBlock",
+    "license": "CC BY-SA 4.0"
+  },
+  "南京西路": {
+    "file": "南京西路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:West%20Nanjing%20Road%20Station%20Line12%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "南京东路": {
+    "file": "南京东路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%202%20Platform%20of%20East%20Nanjing%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "陆家嘴": {
+    "file": "陆家嘴.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20L14%20Lujiazui%20Station%20(20251026173114).jpg",
+    "author": "N509FZ",
+    "license": "CC BY-SA 4.0"
+  },
+  "浦东南路": {
+    "file": "浦东南路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20South%20Pudong%20Road%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "世纪大道": {
+    "file": "世纪大道.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%206%20Platform%20of%20Century%20Avenue%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "上海科技馆": {
+    "file": "上海科技馆.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Concourse%20of%20Shanghai%20Science%20%26%20Technology%20Museum%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "世纪公园": {
+    "file": "世纪公园.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Century%20Park%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "龙阳路": {
+    "file": "龙阳路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Line%2016%20platform%2C%20Longyang%20Road%20Station%2020240725173608.jpg",
+    "author": "XiaYZ2023",
+    "license": "CC BY-SA 4.0"
+  },
+  "张江高科": {
+    "file": "张江高科.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Zhangjiang%20High%20Technology%20Park%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "金科路": {
+    "file": "金科路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Jinke%20Road%20Station%20(20191112160608).jpg",
+    "author": "N509FZ",
+    "license": "CC BY-SA 4.0"
+  },
+  "广兰路": {
+    "file": "广兰路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Guanglan%20Road%20Station%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "唐镇": {
+    "file": "唐镇.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Tangzhen%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "创新中路": {
+    "file": "创新中路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201908%20Middle%20Chuangxin%20Road%20Platform.jpg",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "华夏东路": {
+    "file": "华夏东路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Eastbound%20platform%20of%20East%20Huaxia%20Road%20Station%20(20191112161958).jpg",
+    "author": "N509FZ",
+    "license": "CC BY-SA 4.0"
+  },
+  "川沙": {
+    "file": "川沙.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20Metro%20-%20Line%202%20-%20Chuanshua.JPG",
+    "author": "Azylber",
+    "license": "CC BY-SA 3.0"
+  },
+  "凌空路": {
+    "file": "凌空路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20Metro%20-%20Line%202%20-%20Lingkong%20Road.JPG",
+    "author": "Azylber",
+    "license": "CC BY-SA 3.0"
+  },
+  "远东大道": {
+    "file": "远东大道.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20180630%E8%BF%9C%E4%B8%9C%E5%A4%A7%E9%81%93%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "海天三路": {
+    "file": "海天三路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Haitiansan%20Road%20Station%20(20191112163756).jpg",
+    "author": "N509FZ",
+    "license": "CC BY-SA 4.0"
+  },
+  "浦东1号2号航站楼": {
+    "file": "浦东1号2号航站楼.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Airport%20Link%20Line%20Platform%20of%20Pudong%20Airport%20Terminal%201%262%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "石龙路": {
+    "file": "石龙路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20South%20Station%20Building%20of%20Shilong%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "龙漕路": {
+    "file": "龙漕路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Longcao%20Road%20Station%20Line%2012%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "漕溪路": {
+    "file": "漕溪路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Caoxi%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "宜山路": {
+    "file": "宜山路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201609%20Platform%20for%20L9%20at%20Yishan%20Road%20Station.jpg",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "虹桥路": {
+    "file": "虹桥路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20240110%20Hongqiao%20Road%20Station%20-%20Platforms%20of%20Line%203%20and%204.jpg",
+    "author": "Windmemories",
+    "license": "CC BY-SA 4.0"
+  },
+  "延安西路": {
+    "file": "延安西路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201604%2003A02-333%20at%20West%20Yan'an%20Road%20Station.JPG",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "金沙江路": {
+    "file": "金沙江路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2013%20Platform%20of%20Jinshajiang%20Road%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "曹杨路": {
+    "file": "曹杨路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Caoyang%20Road.jpg",
+    "author": "SolidBlock",
+    "license": "CC BY-SA 4.0"
+  },
+  "镇坪路": {
+    "file": "镇坪路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SHM%2007A01%20in%20Zhenping%20Road%20station.jpg",
+    "author": "Evan0512",
+    "license": "CC BY-SA 4.0"
+  },
+  "中潭路": {
+    "file": "中潭路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Zhongtan%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "宝山路": {
+    "file": "宝山路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Baoshan%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "东宝兴路": {
+    "file": "东宝兴路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Dongbaoxing%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "虹口足球场": {
+    "file": "虹口足球场.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20240107%20Hongkou%20Football%20Stadium%20Station%20-%20Platform%20of%20Line%203%2002.jpg",
+    "author": "Windmemories",
+    "license": "CC BY-SA 4.0"
+  },
+  "赤峰路": {
+    "file": "赤峰路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Chifeng%20Road%20Station.JPG",
+    "author": "No machine-readable author provided. 枫难寻~commonswiki assumed (based on copyright claims).",
+    "license": "Public domain"
+  },
+  "大柏树": {
+    "file": "大柏树.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Dabaishu%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "江湾镇": {
+    "file": "江湾镇.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Jiangwan%20Town%20Station.JPG",
+    "author": "No machine-readable author provided. 枫难寻~commonswiki assumed (based on copyright claims).",
+    "license": "Public domain"
+  },
+  "殷高西路": {
+    "file": "殷高西路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:West%20Yingao%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "长江南路": {
+    "file": "长江南路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2018%20Platform%20of%20South%20Changjiang%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "淞发路": {
+    "file": "淞发路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201704%20Songfa%20Road%20Station.jpg",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "张华浜": {
+    "file": "张华浜.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Zhanghuabang%20station%2C%20Line%203.jpg",
+    "author": "Sashawiki2008",
+    "license": "CC BY-SA 4.0"
+  },
+  "淞滨路": {
+    "file": "淞滨路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Songbin%20Road%20Station.JPG",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "水产路": {
+    "file": "水产路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shuichan%20Road%20Station.JPG",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "宝杨路": {
+    "file": "宝杨路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Line%203%20Platform%20of%20Baoyang%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "友谊路": {
+    "file": "友谊路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Youyi%20Road%20Station.JPG",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "铁力路": {
+    "file": "铁力路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Tieli%20Road%20Station.JPG",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "江杨北路": {
+    "file": "江杨北路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:North%20Jiangyang%20Road%20Station.JPG",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "海伦路": {
+    "file": "海伦路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%204%20Platform%20of%20Hailun%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "临平路": {
+    "file": "临平路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Linping%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "大连路": {
+    "file": "大连路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Dalian%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "杨树浦路": {
+    "file": "杨树浦路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Yangshupu%20Road%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "浦东大道": {
+    "file": "浦东大道.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%204%20Platform%20of%20Pudong%20Avenue%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "向城路": {
+    "file": "向城路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Xiangcheng%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "蓝村路": {
+    "file": "蓝村路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Lancun%20Road%20Station%20Line%204%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "塘桥": {
+    "file": "塘桥.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Tangqiao%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "南浦大桥": {
+    "file": "南浦大桥.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20B2%20Platform%20of%20Nanpu%20Bridge%20Station%20in%20Shanghai%202026.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "西藏南路": {
+    "file": "西藏南路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:South%20Xizang%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "鲁班路": {
+    "file": "鲁班路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Luban%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "大木桥路": {
+    "file": "大木桥路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Damuqiao%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "东安路": {
+    "file": "东安路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Dongan%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "上海体育场": {
+    "file": "上海体育场.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20Stadium%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "奉贤新城": {
+    "file": "奉贤新城.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20181230%E5%A5%89%E8%B4%A4%E6%96%B0%E5%9F%8E%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "金海湖": {
+    "file": "金海湖.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20181230%E9%87%91%E6%B5%B7%E6%B9%96%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "望园路": {
+    "file": "望园路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20181230%E6%9C%9B%E5%9B%AD%E8%B7%AF%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "环城东路": {
+    "file": "环城东路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20181230%E7%8E%AF%E5%9F%8E%E4%B8%9C%E8%B7%AF%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "奉浦大道": {
+    "file": "奉浦大道.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20181230%E5%A5%89%E6%B5%A6%E5%A4%A7%E9%81%93%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "萧塘": {
+    "file": "萧塘.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20181230%E8%90%A7%E5%A1%98%E7%AB%99%E7%AB%99%E6%88%BF.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "西渡": {
+    "file": "西渡.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Xidu%20Station%20under%20construction.jpg",
+    "author": "Flsxx",
+    "license": "CC BY-SA 3.0"
+  },
+  "江川路": {
+    "file": "江川路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Jiangchuan%20Road%20Station%20under%20construction.jpg",
+    "author": "Flsxx",
+    "license": "CC BY-SA 3.0"
+  },
+  "东川路": {
+    "file": "东川路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20181021%E4%B8%9C%E5%B7%9D%E8%B7%AF%E7%AB%99%E7%AB%99%E6%88%BF.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "剑川路": {
+    "file": "剑川路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20181020%E5%89%91%E5%B7%9D%E8%B7%AF%E7%AB%99%E6%96%B0%E7%AB%99%E6%88%BF.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "北桥": {
+    "file": "北桥.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Beiqiao%20Station.jpg",
+    "author": "Camphora",
+    "license": "Public domain"
+  },
+  "颛桥": {
+    "file": "颛桥.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Zhuanqiao%20Station.jpg",
+    "author": "Camphora",
+    "license": "Public domain"
+  },
+  "银都路": {
+    "file": "银都路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:L05YinDuRDPlatform.jpg",
+    "author": "LenKi4312",
+    "license": "CC0"
+  },
+  "春申路": {
+    "file": "春申路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:2018033105c01%E5%9E%8B%E5%88%97%E8%BD%A6%E8%BF%9B%E5%85%A5%E6%98%A5%E7%94%B3%E8%B7%AF%E7%AB%99.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "港城路": {
+    "file": "港城路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Gangcheng%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "外高桥保税区北": {
+    "file": "外高桥保税区北.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:North%20Waigaoqiao%20Free%20Trade%20Zone%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "航津路": {
+    "file": "航津路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Hangjin%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "外高桥保税区南": {
+    "file": "外高桥保税区南.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:South%20Waigaoqiao%20Free%20Trade%20Zone%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "洲海路": {
+    "file": "洲海路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Zhouhai%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "五洲大道": {
+    "file": "五洲大道.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Exterior%20of%20Wuzhou%20Avenue%20Station%20(20250611181149).jpg",
+    "author": "N509FZ",
+    "license": "CC BY-SA 4.0"
+  },
+  "东靖路": {
+    "file": "东靖路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Dongjing%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "巨峰路": {
+    "file": "巨峰路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2012%20Platform%20of%20Jufeng%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "五莲路": {
+    "file": "五莲路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:WulianRoad.JPG",
+    "author": "Tnds",
+    "license": "CC BY-SA 4.0"
+  },
+  "博兴路": {
+    "file": "博兴路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Boxing%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "金桥路": {
+    "file": "金桥路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:JinqiaoRoadStation.JPG",
+    "author": "Tnds",
+    "license": "CC BY-SA 4.0"
+  },
+  "云山路": {
+    "file": "云山路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%206%20Platform%20of%20Yunshan%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "德平路": {
+    "file": "德平路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Deping%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "北洋泾路": {
+    "file": "北洋泾路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Beiyangjing%20Road%20Station%20in%20Shanghai%20202508.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "民生路": {
+    "file": "民生路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Minsheng%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "源深体育中心": {
+    "file": "源深体育中心.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Yuanshen%20Sports%20Center%20Station%20in%20Shanghai%20202508.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "浦电路": {
+    "file": "浦电路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Pudian%20Road%20Station%20Line%206.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "上海儿童医学中心": {
+    "file": "上海儿童医学中心.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Shanghai%20Children's%20Medical%20Center%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "临沂新村": {
+    "file": "临沂新村.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Linyi%20Xincun%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "高科西路": {
+    "file": "高科西路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%207%20Platform%20of%20West%20Gaoke%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "东明路": {
+    "file": "东明路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2013%20Platform%20of%20Dongming%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "高青路": {
+    "file": "高青路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Gaoqing%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "华夏西路": {
+    "file": "华夏西路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20West%20Huaxia%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "上南路": {
+    "file": "上南路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shangnan%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "灵岩南路": {
+    "file": "灵岩南路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20South%20Lingyan%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "东方体育中心": {
+    "file": "东方体育中心.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%208%20Platform%20of%20Oriental%20Sports%20Center%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "花木路": {
+    "file": "花木路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20Metro%20-%20Line%207%20-%20Huamu%20Road%20-%20Platform.JPG",
+    "author": "Azylber",
+    "license": "CC BY-SA 3.0"
+  },
+  "芳华路": {
+    "file": "芳华路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Fanghua%20Road%20Station%20Line7%20Shanghai%20Metro.JPG",
+    "author": "Emcc83",
+    "license": "CC BY-SA 3.0"
+  },
+  "锦绣路": {
+    "file": "锦绣路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Jinxiu%20Road%20Station%20Line7%20Shanghai%20Metro.JPG",
+    "author": "Emcc83",
+    "license": "CC BY-SA 3.0"
+  },
+  "杨高南路": {
+    "file": "杨高南路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20Metro%20-%20Line%207%20-%20South%20Yanggao%20Road.JPG",
+    "author": "Azylber",
+    "license": "CC BY-SA 3.0"
+  },
+  "云台路": {
+    "file": "云台路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Yuntai%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "耀华路": {
+    "file": "耀华路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%207%20Platform%20of%20Yaohua%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "长清路": {
+    "file": "长清路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2013%20Platform%20of%20Changqing%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "后滩": {
+    "file": "后滩.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Houtan%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "龙华中路": {
+    "file": "龙华中路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%207%20Platform%20of%20Middle%20Longhua%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "肇嘉浜路": {
+    "file": "肇嘉浜路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%209%20Platform%20of%20Zhaojiabang%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "昌平路": {
+    "file": "昌平路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Changping%20Road%20Station%20Line7%20Shanghai%20Metro.JPG",
+    "author": "Emcc83",
+    "license": "CC BY-SA 3.0"
+  },
+  "长寿路": {
+    "file": "长寿路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Changshou%20Road%20Station%20Line%2013%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "岚皋路": {
+    "file": "岚皋路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Langao%20Road%20Station%20Line7%20Shanghai%20Metro.JPG",
+    "author": "Emcc83",
+    "license": "CC BY-SA 3.0"
+  },
+  "新村路": {
+    "file": "新村路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Xincun%20Road%20Station%20Line7%20Shanghai%20Metro.JPG",
+    "author": "Emcc83",
+    "license": "CC BY-SA 3.0"
+  },
+  "大华三路": {
+    "file": "大华三路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Dahuasan%20Road%20Station%20Line7%20Shanghai%20Metro.JPG",
+    "author": "Emcc83",
+    "license": "CC BY-SA 3.0"
+  },
+  "行知路": {
+    "file": "行知路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Xingzhi%20Road%20Station%20Line7%20Shanghai%20Metro.JPG",
+    "author": "Emcc83",
+    "license": "CC BY-SA 3.0"
+  },
+  "大场镇": {
+    "file": "大场镇.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Dachang%20Town%20Station%20Line7%20Shanghai%20Metro.JPG",
+    "author": "Emcc83",
+    "license": "CC BY-SA 3.0"
+  },
+  "场中路": {
+    "file": "场中路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Changzhong%20Road%20Station%20Line7%20Shanghai%20Metro.JPG",
+    "author": "Emcc83",
+    "license": "CC BY-SA 3.0"
+  },
+  "上大路": {
+    "file": "上大路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shangda%20Road%20Station%20Line7%20Shanghai%20Metro.JPG",
+    "author": "Emcc83",
+    "license": "CC BY-SA 3.0"
+  },
+  "南陈路": {
+    "file": "南陈路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Nanchen%20Road%20Station%20Line7%20Shanghai%20Metro.JPG",
+    "author": "Emcc83",
+    "license": "CC BY-SA 3.0"
+  },
+  "上海大学": {
+    "file": "上海大学.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20University%20Station%20Line7%20Shanghai%20Metro.JPG",
+    "author": "Emcc83",
+    "license": "CC BY-SA 3.0"
+  },
+  "祁华路": {
+    "file": "祁华路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Qihua%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "顾村公园": {
+    "file": "顾村公园.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:L07L15GuCunParkL15Platform(2).jpg",
+    "author": "LenKi4312",
+    "license": "CC0"
+  },
+  "刘行": {
+    "file": "刘行.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Liuhang%20Station%2C%20Line%207.jpg",
+    "author": "Sashawiki2008",
+    "license": "CC BY-SA 4.0"
+  },
+  "潘广路": {
+    "file": "潘广路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Panguang%20Road%20Station%2C%20Line%207.jpg",
+    "author": "Sashawiki2008",
+    "license": "CC BY-SA 4.0"
+  },
+  "罗南新村": {
+    "file": "罗南新村.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Facade%20of%20Luonan%20Xincun%20Station%20of%20Shanghai%20Metro%207%2020250330%2005.jpg",
+    "author": "4084470 0.smil",
+    "license": "CC BY 4.0"
+  },
+  "美兰湖": {
+    "file": "美兰湖.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Meilan%20Lake%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "沈杜公路": {
+    "file": "沈杜公路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20180331%E6%B2%88%E6%9D%9C%E5%85%AC%E8%B7%AF%E5%B2%9B%E5%BC%8F%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "联航路": {
+    "file": "联航路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E8%81%94%E8%88%AA%E8%B7%AF%E7%AB%99.jpg",
+    "author": "Tnds",
+    "license": "CC BY-SA 3.0"
+  },
+  "江月路": {
+    "file": "江月路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E6%B1%9F%E6%9C%88%E8%B7%AF%E7%AB%99.jpg",
+    "author": "Tnds",
+    "license": "CC BY-SA 3.0"
+  },
+  "浦江镇": {
+    "file": "浦江镇.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E6%B5%A6%E6%B1%9F%E9%95%87%E7%AB%99.jpg",
+    "author": "Tnds",
+    "license": "CC BY-SA 3.0"
+  },
+  "芦恒路": {
+    "file": "芦恒路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E8%8A%A6%E6%81%92%E8%B7%AF%E7%AB%99.JPG",
+    "author": "Tnds",
+    "license": "CC BY-SA 3.0"
+  },
+  "凌兆新村": {
+    "file": "凌兆新村.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E5%87%8C%E5%85%86%E6%96%B0%E6%9D%91%E7%AB%99.jpg",
+    "author": "Tnds",
+    "license": "CC BY-SA 3.0"
+  },
+  "杨思": {
+    "file": "杨思.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Yangsi%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "成山路": {
+    "file": "成山路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Chengshan%20Road%20Station%20Line%2013%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "中华艺术宫": {
+    "file": "中华艺术宫.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20China%20Art%20Museum%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "陆家浜路": {
+    "file": "陆家浜路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Lujiabang%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "老西门": {
+    "file": "老西门.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%208%20Platform%20of%20Laoximen%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "大世界": {
+    "file": "大世界.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:202308%20Nameboard%20of%20L14%20Dashijie%20Station.jpg",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "曲阜路": {
+    "file": "曲阜路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Qufu%20Road%20Station%20Line%2012%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "中兴路": {
+    "file": "中兴路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Zhongxing%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "西藏北路": {
+    "file": "西藏北路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20North%20Xizang%20Road%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "曲阳路": {
+    "file": "曲阳路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Quyang%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "四平路": {
+    "file": "四平路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Siping%20Road%20Station%20Line%2010%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "鞍山新村": {
+    "file": "鞍山新村.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Anshan%20Xincun%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "江浦路": {
+    "file": "江浦路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%208%20Platform%20of%20Jiangpu%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "黄兴路": {
+    "file": "黄兴路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Huangxing%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "延吉中路": {
+    "file": "延吉中路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Middle%20Yanji%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "黄兴公园": {
+    "file": "黄兴公园.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Huangxing%20Park%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "翔殷路": {
+    "file": "翔殷路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Xiangyin%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "嫩江路": {
+    "file": "嫩江路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Nenjiang%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "市光路": {
+    "file": "市光路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Shiguang%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "曹路": {
+    "file": "曹路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Caolu%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "民雷路": {
+    "file": "民雷路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Minlei%20Road%20Station%20Line%209%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "顾唐路": {
+    "file": "顾唐路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Gutang%20Road%20Station%20Line%209%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "金海路": {
+    "file": "金海路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Jinhai%20Road%20Metro%20Station.JPG",
+    "author": "AddisWang",
+    "license": "CC BY-SA 3.0"
+  },
+  "金桥": {
+    "file": "金桥.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201801%20Jinqiao%20station%20platform.jpg",
+    "author": "JACK728",
+    "license": "CC BY-SA 4.0"
+  },
+  "台儿庄路": {
+    "file": "台儿庄路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201801%20Taierzhuang%20Road%20station%20platform%201.jpg",
+    "author": "JACK728",
+    "license": "CC BY-SA 4.0"
+  },
+  "蓝天路": {
+    "file": "蓝天路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%209%20Platform%20of%20Lantian%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "芳甸路": {
+    "file": "芳甸路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201801%20Fangdian%20Road%20station%20platform.jpg",
+    "author": "JACK728",
+    "license": "CC BY-SA 4.0"
+  },
+  "杨高中路": {
+    "file": "杨高中路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%209%20Platform%20of%20Middle%20Yanggao%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "商城路": {
+    "file": "商城路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Shangcheng%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "小南门": {
+    "file": "小南门.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Xiaonanmen%20Station.jpg",
+    "author": "Tnds",
+    "license": "CC BY-SA 3.0"
+  },
+  "马当路": {
+    "file": "马当路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%209%20Platform%20of%20Madang%20Road%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "打浦桥": {
+    "file": "打浦桥.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Dapuqiao%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "嘉善路": {
+    "file": "嘉善路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2012%20Platform%20of%20Jiashan%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "桂林路": {
+    "file": "桂林路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Guilin%20Road%20Station.jpg",
+    "author": "钉钉",
+    "license": "CC BY-SA 4.0"
+  },
+  "漕河泾开发区": {
+    "file": "漕河泾开发区.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Caohejing%20Hi-Tech%20Park%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "合川路": {
+    "file": "合川路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Hechuan%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "星中路": {
+    "file": "星中路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Xingzhong%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "七宝": {
+    "file": "七宝.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Qibao%20Station%2C%20Shanghai%20Metro.jpg",
+    "author": "钉钉",
+    "license": "CC BY-SA 4.0"
+  },
+  "中春路": {
+    "file": "中春路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Airport%20Link%20Line%20Statin%20Building%20of%20Zhongchun%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "九亭": {
+    "file": "九亭.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Jiuting%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "泗泾": {
+    "file": "泗泾.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Sijing%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "佘山": {
+    "file": "佘山.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Sheshan%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "洞泾": {
+    "file": "洞泾.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Dongjing%20Station.jpg",
+    "author": "Heights",
+    "license": "CC BY-SA 3.0"
+  },
+  "松江大学城": {
+    "file": "松江大学城.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20(W)%20of%20L9%2C%20Songjiang%20University%20Town%20Station%2C%20Shanghai%20Metro%2020260516.jpg",
+    "author": "Tim Wu",
+    "license": "CC BY-SA 4.0"
+  },
+  "松江新城": {
+    "file": "松江新城.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Songjiang%20Xincheng%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "松江体育中心": {
+    "file": "松江体育中心.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Songjiang%20Sports%20Center%20Station.JPG",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "醉白池": {
+    "file": "醉白池.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Zuibaichi%20Station.jpg",
+    "author": "钉钉",
+    "license": "CC BY-SA 4.0"
+  },
+  "上海松江站": {
+    "file": "上海松江站.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Metro%20Shanghai%20Songjiang%20Railway%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "基隆路": {
+    "file": "基隆路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Station%20Building%20of%20Jilong%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "高桥": {
+    "file": "高桥.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%202%2C%20Gaoqiao%20Station%2C%20Shanghai%20(August%202021).jpg%2001.jpg",
+    "author": "DreamerBlue",
+    "license": "CC BY-SA 3.0"
+  },
+  "高桥西": {
+    "file": "高桥西.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%202%2C%20West%20Gaoqiao%20Station%2C%20Shanghai%20(August%202021)%2002.jpg",
+    "author": "DreamerBlue",
+    "license": "CC BY-SA 3.0"
+  },
+  "双江路": {
+    "file": "双江路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%202%2C%20Shuangqiao%20Road%20Station%20(August%202021)%2003.jpg",
+    "author": "DreamerBlue",
+    "license": "CC BY-SA 3.0"
+  },
+  "国帆路": {
+    "file": "国帆路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Guofan%20Rd.%20Station.jpg",
+    "author": "Gaolezhe",
+    "license": "CC BY 4.0"
+  },
+  "新江湾城": {
+    "file": "新江湾城.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201704%20Nameboard%20of%20Xinjiangwancheng%20Station.jpg",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "殷高东路": {
+    "file": "殷高东路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201704%20Nameboard%20of%20East%20Yingao%20Road%20Station.jpg",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "三门路": {
+    "file": "三门路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Sanmen%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "江湾体育场": {
+    "file": "江湾体育场.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Jiangwan%20Stadium%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "五角场": {
+    "file": "五角场.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Wujiaochang%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "国权路": {
+    "file": "国权路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Line%2018%20Platform%20of%20Guoquan%20Road%20Station.jpg",
+    "author": "Nanhuajiaren",
+    "license": "CC BY-SA 3.0"
+  },
+  "同济大学": {
+    "file": "同济大学.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Tongji%20University%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "邮电新村": {
+    "file": "邮电新村.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Youdian%20Xincun%20Station.JPG",
+    "author": "Yangfl",
+    "license": "CC BY 4.0"
+  },
+  "四川北路": {
+    "file": "四川北路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20North%20Sichuan%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "天潼路": {
+    "file": "天潼路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Tiantong%20Road%20Station%2C%202015-01-10.JPG",
+    "author": "Siyuwj",
+    "license": "CC BY-SA 4.0"
+  },
+  "豫园": {
+    "file": "豫园.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E8%B1%AB%E5%9B%AD%E7%AB%9914%E5%8F%B7%E7%BA%BF%E7%AB%99%E5%8F%B020230318.jpg",
+    "author": "西安兵马俑",
+    "license": "CC BY-SA 4.0"
+  },
+  "一大会址·新天地": {
+    "file": "一大会址·新天地.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2010%20Platform%20of%20Site%20of%20the%20First%20CPC%20National%20Congress%C2%B7Xintiandi%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "上海图书馆": {
+    "file": "上海图书馆.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20Metro%20-%20Line%2010%20-%20Shanghai%20Library.JPG",
+    "author": "Azylber",
+    "license": "CC BY-SA 3.0"
+  },
+  "交通大学": {
+    "file": "交通大学.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2011%20Platform%20of%20Jiao%20Tong%20University%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "宋园路": {
+    "file": "宋园路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20Metro%20-%20Line%2010%20-%20Songyuan%20Road.JPG",
+    "author": "Azylber",
+    "license": "CC BY-SA 3.0"
+  },
+  "伊犁路": {
+    "file": "伊犁路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Yili%20Road%20Station%20(20191021092529).jpg",
+    "author": "N509FZ",
+    "license": "CC BY-SA 4.0"
+  },
+  "水城路": {
+    "file": "水城路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Shuicheng%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "龙溪路": {
+    "file": "龙溪路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20Metro%20-%20Line%2010%20-%20Longxi%20Road.JPG",
+    "author": "Azylber",
+    "license": "CC BY-SA 3.0"
+  },
+  "上海动物园": {
+    "file": "上海动物园.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20Metro%20-%20Line%2010%20-%20Shanghai%20Zoo.JPG",
+    "author": "Azylber",
+    "license": "CC BY-SA 3.0"
+  },
+  "虹桥1号航站楼": {
+    "file": "虹桥1号航站楼.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Hongqiao%20Airport%20Terminal%201%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "花桥": {
+    "file": "花桥.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Suzhou%20Metro%20Line%2011%20Platform%20of%20Huaqiao%20Station%20in%20Kunshan%2C%20Suzhou%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "光明路": {
+    "file": "光明路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Guangming%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "兆丰路": {
+    "file": "兆丰路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Zhaofeng%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "安亭": {
+    "file": "安亭.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Anting%20Station%20Line%2011%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "上海汽车城": {
+    "file": "上海汽车城.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:11%E5%8F%B7%E7%BA%BF%E4%B8%8A%E6%B5%B7%E6%B1%BD%E8%BD%A6%E5%9F%8E%E7%AB%99.jpg",
+    "author": "守望者爱孟",
+    "license": "CC BY-SA 3.0"
+  },
+  "昌吉东路": {
+    "file": "昌吉东路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:East%20Changji%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "上海赛车场": {
+    "file": "上海赛车场.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20Circuit%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "嘉定新城": {
+    "file": "嘉定新城.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Jiading%20Xincheng%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "马陆": {
+    "file": "马陆.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SH%20Metro%20Line%2011%20Malu%20Station.jpg",
+    "author": "Le Concorde",
+    "license": "CC BY-SA 3.0"
+  },
+  "陈翔公路": {
+    "file": "陈翔公路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Exterior%20of%20Chenxiang%20Highway%20Station.jpg",
+    "author": "Shwangtianyuan",
+    "license": "CC BY-SA 4.0"
+  },
+  "南翔": {
+    "file": "南翔.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201805%20Station%20Building%20of%20Metro%20Nanxiang%20Station.jpg",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "桃浦新村": {
+    "file": "桃浦新村.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201805%20Taopu%20Xincun%20Station.jpg",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "武威路": {
+    "file": "武威路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201805%20Wuwei%20Road%20Station.jpg",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "祁连山路": {
+    "file": "祁连山路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Qilianshan%20Road%20Station.JPG",
+    "author": "Yangfl",
+    "license": "CC BY-SA 3.0"
+  },
+  "李子园": {
+    "file": "李子园.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Liziyuan%20Station%20(20170910113247).jpg",
+    "author": "N509FZ",
+    "license": "CC BY-SA 4.0"
+  },
+  "上海西站": {
+    "file": "上海西站.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2015%20Platform%20of%20Metro%20Shanghai%20West%20Railway%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "真如": {
+    "file": "真如.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2011%20Platform%20of%20Zhenru%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "枫桥路": {
+    "file": "枫桥路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Fengqiao%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "隆德路": {
+    "file": "隆德路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Longde%20Road%20Station%20Line%2013%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "上海游泳馆": {
+    "file": "上海游泳馆.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Shanghai%20Swimming%20Center%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "龙华": {
+    "file": "龙华.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Line%2011%20Longhua.jpg",
+    "author": "YuDiao1118",
+    "license": "CC BY-SA 4.0"
+  },
+  "云锦路": {
+    "file": "云锦路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Yunjin%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "龙耀路": {
+    "file": "龙耀路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Longyao%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "三林": {
+    "file": "三林.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201609%20Platform%20of%20Sanlin%20Station.jpg",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "三林东": {
+    "file": "三林东.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:201806%20East%20Sanlin%20Station.jpg",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "浦三路": {
+    "file": "浦三路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%202nd%20Platform%20of%20Pusan%20Road%20Station%20in%20Shanghai%202026.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "康恒路": {
+    "file": "康恒路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Kangheng%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "御桥": {
+    "file": "御桥.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2011%20Platform%20of%20Yuqiao%20Station%20in%20Shanghai%20202409.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "罗山路": {
+    "file": "罗山路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Luoshan%20Road%20Station%20Line%2011%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "秀沿路": {
+    "file": "秀沿路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Xiuyan%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "康新公路": {
+    "file": "康新公路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Kangxin%20Highway%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "迪士尼": {
+    "file": "迪士尼.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Disney%20Resort%20Station%201.JPG",
+    "author": "Fayhoo",
+    "license": "CC BY-SA 3.0"
+  },
+  "七莘路": {
+    "file": "七莘路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Qixin%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "虹莘路": {
+    "file": "虹莘路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Hongxin%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "顾戴路": {
+    "file": "顾戴路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Gudai%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "东兰路": {
+    "file": "东兰路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Donglan%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "虹梅路": {
+    "file": "虹梅路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20151229%E4%B8%8A%E6%B5%B7%E5%9C%B0%E9%93%8112%E5%8F%B7%E7%BA%BF%E8%99%B9%E6%A2%85%E8%B7%AF%E7%AB%99.jpg",
+    "author": "QFA7301",
+    "license": "CC BY-SA 4.0"
+  },
+  "虹漕路": {
+    "file": "虹漕路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Hongcao%20Road%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "桂林公园": {
+    "file": "桂林公园.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2015%20Platform%20of%20Guilin%20Park%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "国际客运中心": {
+    "file": "国际客运中心.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Westbound%20platform%20of%20International%20Cruise%20Terminal%20Station%20(20191113205016).jpg",
+    "author": "N509FZ",
+    "license": "CC BY-SA 4.0"
+  },
+  "提篮桥": {
+    "file": "提篮桥.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Tilanqiao%20Station%2C%202015-01-10%2004.JPG",
+    "author": "Siyuwj",
+    "license": "CC BY-SA 4.0"
+  },
+  "江浦公园": {
+    "file": "江浦公园.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2018%20Platform%20of%20jiangpu%20Park%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "宁国路": {
+    "file": "宁国路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Ningguo%20Road%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "隆昌路": {
+    "file": "隆昌路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Longchang%20Road%20Station.JPG",
+    "author": "Chongkian",
+    "license": "CC BY-SA 4.0"
+  },
+  "爱国路": {
+    "file": "爱国路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E7%88%B1%E5%9B%BD%E8%B7%AF%E7%AB%99.jpg",
+    "author": "Mx. Granger",
+    "license": "CC0"
+  },
+  "复兴岛": {
+    "file": "复兴岛.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E5%A4%8D%E5%85%B4%E5%B2%9B%E7%AB%99.jpg",
+    "author": "Mx. Granger",
+    "license": "CC0"
+  },
+  "东陆路": {
+    "file": "东陆路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E4%B8%9C%E9%99%86%E8%B7%AF%E7%AB%99.jpg",
+    "author": "Mx. Granger",
+    "license": "CC0"
+  },
+  "杨高北路": {
+    "file": "杨高北路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20North%20Yanggao%20Road%20Metro%20Station.JPG",
+    "author": "AddisWang",
+    "license": "CC BY-SA 3.0"
+  },
+  "金京路": {
+    "file": "金京路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E9%87%91%E4%BA%AC%E8%B7%AF%E7%AB%99.jpg",
+    "author": "Mx. Granger",
+    "license": "CC0"
+  },
+  "申江路": {
+    "file": "申江路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E7%94%B3%E6%B1%9F%E8%B7%AF%E7%AB%99.jpg",
+    "author": "Mx. Granger",
+    "license": "CC0"
+  },
+  "金运路": {
+    "file": "金运路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SH%20Metro%20Jinyun%20Road%20Station.JPG",
+    "author": "Nav",
+    "license": "CC BY-SA 3.0"
+  },
+  "金沙江西路": {
+    "file": "金沙江西路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:West%20Jinshajiang%20Road%20Station.JPG",
+    "author": "Yangfl",
+    "license": "CC BY-SA 3.0"
+  },
+  "丰庄": {
+    "file": "丰庄.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SH%20Metro%20Fengzhuang%20Station.JPG",
+    "author": "Nav",
+    "license": "CC BY-SA 3.0"
+  },
+  "祁连山南路": {
+    "file": "祁连山南路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:South%20Qilianshan%20Road%20Station.JPG",
+    "author": "Leoyunyi",
+    "license": "CC BY-SA 4.0"
+  },
+  "真北路": {
+    "file": "真北路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Zhenbei%20Road%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "大渡河路": {
+    "file": "大渡河路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2015%20Platform%20of%20Daduhe%20Road%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "武宁路": {
+    "file": "武宁路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Wuning%20Road%20platform%2C%20Line%2014.jpg",
+    "author": "SolidBlock",
+    "license": "CC BY-SA 4.0"
+  },
+  "江宁路": {
+    "file": "江宁路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Jiangning%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "自然博物馆": {
+    "file": "自然博物馆.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Shanghai%20Natural%20History%20Museum%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "淮海中路": {
+    "file": "淮海中路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20151219%E4%B8%8A%E6%B5%B7%E5%9C%B0%E9%93%81%E6%B7%AE%E6%B5%B7%E4%B8%AD%E8%B7%AF%E7%AB%99%E7%AB%99%E5%8F%B0.JPG",
+    "author": "QFA7301",
+    "license": "CC BY-SA 4.0"
+  },
+  "世博会博物馆": {
+    "file": "世博会博物馆.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Lupu%20Bridge%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "世博大道": {
+    "file": "世博大道.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shibo%20Avenue%20Station%20Side%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "华鹏路": {
+    "file": "华鹏路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Huapeng%20Road%20Station%20Line%2013%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "下南路": {
+    "file": "下南路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Xianan%20Road%20Station%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "北蔡": {
+    "file": "北蔡.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Beicai%20Station%20Line%2013%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "陈春路": {
+    "file": "陈春路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Chenchun%20Road%20Station%20Platform.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "莲溪路": {
+    "file": "莲溪路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2013%20Platform%20of%20Lianxi%20Road%20Station%20in%20Shanghai%20202412.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "华夏中路": {
+    "file": "华夏中路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2013%20Platform%20of%20Middle%20Huaxia%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "中科路": {
+    "file": "中科路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Zhongke%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "学林路": {
+    "file": "学林路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Xuelin%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "张江路": {
+    "file": "张江路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Zhangjiang%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "桂桥路": {
+    "file": "桂桥路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Exit%204A%20of%20Guiqiao%20Road.jpg",
+    "author": "SolidBlock",
+    "license": "CC BY-SA 4.0"
+  },
+  "金粤路": {
+    "file": "金粤路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Station%20name%20wall%20of%20Jinyue%20Road.jpg",
+    "author": "SolidBlock",
+    "license": "CC BY-SA 4.0"
+  },
+  "浦东足球场": {
+    "file": "浦东足球场.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Namewall%20of%20Pudong%20Football%20Stadium%20station-20230520.jpg",
+    "author": "Shwangtianyuan",
+    "license": "CC BY-SA 4.0"
+  },
+  "云顺路": {
+    "file": "云顺路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Yunshun%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "黄杨路": {
+    "file": "黄杨路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Huangyang%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "歇浦路": {
+    "file": "歇浦路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Concourse%20of%20Xiepu%20Road%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "昌邑路": {
+    "file": "昌邑路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2014%20Platform%20of%20Changyi%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "源深路": {
+    "file": "源深路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Yuanshen%20Road%20platform.jpg",
+    "author": "SolidBlock",
+    "license": "CC BY-SA 4.0"
+  },
+  "东昌路": {
+    "file": "东昌路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Dongchang%20Road%20Station%20(20191112154910).jpg",
+    "author": "N509FZ",
+    "license": "CC BY-SA 4.0"
+  },
+  "武定路": {
+    "file": "武定路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:202308%20Platform%20of%20Wuding%20Road%20Station.jpg",
+    "author": "MNXANL",
+    "license": "CC BY-SA 4.0"
+  },
+  "中宁路": {
+    "file": "中宁路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Zhongning%20Road.jpg",
+    "author": "SolidBlock",
+    "license": "CC BY-SA 4.0"
+  },
+  "铜川路": {
+    "file": "铜川路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20Tongchuan%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "真光路": {
+    "file": "真光路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20(to%20Guiqiao%20Rd.)%20of%20Zhenguang%20Rd.%20Station%20of%20Shanghai%20Metro%20Line%2014%2020250223.jpg",
+    "author": "4084470 0.smil",
+    "license": "CC BY 4.0"
+  },
+  "真新新村": {
+    "file": "真新新村.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Zhenxin%20Xincun.jpg",
+    "author": "SolidBlock",
+    "license": "CC BY-SA 4.0"
+  },
+  "定边路": {
+    "file": "定边路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Exit%202%20of%20Dingbian%20Road%20Station%20in%20Shanghai.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "嘉怡路": {
+    "file": "嘉怡路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Jiayi%20Road%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "临洮路": {
+    "file": "临洮路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Lintao%20Road%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "乐秀路": {
+    "file": "乐秀路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Exit%201%20of%20Lexiu%20Road%20Station%20in%20Shanghai.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "封浜": {
+    "file": "封浜.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Fengbang%20station.jpg",
+    "author": "SolidBlock",
+    "license": "CC BY-SA 4.0"
+  },
+  "锦秋路": {
+    "file": "锦秋路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20Jinqiu%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "丰翔路": {
+    "file": "丰翔路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20Fengxiang%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "南大路": {
+    "file": "南大路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20Nanda%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "祁安路": {
+    "file": "祁安路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20Qi'an%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "古浪路": {
+    "file": "古浪路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Platform%20of%20Gulang%20Road%20Station.jpg",
+    "author": "SolidBlock",
+    "license": "CC BY-SA 4.0"
+  },
+  "武威东路": {
+    "file": "武威东路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:East%20Wuwei%20Road%20Station%20(August%202021)%2002.jpg",
+    "author": "DreamerBlue",
+    "license": "CC BY-SA 3.0"
+  },
+  "梅岭北路": {
+    "file": "梅岭北路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20North%20Meiling%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "长风公园": {
+    "file": "长风公园.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Changfeng%20Park%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "红宝石路": {
+    "file": "红宝石路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:L15HongBaoShiRDPlatform.jpg",
+    "author": "LenKi4312",
+    "license": "CC0"
+  },
+  "姚虹路": {
+    "file": "姚虹路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20Yaohong%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "吴中路": {
+    "file": "吴中路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Wuzhong%20Road%20Station%20concourse.jpg",
+    "author": "Tianhaoz95",
+    "license": "CC BY-SA 4.0"
+  },
+  "华东理工大学": {
+    "file": "华东理工大学.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20East%20China%20University%20of%20Science%20and%20Technology%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "罗秀路": {
+    "file": "罗秀路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20Luoxiu%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "朱梅路": {
+    "file": "朱梅路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20Zhumei%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "景洪路": {
+    "file": "景洪路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2015%20Platform%20of%20Jinghong%20Road%20Station%20in%20Shanghai%202026.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "虹梅南路": {
+    "file": "虹梅南路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20South%20Hongmei%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "景西路": {
+    "file": "景西路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20Jingxi%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "曙建路": {
+    "file": "曙建路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20Shujian%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "双柏路": {
+    "file": "双柏路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20Shuangbai%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "元江路": {
+    "file": "元江路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20Yuanjiang%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "永德路": {
+    "file": "永德路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L15%20Yongde%20Road%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "紫竹高新区": {
+    "file": "紫竹高新区.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Exit%208%20of%20Zizhu%20Hi-Tech%20Park%20Station.jpg",
+    "author": "SolidBlock",
+    "license": "CC BY-SA 4.0"
+  },
+  "滴水湖": {
+    "file": "滴水湖.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Dishui%20Lake%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "临港大道": {
+    "file": "临港大道.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Lingang%20Avenue%20Station.jpg",
+    "author": "Baycrest",
+    "license": "CC BY-SA 2.5"
+  },
+  "书院": {
+    "file": "书院.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Exit%201%20of%20Shuyuan%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "惠南东": {
+    "file": "惠南东.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Station%20Building%20of%20East%20Huinan%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "惠南": {
+    "file": "惠南.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Huinan%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "野生动物园": {
+    "file": "野生动物园.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Wild%20Animal%20Park%20Station%2020140221%20145320.jpg",
+    "author": "Qa003qa003",
+    "license": "CC BY-SA 4.0"
+  },
+  "新场": {
+    "file": "新场.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Station%20Building%20of%20Xinchang%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "航头东": {
+    "file": "航头东.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Station%20Building%20of%20East%20Hangtou%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "鹤沙航城": {
+    "file": "鹤沙航城.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Exit%202%20of%20Heshahangcheng%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "周浦东": {
+    "file": "周浦东.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20East%20Zhoupu%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "蟠龙路": {
+    "file": "蟠龙路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20171230%E8%9F%A0%E9%BE%99%E8%B7%AF%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "徐盈路": {
+    "file": "徐盈路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20171230%E5%BE%90%E7%9B%88%E8%B7%AF%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "徐泾北城": {
+    "file": "徐泾北城.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20171230%E5%BE%90%E6%B3%BE%E5%8C%97%E5%9F%8E%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "嘉松中路": {
+    "file": "嘉松中路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20171230%E5%98%89%E6%9D%BE%E4%B8%AD%E8%B7%AF%E7%AB%99%E5%BE%80%E8%99%B9%E6%A1%A5%E7%81%AB%E8%BD%A6%E7%AB%99%E6%96%B9%E5%90%91%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "赵巷": {
+    "file": "赵巷.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20171230%E8%B5%B5%E5%B7%B7%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "汇金路": {
+    "file": "汇金路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20171230%E6%B1%87%E9%87%91%E8%B7%AF%E7%AB%99%E7%AB%99%E5%8F%B0%E4%B8%8E%E5%A4%A7%E5%AD%97%E5%A3%81.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "青浦新城": {
+    "file": "青浦新城.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20171230%E9%9D%92%E6%B5%A6%E6%96%B0%E5%9F%8E%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "漕盈路": {
+    "file": "漕盈路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20171230%E6%BC%95%E7%9B%88%E8%B7%AF%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "淀山湖大道": {
+    "file": "淀山湖大道.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20171230%E6%B7%80%E5%B1%B1%E6%B9%96%E5%A4%A7%E9%81%93%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "朱家角": {
+    "file": "朱家角.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20171230%E6%9C%B1%E5%AE%B6%E8%A7%92%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "东方绿舟": {
+    "file": "东方绿舟.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:20171230%E4%B8%9C%E6%96%B9%E7%BB%BF%E8%88%9F%E7%AB%99%E7%AB%99%E5%8F%B0.jpg",
+    "author": "MasaneMiyaPA",
+    "license": "CC BY-SA 4.0"
+  },
+  "西岑": {
+    "file": "西岑.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Line%2017%20Platform%20of%20Xicen%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "康文路": {
+    "file": "康文路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Kangwen%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "爱辉路": {
+    "file": "爱辉路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Aihui%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "长江西路": {
+    "file": "长江西路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20West%20Changjiang%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "通南路": {
+    "file": "通南路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Tongnan%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "殷高路": {
+    "file": "殷高路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Yingao%20Road%20Station.jpg",
+    "author": "Nanhuajiaren",
+    "license": "CC BY-SA 3.0"
+  },
+  "复旦大学": {
+    "file": "复旦大学.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Shanghai%20Metro%20Line18%2C%20Fudan%20University%20Station%2C%20Exit%202.jpg",
+    "author": "AaronRuan-212",
+    "license": "CC BY-SA 4.0"
+  },
+  "抚顺路": {
+    "file": "抚顺路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Fushun%20Road%20Station%20in%20Shanghai%202025.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "平凉路": {
+    "file": "平凉路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Exit%205%20of%20Pingliang%20Road%20Station%20in%20Shanghai.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "丹阳路": {
+    "file": "丹阳路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Danyang%20Road%20Station.png",
+    "author": "中日韩越的汉字",
+    "license": "CC BY-SA 4.0"
+  },
+  "迎春路": {
+    "file": "迎春路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Yingchun%20Road%20Station%20in%20Shanghai%202023.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "芳芯路": {
+    "file": "芳芯路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Exit%202%20of%20Fangxin%20Road%20Station%20in%20Shanghai.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "北中路": {
+    "file": "北中路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Exit%202%20of%20Beizhong%20Road%20Station%20in%20Shanghai.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "周浦": {
+    "file": "周浦.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Name%20wall%20of%20Zhoupu%20Station.jpg",
+    "author": "SolidBlock",
+    "license": "CC BY-SA 4.0"
+  },
+  "繁荣路": {
+    "file": "繁荣路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:The%20Platform%20of%20Fanrong%20Road%20Station%20in%20Shanghai%202024.jpg",
+    "author": "Kmchang28",
+    "license": "CC BY-SA 4.0"
+  },
+  "沈梅路": {
+    "file": "沈梅路.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Name%20wall%20of%20Shenmei%20Road.jpg",
+    "author": "SolidBlock",
+    "license": "CC BY-SA 4.0"
+  },
+  "下沙": {
+    "file": "下沙.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SM%20L18%20Xiasha%20Station.jpg",
+    "author": "SFSQ2012",
+    "license": "CC BY 3.0"
+  },
+  "航头": {
+    "file": "航头.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Hangtou%20station.jpeg",
+    "author": "Szalai.laci",
+    "license": "CC BY-SA 4.0"
+  }
+}

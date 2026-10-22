@@ -1,0 +1,18 @@
+# pnpm 11 起，pnpm 专属设置从 pnpm-workspace.yaml 读取（项目级 .npmrc 已被忽略）。
+#
+# 背景：`verify-deps-before-run` 在 pnpm 11 的默认值是 "install"，意味着执行
+# `pnpm dev` 时 pnpm 会先偷偷跑一次 `pnpm install`。而本项目的 node_modules
+# 是 pnpm 10.33.0 安装的（.modules.yaml 记录 storeDir = D:\.pnpm-store\v10），
+# 当前 PATH 上的 pnpm 是 11.8.0（store 解析为 D:\.pnpm-store\v11；v10 用散装
+# index 文件、v11 用 index.db，格式不兼容）。store 对不上，install 就判定
+# node_modules 必须推倒重建，无 TTY 时直接中止：
+#   [ERR_PNPM_ABORTED_REMOVE_MODULES_DIR_NO_TTY]
+#
+# 关掉运行前依赖校验后，`pnpm dev` 直接执行 vite，node_modules 原样使用。
+#
+# ⚠ 不要照报错提示设 CI=true 或 confirm-modules-purge=false：那会让 pnpm 跳过
+#    确认，真的把 node_modules 删掉并联网重装。
+#
+# 若确实想重新安装以对齐 store：删掉下面这行，在带真实 TTY 的终端里执行
+# `pnpm install` 并在提示时手动确认。
+verifyDepsBeforeRun: false

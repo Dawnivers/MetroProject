@@ -1,0 +1,733 @@
+<!DOCTYPE html><html lang="zh-CN" style="width: 1280px; height: 664px; overflow: hidden; position: relative;"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>线路概览组件 (可调缩放与拖拽漫游插槽版)</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+    /* === 纯原生工业级 OCC 调度大屏通用样式 === */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: #070d19;
+      background-image: 
+        radial-gradient(circle at 50% 30%, rgba(13, 38, 77, 0.45) 0%, transparent 70%),
+        linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+      color: #cfd9e8;
+      font-family: 'Noto Sans SC', -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    /* 主组件卡片容器 */
+    .overview-widget {
+      width: 980px;
+      height: 640px;
+      background: rgba(8, 18, 36, 0.88);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 229, 255, 0.22);
+      border-radius: 4px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.65),
+        inset 0 0 25px rgba(0, 229, 255, 0.05);
+      overflow: hidden;
+    }
+
+    /* 科技感非均匀薄厚微光描线 */
+    .overview-widget::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(0, 229, 255, 0.8) 15%, 
+        #00e5ff 35%, 
+        rgba(255, 179, 0, 0.7) 65%, 
+        transparent 100%);
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    /* 四角工控瞄准切角 */
+    .corner-bracket {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-color: #00e5ff;
+      border-style: solid;
+      pointer-events: none;
+      z-index: 20;
+    }
+    .corner-tl { top: 3px; left: 3px; border-width: 2px 0 0 2px; }
+    .corner-tr { top: 3px; right: 3px; border-width: 2px 2px 0 0; }
+    .corner-bl { bottom: 3px; left: 3px; border-width: 0 0 2px 2px; }
+    .corner-br { bottom: 3px; right: 3px; border-width: 0 2px 2px 0; }
+
+    /* ================= 顶部标题与控制台 Header ================= */
+    .widget-header {
+      height: 60px;
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+      background: linear-gradient(180deg, rgba(0, 229, 255, 0.06) 0%, rgba(5, 15, 30, 0.3) 100%);
+      position: relative;
+      z-index: 15;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* 标题前缀十字星标 */
+    .title-mark {
+      color: #ffb300;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1;
+      text-shadow: 0 0 10px rgba(255, 179, 0, 0.6);
+    }
+
+    .widget-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      background: linear-gradient(180deg, #ffffff 10%, #ffd066 85%, #ffb300 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 10px rgba(255, 179, 0, 0.3);
+    }
+
+    /* 点阵装饰 */
+    .dot-matrix {
+      display: grid;
+      grid-template-columns: repeat(7, 3px);
+      gap: 3px;
+      margin-left: 4px;
+      opacity: 0.6;
+    }
+    .dot {
+      width: 3px;
+      height: 3px;
+      background-color: #00e5ff;
+      border-radius: 50%;
+    }
+
+    /* 顶部右侧参数设置栏（最大/最小缩放控制与插槽配置） */
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .param-group {
+      display: flex;
+      align-items: center;
+      background: rgba(4, 25, 48, 0.6);
+      border: 1px solid rgba(0, 229, 255, 0.22);
+      border-radius: 3px;
+      padding: 3px 8px;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .param-label {
+      color: #6d93b8;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+
+    .param-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .param-input {
+      width: 48px;
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      border-radius: 2px;
+      color: #00e5ff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      padding: 2px 0;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .param-input:focus {
+      border-color: #ffb300;
+      box-shadow: 0 0 8px rgba(255, 179, 0, 0.4);
+      color: #ffb300;
+    }
+
+    .param-unit {
+      color: #4a759c;
+      font-size: 11px;
+    }
+
+    /* 插槽管理按钮与指示灯 */
+    .slot-badge-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.4);
+      color: #00e5ff;
+      padding: 4px 10px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .slot-badge-btn:hover {
+      background: rgba(0, 229, 255, 0.25);
+      border-color: #00e5ff;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.35);
+      color: #ffffff;
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      background-color: #00e5ff;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #00e5ff;
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    /* ================= 线路图插槽视口 (Slot Viewport) ================= */
+    .slot-viewport-container {
+      position: relative;
+      flex: 1;
+      width: 100%;
+      background: #040914;
+      overflow: hidden;
+      cursor: grab;
+    }
+    .slot-viewport-container:active {
+      cursor: grabbing;
+    }
+
+    /* 内部拖动舞台 (Stage) */
+    .drag-stage {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform-origin: center center;
+      will-change: transform;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 插槽中注入的线路图图片 (占满插槽，并可受控平移缩放) */
+    .slot-line-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      pointer-events: none; /* 防止浏览器默认的图片拖拽鬼影 */
+      transition: filter 0.3s;
+    }
+
+    /* 视口网格雷达刻度背景层 (纯装饰增加专业质感) */
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: 
+        radial-gradient(circle at center, transparent 35%, rgba(4, 9, 20, 0.5) 90%),
+        linear-gradient(rgba(0, 229, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+      background-size: 100% 100%, 80px 80px, 80px 80px;
+      z-index: 5;
+    }
+
+    /* 中心校准十字线 (轻微透明) */
+    .center-reticle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 32px;
+      height: 32px;
+      pointer-events: none;
+      z-index: 6;
+      opacity: 0.25;
+    }
+    .center-reticle::before, .center-reticle::after {
+      content: '';
+      position: absolute;
+      background: #00e5ff;
+    }
+    .center-reticle::before { top: 0; left: 15px; width: 2px; height: 32px; }
+    .center-reticle::after { top: 15px; left: 0; width: 32px; height: 2px; }
+
+    /* ================= 浮动快捷操作栏 & 工控浮标 ================= */
+    /* 左下角状态反馈仪 */
+    .status-hud {
+      position: absolute;
+      bottom: 14px;
+      left: 16px;
+      background: rgba(4, 16, 32, 0.85);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 3px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #799ab8;
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+    .hud-val {
+      color: #00e5ff;
+      font-weight: 600;
+    }
+    .hud-val.alert {
+      color: #ffb300;
+    }
+
+    /* 右下角缩放控制器浮标 */
+    .zoom-toolbar {
+      position: absolute;
+      bottom: 14px;
+      right: 16px;
+      background: rgba(4, 16, 32, 0.85);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 4px;
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .tool-btn {
+      width: 32px;
+      height: 32px;
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 3px;
+      color: #00e5ff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    .tool-btn:hover {
+      background: rgba(0, 229, 255, 0.25);
+      border-color: #00e5ff;
+      color: #ffffff;
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+    }
+    .tool-btn:active {
+      transform: scale(0.92);
+    }
+
+    /* 缩放比例滑杆条 (悬浮在右侧) */
+    .slider-track-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 6px 0;
+    }
+    .zoom-slider {
+      writing-mode: bt-lr; /* IE/Edge */
+      -webkit-appearance: slider-vertical; /* WebKit */
+      width: 14px;
+      height: 90px;
+      cursor: pointer;
+      accent-color: #00e5ff;
+    }
+
+    /* 隐藏的原生文件上传 (支持随时替换插槽图片) */
+    #slotFileInput {
+      display: none;
+    }
+
+    /* 快捷预设区域标签 */
+    .preset-nav {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .preset-chip {
+      background: rgba(4, 16, 32, 0.75);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 2px;
+      color: #8da9c4;
+      font-size: 11px;
+      padding: 3px 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(6px);
+    }
+    .preset-chip:hover {
+      border-color: #00e5ff;
+      color: #00e5ff;
+      background: rgba(0, 229, 255, 0.12);
+    }
+
+    /* 缩放极限状态提示气泡 */
+    .limit-tooltip {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-10px);
+      background: rgba(255, 179, 0, 0.9);
+      color: #040914;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 3px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 30;
+      box-shadow: 0 4px 12px rgba(255, 179, 0, 0.4);
+    }
+    .limit-tooltip.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+<!-- 主组件容器 -->
+<div class="overview-widget" id="overviewWidget">
+<!-- 四角工控瞄准角 -->
+<div class="corner-bracket corner-tl"></div>
+<div class="corner-bracket corner-tr"></div>
+<div class="corner-bracket corner-bl"></div>
+<div class="corner-bracket corner-br"></div>
+<!-- 顶部标题与缩放参数设定栏 -->
+<header class="widget-header">
+<div class="header-left">
+
+<h1 class="widget-title">线路概览</h1>
+<div class="dot-matrix" title="系统联机正常">
+<div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+<div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+</div>
+<!-- 右侧控制台：可设置最大、最小缩放比例 -->
+<div class="header-controls">
+
+
+<!-- 图片插槽更换按钮 -->
+
+<input accept="image/*" id="slotFileInput" type="file">
+</div>
+</header>
+<!-- 线路图插槽视口 (支持拖动与缩放) -->
+<main class="slot-viewport-container" id="viewport">
+<!-- 极值告警提示条 -->
+<div class="limit-tooltip" id="limitTooltip">已达到缩放极值</div>
+<!-- 快捷预设区域跳转 -->
+<nav class="preset-nav">
+
+
+
+</nav>
+<!-- 装饰用网格层与中心十字准星 -->
+<div class="grid-overlay"></div>
+<div class="center-reticle"></div>
+<!-- 拖拽与缩放的舞台层 (Stage) -->
+<div class="drag-stage" id="dragStage" style="transform: translate3d(0px, 0px, 0px) scale(1.75);">
+<!-- 插槽图片：默认填满插槽，可传入更换 -->
+<img alt="城市地铁综合线网拓扑图" class="slot-line-image" draggable="false" id="slotImage" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwpT0mFA1opdA9L7wicJ4Fu4jf1DKPX9CQvcMFhE71JUl-5PyvlNrTHmsCximw_sbnv8IQO2DGbU89rLIKpYnHBG7UW3sCg596sdEAlaLpjqF-EEUKeSFRFgoJMunk_g1r_P20Djexx_Eaiq-s8IjPBb5g4XavfF-ff_68lAmi8iGBvq0xGlOwcGDAHr25WtWJSuugz9aIHSPv6XnAjfduztbtNkTyHIlkUn-9dbBnUk9ghVUAL_kQ0tLCyJiQaelT">
+</div>
+<!-- 左下角工控 HUD 状态显示 -->
+
+<!-- 右下角悬浮缩放控制栏 -->
+
+</main>
+</div>
+<script>
+    /* =========================================================
+       线路概览组件核心交互逻辑 (100% 纯原生 JavaScript)
+       功能特性：
+       1. 线路图插槽：支持通过 API 或文件上传动态传入更换图片
+       2. 可设置最大 / 最小缩放比例 (Min Scale & Max Scale)
+       3. 鼠标自由拖动平移 (Pan) 与 滚轮以鼠标为中心平滑缩放 (Zoom)
+       4. 右下角快捷步进按钮与滑动条联动控制
+    ========================================================= */
+
+    // DOM 元素引用
+    const viewport = document.getElementById('viewport');
+    const dragStage = document.getElementById('dragStage');
+    const slotImage = document.getElementById('slotImage');
+    const minScaleInput = document.getElementById('minScaleInput');
+    const maxScaleInput = document.getElementById('maxScaleInput');
+    const hudCoords = document.getElementById('hudCoords');
+    const hudZoom = document.getElementById('hudZoom');
+    const hudRange = document.getElementById('hudRange');
+    const zoomRangeBar = document.getElementById('zoomRangeBar');
+    const limitTooltip = document.getElementById('limitTooltip');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const slotFileInput = document.getElementById('slotFileInput');
+
+    // 视口状态变量
+    let minScale = 1.75;
+    let maxScale = 4.0;
+    let scale = 1.75;
+    let translateX = 0;
+    let translateY = 0;
+
+    // 拖动状态
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let initialTranslateX = 0;
+    let initialTranslateY = 0;
+    let tooltipTimer = null;
+
+    // 更新画面变换与 HUD 反馈
+    function updateTransform() {
+      dragStage.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`;
+      hudCoords.textContent = `X: ${Math.round(translateX)}px, Y: ${Math.round(translateY)}px`;
+      hudZoom.textContent = `${scale.toFixed(2)}x (${Math.round(scale * 100)}%)`;
+      zoomRangeBar.value = scale;
+
+      // 缩放边界颜色提示
+      if (scale <= minScale || scale >= maxScale) {
+        hudZoom.classList.add('alert');
+      } else {
+        hudZoom.classList.remove('alert');
+      }
+    }
+
+    // 弹出缩放极值提示
+    function showLimitTooltip(text) {
+      limitTooltip.textContent = text;
+      limitTooltip.classList.add('show');
+      clearTimeout(tooltipTimer);
+      tooltipTimer = setTimeout(() => {
+        limitTooltip.classList.remove('show');
+      }, 1500);
+    }
+
+    // 更新最大/最小缩放阈值约束
+    function updateScaleConstraints() {
+      let minVal = parseFloat(minScaleInput.value);
+      let maxVal = parseFloat(maxScaleInput.value);
+
+      if (isNaN(minVal) || minVal < 0.1) minVal = 0.1;
+      if (isNaN(maxVal) || maxVal < minVal) maxVal = minVal + 0.5;
+
+      minScale = minVal;
+      maxScale = maxVal;
+
+      minScaleInput.value = minScale;
+      maxScaleInput.value = maxScale;
+
+      // 同步滑块范围
+      zoomRangeBar.min = minScale;
+      zoomRangeBar.max = maxScale;
+      hudRange.textContent = `[${minScale.toFixed(2)}x ~ ${maxScale.toFixed(1)}x]`;
+
+      // 如果当前缩放超出新范围，自动夹取 (clamp)
+      if (scale < minScale) {
+        scale = minScale;
+        updateTransform();
+      } else if (scale > maxScale) {
+        scale = maxScale;
+        updateTransform();
+      }
+    }
+
+    minScaleInput.addEventListener('change', updateScaleConstraints);
+    maxScaleInput.addEventListener('change', updateScaleConstraints);
+
+    // ================= 鼠标拖拽平移逻辑 (Pan) =================
+    viewport.addEventListener('mousedown', (e) => {
+      // 避免点击控件或按钮时触发拖动
+      if (e.target.closest('.zoom-toolbar') || e.target.closest('.preset-nav') || e.target.closest('input')) {
+        return;
+      }
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      initialTranslateX = translateX;
+      initialTranslateY = translateY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+      translateX = initialTranslateX + deltaX;
+      translateY = initialTranslateY + deltaY;
+      updateTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    // ================= 鼠标滚轮以光标为中心缩放 (Zoom) =================
+    viewport.addEventListener('wheel', (e) => {
+      e.preventDefault();
+
+      const rect = viewport.getBoundingClientRect();
+      const cursorX = e.clientX - rect.left - rect.width / 2;
+      const cursorY = e.clientY - rect.top - rect.height / 2;
+
+      // 滚轮缩放灵敏度
+      const zoomFactor = e.deltaY < 0 ? 1.15 : 0.87;
+      let targetScale = scale * zoomFactor;
+
+      if (targetScale > maxScale) {
+        if (scale !== maxScale) showLimitTooltip(`已达到设定的最大缩放比例 (${maxScale}x)`);
+        targetScale = maxScale;
+      } else if (targetScale < minScale) {
+        if (scale !== minScale) showLimitTooltip(`已达到设定的最小缩放比例 (${minScale}x)`);
+        targetScale = minScale;
+      }
+
+      if (targetScale === scale) return;
+
+      // 以光标为锚点平移补偿计算
+      const scaleRatio = targetScale / scale;
+      translateX = cursorX - (cursorX - translateX) * scaleRatio;
+      translateY = cursorY - (cursorY - translateY) * scaleRatio;
+      scale = targetScale;
+
+      updateTransform();
+    }, { passive: false });
+
+    // ================= 浮标按钮交互 =================
+    document.getElementById('btnZoomIn').addEventListener('click', () => {
+      let targetScale = Math.min(scale + 0.3, maxScale);
+      if (scale >= maxScale) {
+        showLimitTooltip(`已达最大缩放 (${maxScale}x)`);
+      } else {
+        scale = targetScale;
+        updateTransform();
+      }
+    });
+
+    document.getElementById('btnZoomOut').addEventListener('click', () => {
+      let targetScale = Math.max(scale - 0.3, minScale);
+      if (scale <= minScale) {
+        showLimitTooltip(`已达最小缩放 (${minScale}x)`);
+      } else {
+        scale = targetScale;
+        updateTransform();
+      }
+    });
+
+    document.getElementById('btnReset').addEventListener('click', resetToCenter);
+
+    zoomRangeBar.addEventListener('input', (e) => {
+      scale = parseFloat(e.target.value);
+      updateTransform();
+    });
+
+    // 恢复居中状态 (默认恢复为最小允许比例并居中)
+    function resetToCenter() {
+      scale = minScale;
+      translateX = 0;
+      translateY = 0;
+      updateTransform();
+    }
+
+    // 快捷聚焦特定视点
+    function quickFocus(targetScale, targetX, targetY) {
+      scale = Math.max(minScale, Math.min(targetScale, maxScale));
+      translateX = targetX;
+      translateY = targetY;
+      updateTransform();
+    }
+
+    // ================= 图片插槽机制 (Slot API & 上传) =================
+    uploadBtn.addEventListener('click', () => {
+      slotFileInput.click();
+    });
+
+    slotFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          slotImage.src = event.target.result;
+          uploadBtn.querySelector('span:last-child').textContent = `插槽: ${file.name.slice(0, 10)}...`;
+          resetToCenter();
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // 暴露给宿主系统的插槽全局接口 (对外调用 API)
+    window.LineOverviewSlot = {
+      // 传入外部图片URL
+      setImage(url, name = '外部传入图') {
+        slotImage.src = url;
+        uploadBtn.querySelector('span:last-child').textContent = `插槽: ${name}`;
+        resetToCenter();
+      },
+      // 动态设定最小最大缩放
+      setZoomLimits(min, max) {
+        if (min !== undefined) minScaleInput.value = min;
+        if (max !== undefined) maxScaleInput.value = max;
+        updateScaleConstraints();
+      },
+      // 重置视图
+      resetView: resetToCenter
+    };
+
+    // 初始化运行
+    updateScaleConstraints();
+    updateTransform();
+  </script>
+
+
+</body></html>

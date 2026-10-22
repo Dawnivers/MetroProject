@@ -1,0 +1,901 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>科幻国风游戏底部HUD导航控制台 - Cyber Tactical HUD</title>
+<!-- Google Fonts: Rajdhani & Noto Sans SC -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&amp;family=Rajdhani:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+    /* CSS Variables & Tokens */
+    :root {
+      --color-bg: #03070e;
+      --color-deep-blue: #050b14;
+      --color-gold: #e2ba64;
+      --color-gold-glow: #fce38a;
+      --color-gold-dark: #8b6914;
+      --color-cyan: #38ef7d;
+      --color-cyan-glow: #11efe3;
+      --color-text-main: #e2f1ff;
+      --color-text-muted: #88a2be;
+      --panel-bg: rgba(7, 16, 32, 0.88);
+      --panel-border: rgba(226, 186, 100, 0.35);
+      --font-scifi: 'Rajdhani', 'Noto Sans SC', sans-serif;
+      --font-sans: 'Noto Sans SC', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    ::selection {
+      background: #00f2fe;
+      color: #03070e;
+    }
+
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-x: hidden;
+      user-select: none;
+      position: relative;
+      /* 虚拟星空与赛博城市底图网格背景 */
+      background-image: 
+        radial-gradient(circle at 50% 100%, rgba(13, 36, 68, 0.5) 0%, rgba(3, 7, 15, 0.98) 75%),
+        linear-gradient(rgba(0, 242, 254, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 242, 254, 0.035) 1px, transparent 1px);
+      background-size: 100% 100%, 40px 40px, 40px 40px;
+    }
+
+    /* Keyframe Animations */
+    @keyframes dial-rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes dial-reverse {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(-360deg); }
+    }
+
+    @keyframes pulse-core {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 14px rgba(226, 186, 100, 0.75)) drop-shadow(0 0 10px rgba(17, 239, 227, 0.5));
+      }
+      50% {
+        transform: scale(1.03);
+        filter: drop-shadow(0 0 24px rgba(226, 186, 100, 0.95)) drop-shadow(0 0 16px rgba(17, 239, 227, 0.8));
+      }
+    }
+
+    @keyframes ping-dot {
+      0% { transform: scale(1); opacity: 1; }
+      75%, 100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    @keyframes flow-light {
+      0% { transform: translateX(-120%); }
+      100% { transform: translateX(240%); }
+    }
+
+    /* Top Status Bar */
+    .hud-header {
+      width: 100%;
+      padding: 20px 32px 0 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: rgba(226, 186, 100, 0.85);
+      font-family: var(--font-scifi);
+      z-index: 20;
+    }
+
+    .status-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ping-box {
+      position: relative;
+      width: 8px;
+      height: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ping-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--color-cyan-glow);
+      box-shadow: 0 0 8px var(--color-cyan-glow);
+    }
+
+    .ping-wave {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--color-cyan-glow);
+      animation: ping-dot 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    .hud-tag {
+      border: 1px solid rgba(226, 186, 100, 0.35);
+      background: rgba(7, 16, 32, 0.6);
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+
+    .cyan-text {
+      color: var(--color-cyan-glow);
+    }
+
+    /* Main Central Radar & Star Orbit Stage */
+    .central-stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 16px;
+      z-index: 10;
+    }
+
+    .orbit-container {
+      position: absolute;
+      width: 440px;
+      height: 440px;
+      border-radius: 50%;
+      border: 1px solid rgba(226, 186, 100, 0.16);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      animation: dial-rotate 28s linear infinite;
+    }
+
+    .orbit-inner-dashed {
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      border: 1px dashed rgba(17, 239, 227, 0.22);
+    }
+
+    .orbit-node-top {
+      position: absolute;
+      top: -4px;
+      width: 8px;
+      height: 8px;
+      background-color: var(--color-gold);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--color-gold);
+    }
+
+    .orbit-node-bottom {
+      position: absolute;
+      bottom: -4px;
+      width: 8px;
+      height: 8px;
+      background-color: var(--color-cyan-glow);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--color-cyan-glow);
+    }
+
+    .center-hud-label {
+      position: relative;
+      text-align: center;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .center-hud-en {
+      font-family: var(--font-scifi);
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      color: rgba(17, 239, 227, 0.8);
+      text-shadow: 0 0 8px rgba(17, 239, 227, 0.4);
+    }
+
+    .center-hud-cn {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      color: rgba(226, 186, 100, 0.9);
+      text-shadow: 0 0 10px rgba(226, 186, 100, 0.4);
+    }
+
+    /* Bottom Control Bar Area */
+    .hud-bottom-bar {
+      width: 100%;
+      padding: 0 12px 14px 12px;
+      position: relative;
+      z-index: 30;
+    }
+
+    .hud-console-wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    /* Dual Golden Rail Track (Background SVG & Dots) */
+    .track-rail-container {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 2px;
+      z-index: 0;
+    }
+
+    .rail-svg {
+      width: 100%;
+      height: 102px;
+      overflow: visible;
+    }
+
+    /* Fixed constellation star nodes along track */
+    .track-star-node {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      transform: translate(-50%, 50%);
+    }
+
+    /* Stepped Multi-Tier Navigation Deck */
+    .hud-nav-deck {
+      width: 100%;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    /* Wing Sections (Tier 1: 48px height) */
+    .tier-wing {
+      height: 48px;
+      width: 200px;
+      background: linear-gradient(90deg, rgba(5, 11, 20, 0.96), rgba(8, 21, 40, 0.92));
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(226, 186, 100, 0.35);
+      border-bottom: 1px solid rgba(226, 186, 100, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .tier-wing-left {
+      border-left: 1px solid rgba(226, 186, 100, 0.35);
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 0 100%);
+    }
+
+    .tier-wing-right {
+      border-right: 1px solid rgba(226, 186, 100, 0.35);
+      background: linear-gradient(90deg, rgba(8, 21, 40, 0.92), rgba(5, 11, 20, 0.96));
+      clip-path: polygon(0 100%, 10px 0, 100% 0, 100% 100%);
+    }
+
+    .wing-info {
+      display: flex;
+      flex-direction: column;
+      font-family: var(--font-scifi);
+      font-size: 9px;
+      line-height: 1.25;
+      color: #94a3b8;
+    }
+
+    .wing-info .status-line {
+      color: var(--color-cyan-glow);
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .wing-box-badge {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(226, 186, 100, 0.35);
+      color: var(--color-gold);
+      font-size: 10px;
+      font-family: var(--font-scifi);
+      background: rgba(5, 11, 20, 0.5);
+    }
+
+    /* Gear Button Interactivity */
+    .gear-icon-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px;
+      outline: none;
+      color: rgba(226, 186, 100, 0.7);
+      transition: color 0.3s, transform 0.4s ease;
+    }
+
+    .gear-icon-btn:hover {
+      color: var(--color-cyan-glow);
+      transform: rotate(90deg);
+    }
+
+    /* Mid Function Plazas (Tier 2: 64px height) */
+    .tier-mid {
+      height: 64px;
+      background: linear-gradient(90deg, rgba(9, 26, 50, 0.96), rgba(12, 33, 61, 0.98), rgba(11, 27, 48, 0.96));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 2px solid var(--color-gold);
+      border-bottom: 1px solid rgba(226, 186, 100, 0.55);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 16px;
+      position: relative;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(11, 30, 56, 0.6);
+    }
+
+    .tier-mid-left {
+      margin-left: 2px;
+      clip-path: polygon(14px 100%, 0 0, calc(100% - 14px) 0, 100% 100%);
+    }
+
+    .tier-mid-right {
+      margin-right: 2px;
+      clip-path: polygon(0 100%, 14px 0, 100% 0, calc(100% - 14px) 100%);
+    }
+
+    /* Tactical Navigation Buttons */
+    .btn-tactical {
+      position: relative;
+      height: 44px;
+      padding: 0 18px;
+      background: rgba(10, 22, 40, 0.85);
+      border: 1px solid rgba(226, 186, 100, 0.4);
+      border-left: 1px solid rgba(226, 186, 100, 0.7);
+      border-right: 1px solid rgba(226, 186, 100, 0.7);
+      border-radius: 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      overflow: hidden;
+      outline: none;
+    }
+
+    .btn-tactical:hover {
+      background: rgba(14, 38, 70, 0.9);
+      border-color: var(--color-cyan-glow);
+      box-shadow: 0 0 14px rgba(17, 239, 227, 0.35);
+    }
+
+    .btn-tactical.active {
+      background: rgba(17, 43, 79, 0.95);
+      border-color: var(--color-cyan-glow);
+      box-shadow: 0 0 18px rgba(17, 239, 227, 0.5), inset 0 0 10px rgba(17, 239, 227, 0.25);
+    }
+
+    .btn-tactical-highlight {
+      background: linear-gradient(180deg, rgba(16, 45, 78, 0.7) 0%, rgba(7, 18, 33, 0.95) 100%);
+      border: 1px solid var(--color-gold);
+      box-shadow: inset 0 0 14px rgba(226, 186, 100, 0.25), 0 0 10px rgba(226, 186, 100, 0.2);
+      clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 100%, 0% 100%);
+    }
+
+    .btn-tactical-highlight:hover {
+      border-color: #ffd778;
+      box-shadow: inset 0 0 18px rgba(255, 215, 120, 0.4), 0 0 16px rgba(226, 186, 100, 0.4);
+    }
+
+    .btn-en {
+      font-family: var(--font-scifi);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: rgba(226, 186, 100, 0.75);
+      transition: color 0.25s;
+    }
+
+    .btn-cn {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: #e2f1ff;
+      transition: color 0.25s;
+    }
+
+    .btn-tactical:hover .btn-en {
+      color: var(--color-cyan-glow);
+    }
+
+    .btn-tactical:hover .btn-cn {
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    }
+
+    .btn-tactical-highlight .btn-en {
+      color: var(--color-gold-glow);
+    }
+
+    .btn-tactical-highlight .btn-cn {
+      color: #fff9e6;
+    }
+
+    .btn-glow-bar {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--color-cyan-glow);
+      box-shadow: 0 0 6px var(--color-cyan-glow);
+      transition: width 0.3s ease;
+    }
+
+    .btn-tactical:hover .btn-glow-bar,
+    .btn-tactical.active .btn-glow-bar {
+      width: 100%;
+    }
+
+    .scanner-light {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 235, 160, 0.22), transparent);
+      animation: flow-light 3.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .btn-corner-star-left {
+      position: absolute;
+      top: 3px;
+      left: 4px;
+      width: 3px;
+      height: 3px;
+      background: var(--color-gold);
+      border-radius: 50%;
+      box-shadow: 0 0 4px var(--color-gold);
+    }
+
+    .btn-corner-star-right {
+      position: absolute;
+      top: 3px;
+      right: 4px;
+      width: 3px;
+      height: 3px;
+      background: var(--color-gold);
+      border-radius: 50%;
+      box-shadow: 0 0 4px var(--color-gold);
+    }
+
+    /* Central Apex Core Compass (Tier 3: 88px+ height, Elevated) */
+    .tier-apex {
+      position: relative;
+      z-index: 20;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 8px;
+      bottom: 4px;
+    }
+
+    .compass-outer-housing {
+      position: relative;
+      width: 108px;
+      height: 98px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 0 16px rgba(226, 186, 100, 0.5)) drop-shadow(0 0 24px rgba(17, 239, 227, 0.35));
+    }
+
+    /* Concentric Polygon / Hexagon Outer Framing */
+    .compass-polygon-border {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, var(--color-gold) 0%, rgba(226, 186, 100, 0.6) 45%, var(--color-cyan-glow) 100%);
+      padding: 2px;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    }
+
+    .compass-polygon-body {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #132d4b 0%, #0b1c31 60%, #050b14 100%);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .compass-inner-wireframe {
+      position: absolute;
+      inset: 5px;
+      border: 1px solid rgba(226, 186, 100, 0.35);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      pointer-events: none;
+    }
+
+    /* Rotating Constellation Dial Ring */
+    .compass-dial-ring {
+      position: absolute;
+      width: 94px;
+      height: 94px;
+      pointer-events: none;
+      animation: dial-rotate 22s linear infinite;
+    }
+
+    /* Core Circular / Hex Center Button */
+    .compass-core-btn {
+      position: relative;
+      width: 76px;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      outline: none;
+      border: none;
+      background: transparent;
+      z-index: 10;
+      animation: pulse-core 3.5s ease-in-out infinite;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .compass-core-btn:active {
+      transform: scale(0.94);
+    }
+
+    .compass-core-rim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #d97706, #ffd700, #11efe3);
+      padding: 2.5px;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    }
+
+    .compass-core-inner {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #1b3a4b 0%, #0b1c31 50%, #06111e 100%);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .compass-core-highlight {
+      position: absolute;
+      top: 1px;
+      left: 10px;
+      right: 10px;
+      height: 16px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .compass-core-inner svg.reverse-dial {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.45;
+      animation: dial-reverse 16s linear infinite;
+    }
+
+    .core-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: #fff6d9;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.9), 0 0 20px rgba(226, 186, 100, 0.6);
+      position: relative;
+      z-index: 2;
+    }
+
+    .core-sub {
+      font-family: var(--font-scifi);
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: var(--color-cyan-glow);
+      text-shadow: 0 0 6px var(--color-cyan-glow);
+      position: relative;
+      z-index: 2;
+      margin-top: -1px;
+    }
+
+    .core-indicator-bar {
+      position: absolute;
+      bottom: 7px;
+      width: 7px;
+      height: 3px;
+      background: #ffd700;
+      border-radius: 1px;
+      box-shadow: 0 0 8px #ffd700;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 960px) {
+      .tier-wing {
+        display: none;
+      }
+      .track-rail-container {
+        display: none;
+      }
+      .tier-mid {
+        padding: 0 8px;
+        gap: 6px;
+      }
+      .btn-tactical {
+        padding: 0 12px;
+      }
+      .btn-cn {
+        font-size: 12px;
+      }
+      .hud-header {
+        padding: 16px 16px 0 16px;
+        font-size: 9px;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- BEGIN: Top Tactical Status Bar -->
+
+<!-- END: Top Tactical Status Bar -->
+<!-- BEGIN: Central Star Orbit HUD Background Canvas -->
+<main class="central-stage" data-purpose="hud-central-stage">
+<div class="orbit-container">
+<div class="orbit-inner-dashed"></div>
+<div class="orbit-node-top"></div>
+<div class="orbit-node-bottom"></div>
+</div>
+<div class="center-hud-label">
+<div class="center-hud-en">CYBER CHINESE TACTICAL HUD ARCHITECTURE</div>
+<div class="center-hud-cn">虚陵浑天战术中枢 · 自适应梯级控制阵列</div>
+</div>
+</main>
+<!-- END: Central Star Orbit HUD Background Canvas -->
+<!-- BEGIN: Bottom Tactical Stepped HUD Navigation Console -->
+<footer class="hud-bottom-bar" data-purpose="hud-bottom-bar">
+<div class="hud-console-wrap">
+<!-- Stepped Dynamic Dual Golden Rail Lines (SVG & Nodes) -->
+<div class="track-rail-container">
+<svg class="rail-svg" preserveAspectRatio="none" viewBox="0 0 1200 102">
+<defs>
+<linearGradient id="goldTrackGrad" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#e2ba64" stop-opacity="0"></stop>
+<stop offset="15%" stop-color="#e2ba64" stop-opacity="0.85"></stop>
+<stop offset="35%" stop-color="#ffd778" stop-opacity="0.95"></stop>
+<stop offset="50%" stop-color="#ffffff" stop-opacity="1"></stop>
+<stop offset="65%" stop-color="#ffd778" stop-opacity="0.95"></stop>
+<stop offset="85%" stop-color="#e2ba64" stop-opacity="0.85"></stop>
+<stop offset="100%" stop-color="#e2ba64" stop-opacity="0"></stop>
+</linearGradient>
+<filter height="140%" id="goldGlowBlur" width="140%" x="-20%" y="-20%">
+<feGaussianBlur result="blur" stdDeviation="2.2"></feGaussianBlur>
+<feMerge>
+<feMergeNode in="blur"></feMergeNode>
+<feMergeNode in="SourceGraphic"></feMergeNode>
+</feMerge>
+</filter>
+</defs>
+<!-- Upper Main Stepped Golden Rail -->
+<path d="M 0,58 L 240,58 L 270,34 L 490,34 L 525,12 L 675,12 L 710,34 L 930,34 L 960,58 L 1200,58" fill="none" filter="url(#goldGlowBlur)" stroke="url(#goldTrackGrad)" stroke-width="2"></path>
+<!-- Lower Secondary Cyan/Gold Dashed Parallel Rail -->
+<path d="M 30,70 L 245,70 L 275,46 L 485,46 L 520,24 L 680,24 L 715,46 L 925,46 L 955,70 L 1170,70" fill="none" stroke="rgba(226, 186, 100, 0.4)" stroke-dasharray="4,4" stroke-width="1"></path>
+</svg>
+<!-- Golden/Cyan Star Nodes on Track Transition Vertices -->
+<div class="track-star-node" style="left: 20%; bottom: 44px; background: #ffd700; box-shadow: 0 0 10px #ffd700;"></div>
+<div class="track-star-node" style="left: 22.5%; bottom: 68px; background: #fce38a; box-shadow: 0 0 8px #fce38a;"></div>
+<div class="track-star-node" style="left: 40.8%; bottom: 68px; background: #fce38a; box-shadow: 0 0 8px #fce38a;"></div>
+<div class="track-star-node" style="left: 43.8%; bottom: 90px; background: #11efe3; box-shadow: 0 0 12px #11efe3; width: 8px; height: 8px;"></div>
+<div class="track-star-node" style="right: 43.8%; bottom: 90px; background: #11efe3; box-shadow: 0 0 12px #11efe3; width: 8px; height: 8px;"></div>
+<div class="track-star-node" style="right: 40.8%; bottom: 68px; background: #fce38a; box-shadow: 0 0 8px #fce38a;"></div>
+<div class="track-star-node" style="right: 22.5%; bottom: 68px; background: #fce38a; box-shadow: 0 0 8px #fce38a;"></div>
+<div class="track-star-node" style="right: 20%; bottom: 44px; background: #ffd700; box-shadow: 0 0 10px #ffd700;"></div>
+</div>
+<!-- Main Navigation Console Deck -->
+<nav aria-label="战术导航中枢" class="hud-nav-deck">
+<!-- ================= 1. 左侧低阶翼部 (Tier 1: 48px) ================= -->
+<div class="tier-wing tier-wing-left">
+<div class="wing-info">
+<span class="status-line">
+<span class="ping-box" style="width:5px; height:5px;">
+<span class="ping-dot" style="width:5px; height:5px;"></span>
+</span>
+              LNK_OK // SEC-01
+            </span>
+<span style="opacity: 0.7; font-size: 8px; margin-top: 1px;" class="">SYS.LATENCY: 18ms</span>
+</div>
+<div class="wing-box-badge">01</div>
+</div>
+<!-- ================= 2. 左侧中阶功能区 (Tier 2: 64px) ================= -->
+<div class="tier-mid tier-mid-left">
+<!-- Button 1: 实时监控 -->
+<button class="btn-tactical" data-nav="realtime" data-purpose="nav-button">
+<span class="btn-en">REALTIME</span>
+<span class="btn-cn">实时监控</span>
+<span class="btn-glow-bar"></span>
+</button>
+<!-- Button 2: 量化试验 (突出金色切角) -->
+<button class="btn-tactical btn-tactical-highlight" data-nav="experiment" data-purpose="nav-button-highlight">
+<span class="scanner-light"></span>
+<span class="btn-corner-star-left"></span>
+<span class="btn-corner-star-right"></span>
+<span class="btn-en">EXP.TRIAL</span>
+<span class="btn-cn">量化试验</span>
+<span class="btn-glow-bar" style="background: var(--color-gold-glow); box-shadow: 0 0 8px var(--color-gold-glow);"></span>
+</button>
+</div>
+<!-- ================= 3. 中央高阶主控罗盘基座 (Tier 3: 88px+ Elevated) ================= -->
+<div class="tier-apex">
+<div class="compass-outer-housing">
+<!-- Outermost Regular Hexagonal Housing -->
+<div class="compass-polygon-border">
+<div class="compass-polygon-body">
+<div class="compass-inner-wireframe"></div>
+</div>
+</div>
+<!-- Concentric SVG Rotating Celestial Dial Ring -->
+<div class="compass-dial-ring">
+<svg style="width:100%; height:100%; overflow:visible;" viewBox="0 0 100 100">
+<polygon fill="none" points="50,2 92,26 92,74 50,98 8,74 8,26" stroke="rgba(226,186,100,0.6)" stroke-dasharray="5,3.5" stroke-width="1.2"></polygon>
+<circle cx="50" cy="2" fill="#ffd700" filter="drop-shadow(0 0 4px #ffd700)" r="2.2"></circle>
+<circle cx="92" cy="26" fill="#11efe3" filter="drop-shadow(0 0 4px #11efe3)" r="2"></circle>
+<circle cx="92" cy="74" fill="#ffd700" filter="drop-shadow(0 0 4px #ffd700)" r="2"></circle>
+<circle cx="50" cy="98" fill="#ffd700" filter="drop-shadow(0 0 4px #ffd700)" r="2.2"></circle>
+<circle cx="8" cy="74" fill="#11efe3" filter="drop-shadow(0 0 4px #11efe3)" r="2"></circle>
+<circle cx="8" cy="26" fill="#ffd700" filter="drop-shadow(0 0 4px #ffd700)" r="2"></circle>
+</svg>
+</div>
+<!-- Core Button (首页 CORE) -->
+<button class="compass-core-btn" data-purpose="hud-center-core" title="返回主控中心">
+<div class="compass-core-rim">
+<div class="compass-core-inner">
+<div class="compass-core-highlight"></div>
+<!-- Inner Reverse Rotating Dashed Hex Wire -->
+<svg class="reverse-dial" viewBox="0 0 80 80">
+<polygon fill="none" points="40,9 68,25 68,55 40,71 12,55 12,25" stroke="#11efe3" stroke-dasharray="4,3" stroke-width="1.2"></polygon>
+</svg>
+<span class="core-title">首页</span>
+<span class="core-sub">CORE</span>
+<span class="core-indicator-bar"></span>
+</div>
+</div>
+</button>
+</div>
+</div>
+<!-- ================= 4. 右侧中阶功能区 (Tier 2: 64px) ================= -->
+<div class="tier-mid tier-mid-right">
+<!-- Button 3: 决策工程 (突出金色切角) -->
+<button class="btn-tactical btn-tactical-highlight" data-nav="strategy" data-purpose="nav-button-highlight">
+<span class="scanner-light" style="animation-delay: 1.8s;"></span>
+<span class="btn-corner-star-left"></span>
+<span class="btn-corner-star-right"></span>
+<span class="btn-en">STRATEGY</span>
+<span class="btn-cn">决策工程</span>
+<span class="btn-glow-bar" style="background: var(--color-gold-glow); box-shadow: 0 0 8px var(--color-gold-glow);"></span>
+</button>
+<!-- Button 4: 节点管理 -->
+<button class="btn-tactical" data-nav="nodes" data-purpose="nav-button">
+<span class="btn-en">NODES</span>
+<span class="btn-cn">节点管理</span>
+<span class="btn-glow-bar"></span>
+</button>
+</div>
+<!-- ================= 5. 右侧低阶翼部 (Tier 1: 48px) ================= -->
+<div class="tier-wing tier-wing-right">
+<div class="wing-box-badge">02</div>
+<div style="display: flex; align-items: center; gap: 8px;">
+<div class="wing-info" style="align-items: flex-end;">
+<span class="status-line">CORE BURDEN</span>
+<span style="opacity: 0.7; font-size: 8px; margin-top: 1px;" class="">78% STABLE</span>
+</div>
+<!-- Gear Settings Interactivity Icon -->
+<button aria-label="设置" class="gear-icon-btn" id="hudSettingsBtn" title="中枢参数配置">
+<svg fill="currentColor" height="18" viewBox="0 0 24 24" width="18">
+<path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97 0-.33-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.31-.61-.22l-2.49 1c-.52-.39-1.06-.73-1.69-.98l-.37-2.65A.506.506 0 0 0 14 2h-4c-.25 0-.46.18-.5.42l-.37 2.65c-.63.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.67-.07 1 0 .33.03.65.07.97l-2.11 1.66c-.19.15-.25.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1.01c.52.4 1.06.74 1.69.99l.37 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.37-2.65c.63-.26 1.17-.59 1.69-.99l2.49 1.01c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.66Z"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+</div>
+</footer>
+<!-- END: Bottom Tactical Stepped HUD Navigation Console -->
+<!-- BEGIN: Native Interactive Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 触控与点击微动效
+      const interactiveElements = document.querySelectorAll(
+        '.btn-tactical, .compass-core-btn, .gear-icon-btn'
+      );
+
+      interactiveElements.forEach(elem => {
+        elem.addEventListener('mousedown', function () {
+          this.style.transform = 'scale(0.96)';
+        });
+        elem.addEventListener('mouseup', function () {
+          this.style.transform = '';
+        });
+        elem.addEventListener('mouseleave', function () {
+          this.style.transform = '';
+        });
+      });
+
+      // 战术功能按钮激活状态切换
+      const navButtons = document.querySelectorAll('.btn-tactical');
+      navButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+          navButtons.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      // 核心主按钮点击特效
+      const coreBtn = document.querySelector('[data-purpose="hud-center-core"]');
+      if (coreBtn) {
+        coreBtn.addEventListener('click', function () {
+          navButtons.forEach(b => b.classList.remove('active'));
+          const coreTitle = this.querySelector('.core-title');
+          if (coreTitle) {
+            coreTitle.style.color = '#11efe3';
+            setTimeout(() => {
+              coreTitle.style.color = '#fff6d9';
+            }, 300);
+          }
+        });
+      }
+    });
+  </script>
+<!-- END: Native Interactive Script -->
+
+
+</body></html>

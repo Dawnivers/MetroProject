@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>运营统计 - 智慧轨道交通运行监控中心</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg-dark: #090d16;
+    --panel-bg: linear-gradient(180deg, rgba(14, 21, 33, 0.94) 0%, rgba(9, 14, 22, 0.97) 100%);
+    --card-border-glow: rgba(56, 189, 248, 0.35);
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --amber-main: #f59e0b;
+    --amber-light: #fef3c7;
+    --cyan-accent: #38bdf8;
+    --track-bg: #151e2e;
+    --font-sans: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Chakra Petch', sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: var(--bg-dark);
+    background-image: 
+      radial-gradient(circle at 50% 15%, rgba(24, 45, 78, 0.45) 0%, transparent 60%),
+      radial-gradient(circle at 10% 85%, rgba(14, 28, 48, 0.5) 0%, transparent 50%),
+      radial-gradient(circle at 90% 80%, rgba(18, 36, 62, 0.45) 0%, transparent 50%),
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 28px 28px, 28px 28px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+  }
+
+  /* 工业级专业控制面板容器与非均匀多层光感边框 */
+  .dashboard-card {
+    position: relative;
+    width: 100%;
+    max-width: 1060px;
+    background: var(--panel-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    backdrop-filter: blur(16px);
+    box-shadow: 
+      0 24px 60px -12px rgba(0, 0, 0, 0.75),
+      rgba(56, 189, 248, 0.5) 0px 1.5px 0px 0px inset,
+      rgba(56, 189, 248, 0.22) 0px 3px 8px -1px inset,
+      rgba(255, 255, 255, 0.06) 1px 0px 0px 0px inset,
+      rgba(255, 255, 255, 0.04) -1px 0px 0px 0px inset,
+      rgba(255, 255, 255, 0.04) 0px -1px 0px 0px inset;
+    border: 1px solid rgba(56, 80, 116, 0.45);
+    border-top-color: rgba(56, 189, 248, 0.65);
+    border-bottom-color: rgba(30, 41, 59, 0.6);
+  }
+
+  /* 顶层非对称高光线条带 */
+  .top-accent-line {
+    position: relative;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.2) 15%, rgba(56, 189, 248, 0.95) 50%, rgba(56, 189, 248, 0.2) 85%, transparent 100%);
+    box-shadow: 0 1px 6px rgba(56, 189, 248, 0.45);
+  }
+
+  /* 头部区域 */
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 26px;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.45);
+    background: rgba(13, 20, 32, 0.45);
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(2, 132, 199, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    color: var(--cyan-accent);
+    box-shadow: inset 0 0 8px rgba(56, 189, 248, 0.2);
+  }
+
+  .main-title {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #f8fafc;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.12);
+  }
+
+  /* 右上角安全运营数显牌 */
+  .safety-counter {
+    display: flex;
+    align-items: center;
+    background: rgba(10, 15, 26, 0.85);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    border-radius: 6px;
+    padding: 6px 14px;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.65), 0 0 12px rgba(245, 158, 11, 0.12);
+  }
+
+  .counter-meta {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    margin-right: 12px;
+  }
+
+  .counter-date {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    line-height: 1.1;
+  }
+
+  .counter-label {
+    font-size: 11px;
+    color: #fde68a;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .counter-digits-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    padding-left: 10px;
+    border-left: 1px solid rgba(71, 85, 105, 0.6);
+  }
+
+  .counter-digits {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--amber-main);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 14px rgba(245, 158, 11, 0.38);
+  }
+
+  .counter-unit {
+    font-size: 11px;
+    color: rgba(245, 158, 11, 0.85);
+    font-weight: 500;
+  }
+
+  /* 面板主体内容布局 */
+  .card-body {
+    padding: 28px 24px 24px;
+  }
+
+  .body-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .body-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* 左侧环形仪表区域 */
+  .gauge-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gauge-container {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gauge-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  @keyframes radar-scan {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .radar-indicator {
+    transform-origin: 140px 140px;
+    animation: radar-scan 45s linear infinite;
+  }
+
+  .gauge-center-info {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .gauge-subtext {
+    font-size: 11px;
+    color: var(--text-secondary);
+    letter-spacing: 0.08em;
+  }
+
+  .gauge-value-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    margin: 4px 0 6px;
+  }
+
+  .gauge-value {
+    font-family: var(--font-display);
+    font-size: 38px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
+  }
+
+  .gauge-unit {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-left: 4px;
+  }
+
+  .gauge-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 20px;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cyan-accent);
+    box-shadow: 0 0 6px var(--cyan-accent);
+  }
+
+  .badge-text {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    color: #bae6fd;
+    font-weight: 500;
+  }
+
+  /* 右侧18条线路列表（3列×6行）完全无生硬卡片外框，通透极简 */
+  .routes-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .route-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 16px;
+    column-gap: 20px;
+  }
+
+  @media (max-width: 640px) {
+    .route-grid {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 12px;
+    }
+  }
+
+  .route-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4px 6px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .route-item:hover {
+    transform: translateY(-1px);
+  }
+
+  .route-header-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .route-label-wrap {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+  }
+
+  .route-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 6px currentColor;
+  }
+
+  .route-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e2e8f0;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  .route-mileage {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: #f1f5f9;
+    white-space: nowrap;
+  }
+
+  .route-mileage.is-max {
+    color: #fde047;
+    text-shadow: 0 0 6px rgba(253, 224, 71, 0.4);
+  }
+
+  .route-unit {
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-left: 1px;
+  }
+
+  /* 通透型微光里程条基底与进度条 */
+  .route-bar-track {
+    width: 100%;
+    height: 3px;
+    background: rgba(30, 41, 59, 0.65);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .route-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    box-shadow: 0 0 6px currentColor;
+  }
+
+  /* 底部汇总统计行 */
+  .stats-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(51, 65, 85, 0.4);
+    font-size: 11px;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .stats-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .stats-summary strong {
+    font-family: var(--font-mono);
+    color: #cbd5e1;
+    font-size: 12px;
+  }
+
+  .divider-pipe {
+    color: rgba(71, 85, 105, 0.6);
+  }
+
+  /* 卡片底部极细渐隐光边 */
+  .bottom-accent-line {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, rgba(71, 85, 105, 0.4), transparent);
+  }
+</style>
+</head>
+<body>
+<main class="dashboard-card" data-purpose="operational-statistics-panel">
+<!-- 顶部科技渐变微光细线 -->
+<div class="top-accent-line"></div>
+<!-- 头部区域 -->
+<header class="card-header">
+<div class="header-left">
+<div class="header-icon-wrapper">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18">
+<circle cx="12" cy="12" r="9"></circle>
+<path d="M12 3v18"></path>
+<path d="M3 12h18"></path>
+<path d="M7 7l10 10"></path>
+<path d="M17 7L7 17"></path>
+</svg>
+</div>
+<h1 class="main-title">运营统计</h1>
+</div>
+<!-- 右上角：安全运营数显牌 -->
+<div class="safety-counter">
+<div class="counter-meta">
+<span class="counter-date">截至 2024/05/16</span>
+<span class="counter-label">年度安全运营</span>
+</div>
+<div class="counter-digits-wrap">
+<span class="counter-digits">3618</span>
+<span class="counter-unit">天</span>
+</div>
+</div>
+</header>
+<!-- 主体内容 -->
+<div class="card-body">
+<div class="body-layout">
+<!-- 左侧：18条线路等比多轨同心圆弧图谱与核心指标 -->
+<section class="gauge-section" data-purpose="circular-metric-gauge">
+<div class="gauge-container">
+<svg class="gauge-svg" viewbox="0 0 280 280">
+<!-- 仪表盘极细标尺外圆与刻度 -->
+<circle cx="140" cy="140" fill="none" opacity="0.6" r="136" stroke="#334155" stroke-dasharray="2 6" stroke-width="0.75"></circle>
+<circle cx="140" cy="140" fill="none" r="132" stroke="#1e293b" stroke-width="1"></circle>
+<!-- 4个主分位刻度点 -->
+<line opacity="0.85" stroke="#38bdf8" stroke-width="1.5" x1="140" x2="140" y1="4" y2="11"></line>
+<line opacity="0.85" stroke="#38bdf8" stroke-width="1.5" x1="276" x2="269" y1="140" y2="140"></line>
+<line opacity="0.85" stroke="#38bdf8" stroke-width="1.5" x1="140" x2="140" y1="276" y2="269"></line>
+<line opacity="0.85" stroke="#38bdf8" stroke-width="1.5" x1="4" x2="11" y1="140" y2="140"></line>
+<!-- 慢速旋转雷达微光环 -->
+<g class="radar-indicator">
+<circle cx="140" cy="140" fill="none" opacity="0.3" r="128" stroke="#0284c7" stroke-dasharray="16 180" stroke-width="1"></circle>
+</g>
+<!-- 轨道4 (R=118, 周长约741.4): 7号线(67.7km), 2号线(60.3km), 16号线(58.9km), 11号线(58.3km), 10号线(57.1km) -->
+<circle cx="140" cy="140" fill="none" r="118" stroke="var(--track-bg)" stroke-width="5"></circle>
+<circle cx="140" cy="140" fill="none" r="118" stroke="#f97316" stroke-dasharray="61.5 679.9" stroke-dashoffset="0" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="118" stroke="#fb7185" stroke-dasharray="54.7 686.7" stroke-dashoffset="-70" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="118" stroke="#2dd4bf" stroke-dasharray="53.5 687.9" stroke-dashoffset="-133" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="118" stroke="#a855f7" stroke-dasharray="52.9 688.5" stroke-dashoffset="-195" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="118" stroke="#14b8a6" stroke-dasharray="51.8 689.6" stroke-dashoffset="-256" stroke-linecap="round" stroke-width="5.5"></circle>
+<!-- 轨道3 (R=104, 周长约653.4): 4号线(49.7km), 9号线(45.6km), 18号线(43.1km), 6号线(42.5km), 15号线(42.3km) -->
+<circle cx="140" cy="140" fill="none" r="104" stroke="var(--track-bg)" stroke-width="5"></circle>
+<circle cx="140" cy="140" fill="none" r="104" stroke="#a3e635" stroke-dasharray="39.8 613.6" stroke-dashoffset="-10" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="104" stroke="#c084fc" stroke-dasharray="36.5 616.9" stroke-dashoffset="-58" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="104" stroke="#f43f5e" stroke-dasharray="34.5 618.9" stroke-dashoffset="-102" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="104" stroke="#10b981" stroke-dasharray="34.0 619.4" stroke-dashoffset="-144" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="104" stroke="#84cc16" stroke-dasharray="33.8 619.6" stroke-dashoffset="-186" stroke-linecap="round" stroke-width="5.5"></circle>
+<!-- 轨道2 (R=90, 周长约565.5): 14号线(42.2km), 12号线(40.4km), 13号线(38.8km), 8号线(38.3km) -->
+<circle cx="140" cy="140" fill="none" r="90" stroke="var(--track-bg)" stroke-width="5"></circle>
+<circle cx="140" cy="140" fill="none" r="90" stroke="#38bdf8" stroke-dasharray="29.2 536.3" stroke-dashoffset="-15" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="90" stroke="#06b6d4" stroke-dasharray="28.0 537.5" stroke-dashoffset="-52" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="90" stroke="#f59e0b" stroke-dasharray="26.9 538.6" stroke-dashoffset="-88" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="90" stroke="#60a5fa" stroke-dasharray="26.5 539.0" stroke-dashoffset="-123" stroke-linecap="round" stroke-width="5.5"></circle>
+<!-- 轨道1 (R=76, 周长约477.5): 1号线(37.8km), 17号线(35.3km), 5号线(34.6km), 3号线(29.7km) -->
+<circle cx="140" cy="140" fill="none" r="76" stroke="var(--track-bg)" stroke-width="5"></circle>
+<circle cx="140" cy="140" fill="none" r="76" stroke="#2563eb" stroke-dasharray="22.1 455.4" stroke-dashoffset="-8" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="76" stroke="#d97706" stroke-dasharray="20.6 456.9" stroke-dashoffset="-38" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="76" stroke="#94a3b8" stroke-dasharray="20.2 457.3" stroke-dashoffset="-66" stroke-linecap="round" stroke-width="5.5"></circle>
+<circle cx="140" cy="140" fill="none" r="76" stroke="#c2410c" stroke-dasharray="17.4 460.1" stroke-dashoffset="-94" stroke-linecap="round" stroke-width="5.5"></circle>
+<!-- 仪表盘内部遮罩圆 -->
+<circle cx="140" cy="140" fill="none" opacity="0.7" r="63" stroke="#334155" stroke-dasharray="3 4" stroke-width="1"></circle>
+<circle cx="140" cy="140" fill="#0c1322" r="60"></circle>
+</svg>
+<!-- 环内中心核心指标 -->
+<div class="gauge-center-info">
+<span class="gauge-subtext">全网运营总里程</span>
+<div class="gauge-value-row">
+<span class="gauge-value">816.6</span>
+<span class="gauge-unit">km</span>
+</div>
+<div class="gauge-badge">
+<span class="pulse-dot"></span>
+<span class="badge-text">18条线路在网</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 右侧：18条线路精准 3列×6行 通透排布 -->
+<section class="routes-section" data-purpose="subway-lines-statistics-grid">
+<div class="route-grid">
+<!-- 1号线 (37.8km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #2563eb; color: #2563eb;"></span>
+<span class="route-name">1号线</span>
+</div>
+<span class="route-mileage">37.8<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 55.8%; background-color: #2563eb; color: #2563eb;"></div>
+</div>
+</div>
+<!-- 2号线 (60.3km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #fb7185; color: #fb7185;"></span>
+<span class="route-name">2号线</span>
+</div>
+<span class="route-mileage">60.3<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 89.1%; background-color: #fb7185; color: #fb7185;"></div>
+</div>
+</div>
+<!-- 3号线 (29.7km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #c2410c; color: #c2410c;"></span>
+<span class="route-name">3号线</span>
+</div>
+<span class="route-mileage">29.7<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 43.9%; background-color: #c2410c; color: #c2410c;"></div>
+</div>
+</div>
+<!-- 4号线 (49.7km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #a3e635; color: #a3e635;"></span>
+<span class="route-name">4号线</span>
+</div>
+<span class="route-mileage">49.7<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 73.4%; background-color: #a3e635; color: #a3e635;"></div>
+</div>
+</div>
+<!-- 5号线 (34.6km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #94a3b8; color: #94a3b8;"></span>
+<span class="route-name">5号线</span>
+</div>
+<span class="route-mileage">34.6<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 51.1%; background-color: #94a3b8; color: #94a3b8;"></div>
+</div>
+</div>
+<!-- 6号线 (42.5km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #10b981; color: #10b981;"></span>
+<span class="route-name">6号线</span>
+</div>
+<span class="route-mileage">42.5<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 62.8%; background-color: #10b981; color: #10b981;"></div>
+</div>
+</div>
+<!-- 7号线 (67.7km - 全网最长) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #f97316; color: #f97316;"></span>
+<span class="route-name">7号线</span>
+</div>
+<span class="route-mileage is-max">67.7<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 100%; background-color: #f97316; color: #f97316;"></div>
+</div>
+</div>
+<!-- 8号线 (38.3km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #60a5fa; color: #60a5fa;"></span>
+<span class="route-name">8号线</span>
+</div>
+<span class="route-mileage">38.3<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 56.6%; background-color: #60a5fa; color: #60a5fa;"></div>
+</div>
+</div>
+<!-- 9号线 (45.6km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #c084fc; color: #c084fc;"></span>
+<span class="route-name">9号线</span>
+</div>
+<span class="route-mileage">45.6<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 67.4%; background-color: #c084fc; color: #c084fc;"></div>
+</div>
+</div>
+<!-- 10号线 (57.1km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #14b8a6; color: #14b8a6;"></span>
+<span class="route-name">10号线</span>
+</div>
+<span class="route-mileage">57.1<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 84.3%; background-color: #14b8a6; color: #14b8a6;"></div>
+</div>
+</div>
+<!-- 11号线 (58.3km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #a855f7; color: #a855f7;"></span>
+<span class="route-name">11号线</span>
+</div>
+<span class="route-mileage">58.3<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 86.1%; background-color: #a855f7; color: #a855f7;"></div>
+</div>
+</div>
+<!-- 12号线 (40.4km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #06b6d4; color: #06b6d4;"></span>
+<span class="route-name">12号线</span>
+</div>
+<span class="route-mileage">40.4<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 59.7%; background-color: #06b6d4; color: #06b6d4;"></div>
+</div>
+</div>
+<!-- 13号线 (38.8km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #f59e0b; color: #f59e0b;"></span>
+<span class="route-name">13号线</span>
+</div>
+<span class="route-mileage">38.8<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 57.3%; background-color: #f59e0b; color: #f59e0b;"></div>
+</div>
+</div>
+<!-- 14号线 (42.2km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #38bdf8; color: #38bdf8;"></span>
+<span class="route-name">14号线</span>
+</div>
+<span class="route-mileage">42.2<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 62.3%; background-color: #38bdf8; color: #38bdf8;"></div>
+</div>
+</div>
+<!-- 15号线 (42.3km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #84cc16; color: #84cc16;"></span>
+<span class="route-name">15号线</span>
+</div>
+<span class="route-mileage">42.3<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 62.5%; background-color: #84cc16; color: #84cc16;"></div>
+</div>
+</div>
+<!-- 16号线 (58.9km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #2dd4bf; color: #2dd4bf;"></span>
+<span class="route-name">16号线</span>
+</div>
+<span class="route-mileage">58.9<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 87.0%; background-color: #2dd4bf; color: #2dd4bf;"></div>
+</div>
+</div>
+<!-- 17号线 (35.3km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #d97706; color: #d97706;"></span>
+<span class="route-name">17号线</span>
+</div>
+<span class="route-mileage">35.3<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 52.1%; background-color: #d97706; color: #d97706;"></div>
+</div>
+</div>
+<!-- 18号线 (43.1km) -->
+<div class="route-item">
+<div class="route-header-info">
+<div class="route-label-wrap">
+<span class="route-dot" style="background-color: #f43f5e; color: #f43f5e;"></span>
+<span class="route-name">18号线</span>
+</div>
+<span class="route-mileage">43.1<span class="route-unit">km</span></span>
+</div>
+<div class="route-bar-track">
+<div class="route-bar-fill" style="width: 63.7%; background-color: #f43f5e; color: #f43f5e;"></div>
+</div>
+</div>
+</div>
+<!-- 底部线网统计汇总 -->
+<footer class="stats-footer">
+<div class="stats-summary">
+<span>线路总数: <strong>18</strong> 条</span>
+<span class="divider-pipe">|</span>
+<span>线网平均长度: <strong>45.37</strong> km</span>
+</div>
+<div>
+<span>标准运行监控已联机</span>
+</div>
+</footer>
+</section>
+</div>
+</div>
+<!-- 底部细微边缘光收敛线 -->
+<div class="bottom-accent-line"></div>
+</main>
+<script>
+  // 原生轻量交互增强：悬停线路高亮
+  document.addEventListener('DOMContentLoaded', () => {
+    const routeItems = document.querySelectorAll('.route-item');
+    routeItems.forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        routeItems.forEach(other => {
+          if (other !== item) other.style.opacity = '0.55';
+        });
+      });
+      item.addEventListener('mouseleave', () => {
+        routeItems.forEach(other => other.style.opacity = '1');
+      });
+    });
+  });
+</script>
+</body></html>

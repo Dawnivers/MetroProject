@@ -1,0 +1,731 @@
+<!DOCTYPE html><html lang="zh-CN" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>工业级智慧轨道交通大屏组件 - 地铁活动时间滚动监控</title>
+<style>
+    /* ========================================================
+       基础布局与高端工业深海蓝大屏背景
+       ======================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    body {
+      background-color: #030813;
+      background-image:
+        radial-gradient(ellipse at 50% 45%, rgba(10, 48, 96, 0.45) 0%, rgba(3, 8, 19, 0.98) 72%),
+        linear-gradient(rgba(0, 240, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.035) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #cbd5e1;
+      position: relative;
+    }
+
+    /* 调度大屏暗场径向辉光与视口景深遮罩 */
+    .viewport-ambient-light {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 50%, rgba(0, 210, 255, 0.05) 0%, transparent 60%);
+      z-index: 1;
+    }
+
+    /* ========================================================
+       卡片架构：深海蓝高质感毛玻璃与工控切角外框
+       ======================================================== */
+    .metro-panel-container {
+      position: relative;
+      z-index: 10;
+      width: 620px;
+      height: 420px;
+      background: linear-gradient(160deg, rgba(8, 22, 45, 0.88) 0%, rgba(4, 13, 28, 0.94) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 220, 255, 0.28);
+      border-radius: 4px;
+      box-shadow: 
+        0 24px 60px rgba(0, 0, 0, 0.82),
+        0 0 35px rgba(0, 200, 255, 0.08) inset,
+        0 1px 0 rgba(255, 255, 255, 0.12) inset;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      transform: translateZ(0);
+    }
+
+    /* 经典工业大屏四角精密卡标 */
+    .corner-marker {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .corner-tl {
+      top: -2px;
+      left: -2px;
+      border-top: 2.5px solid #00f0ff;
+      border-left: 2.5px solid #00f0ff;
+      filter: drop-shadow(0 0 4px #00f0ff);
+    }
+    .corner-tr {
+      top: -2px;
+      right: -2px;
+      border-top: 2.5px solid #00f0ff;
+      border-right: 2.5px solid #00f0ff;
+      filter: drop-shadow(0 0 4px #00f0ff);
+    }
+    .corner-bl {
+      bottom: -2px;
+      left: -2px;
+      border-bottom: 2.5px solid #00f0ff;
+      border-left: 2.5px solid #00f0ff;
+      filter: drop-shadow(0 0 4px #00f0ff);
+    }
+    .corner-br {
+      bottom: -2px;
+      right: -2px;
+      border-bottom: 2.5px solid #00f0ff;
+      border-right: 2.5px solid #00f0ff;
+      filter: drop-shadow(0 0 4px #00f0ff);
+    }
+
+    /* 顶部非均匀微光棱线 */
+    .top-light-edge {
+      position: absolute;
+      top: 0;
+      left: 8%;
+      right: 8%;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent 0%, rgba(0, 240, 255, 0.9) 45%, rgba(56, 189, 248, 0.9) 55%, transparent 100%);
+      filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.8));
+      pointer-events: none;
+    }
+
+    /* ========================================================
+       标题区：精工字号、拉丝金光感、点阵与推流状态灯
+       ======================================================== */
+    .metro-panel-header {
+      height: 56px;
+      padding: 0 18px 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.18);
+      background: linear-gradient(90deg, rgba(14, 46, 88, 0.6) 0%, rgba(8, 24, 48, 0.2) 100%);
+      position: relative;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* 精密工控十字星/轨道瞄准图符 */
+    .header-crosshair {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .crosshair-axis-x {
+      position: absolute;
+      width: 18px;
+      height: 2px;
+      background: #f59e0b;
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.9);
+      border-radius: 1px;
+    }
+    .crosshair-axis-y {
+      position: absolute;
+      width: 2px;
+      height: 18px;
+      background: #f59e0b;
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.9);
+      border-radius: 1px;
+    }
+    .crosshair-center {
+      position: relative;
+      width: 6px;
+      height: 6px;
+      background: #ffffff;
+      border: 1.5px solid #f59e0b;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #ffffff;
+      z-index: 2;
+    }
+
+    /* 饱满金属质感标题 */
+    .panel-title {
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      background: linear-gradient(180deg, #ffffff 10%, #ffeaa7 60%, #e69500 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 8px rgba(245, 158, 11, 0.4));
+      display: flex;
+      align-items: center;
+      margin: 0;
+      line-height: 1;
+    }
+
+    /* 标头工控科技点阵指示 */
+    .matrix-dots {
+      display: grid;
+      grid-template-columns: repeat(8, 3px);
+      grid-template-rows: repeat(2, 3px);
+      gap: 3px;
+      margin-left: 6px;
+      opacity: 0.75;
+    }
+    .matrix-dot {
+      width: 3px;
+      height: 3px;
+      background-color: #38bdf8;
+      border-radius: 0.5px;
+      box-shadow: 0 0 3px rgba(56, 189, 248, 0.6);
+    }
+
+    /* 标头右侧：胶囊状态与指标 */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-capsule {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-family: "JetBrains Mono", Consolas, "SF Pro Text", monospace;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 3px 9px;
+      border-radius: 3px;
+      border: 1px solid rgba(16, 185, 129, 0.32);
+      letter-spacing: 0.5px;
+    }
+
+    .pulse-indicator {
+      width: 6px;
+      height: 6px;
+      background-color: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse-ring 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.3;
+        transform: scale(0.8);
+      }
+    }
+
+    .count-capsule {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-family: "JetBrains Mono", Consolas, monospace;
+      color: #94a3b8;
+      background: rgba(15, 33, 64, 0.55);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+    .count-num {
+      color: #38bdf8;
+      font-weight: 700;
+      font-size: 12px;
+      text-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+    }
+
+    /* 进度条指示器：微光匀速平缓扫略 */
+    .sync-meter-bar {
+      width: 100%;
+      height: 2px;
+      background: rgba(15, 30, 54, 0.8);
+      position: relative;
+      overflow: hidden;
+    }
+    .sync-meter-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 32%;
+      background: linear-gradient(90deg, transparent, #0284c7, #00f0ff, transparent);
+      box-shadow: 0 0 8px #00f0ff;
+      animation: meter-scan 3.2s linear infinite;
+    }
+
+    @keyframes meter-scan {
+      0% { left: -32%; }
+      100% { left: 100%; }
+    }
+
+    /* ========================================================
+       滚动主体：上下各36px 高精平滑羽化遮罩与无缝行排版
+       ======================================================== */
+    .metro-ticker-viewport {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      padding: 0 16px;
+      /* 上下 36px 精密羽化过渡遮罩，出入视口极其平顺 */
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0px,
+        #000000 36px,
+        #000000 calc(100% - 36px),
+        transparent 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0px,
+        #000000 36px,
+        #000000 calc(100% - 36px),
+        transparent 100%
+      );
+    }
+
+    .metro-ticker-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      will-change: transform;
+      pointer-events: none; /* 拒绝意外的干扰，保持纯正大屏纯流式滚动 */
+    }
+
+    /* 单行活动条目 */
+    .ticker-row {
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      position: relative;
+      border-bottom: 1px dashed rgba(56, 189, 248, 0.14);
+      box-sizing: border-box;
+    }
+
+    .ticker-row-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding-right: 14px;
+    }
+
+    /* 轨道工控微型菱形状态图符 */
+    .node-track-icon {
+      position: relative;
+      width: 7px;
+      height: 7px;
+      background: #0ea5e9;
+      transform: rotate(45deg);
+      flex-shrink: 0;
+      box-shadow: 0 0 6px #0ea5e9;
+      border-radius: 1px;
+    }
+
+    .ticker-row.is-latest .node-track-icon {
+      background: #00f0ff;
+      box-shadow: 0 0 9px #00f0ff;
+      transform: rotate(45deg) scale(1.15);
+    }
+
+    /* 文本内容 */
+    .ticker-text {
+      font-size: 14.5px;
+      font-weight: 400;
+      letter-spacing: 0.6px;
+      color: #b0cfee;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+    }
+
+    .ticker-row.is-latest .ticker-text {
+      color: #e0f2fe;
+    }
+
+    /* 右侧专业等宽日期胶囊标签 */
+    .ticker-date {
+      flex-shrink: 0;
+      font-family: "JetBrains Mono", Consolas, "SF Mono", monospace;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: #38bdf8;
+      letter-spacing: 0.6px;
+      background: rgba(14, 165, 233, 0.08);
+      padding: 3px 8px;
+      border-radius: 3px;
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      text-shadow: 0 0 5px rgba(56, 189, 248, 0.4);
+    }
+
+    /* ========================================================
+       底部 OCC 调度元信息控制台栏
+       ======================================================== */
+    .metro-panel-footer {
+      height: 38px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(0, 240, 255, 0.14);
+      background: rgba(4, 12, 24, 0.75);
+      font-size: 11px;
+      color: #64748b;
+      position: relative;
+    }
+
+    .footer-left-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: "JetBrains Mono", Consolas, monospace;
+    }
+
+    .occ-tag {
+      color: #38bdf8;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .flow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #94a3b8;
+      font-size: 10.5px;
+    }
+    .flow-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #00f0ff;
+      box-shadow: 0 0 5px #00f0ff;
+    }
+
+    .footer-right-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 10.5px;
+      color: #64748b;
+      letter-spacing: 0.5px;
+    }
+    .comm-active {
+      color: #10b981;
+    }
+  </style>
+<style>.ticker-date { background: transparent !important; border: none !important; box-shadow: none !important; text-shadow: none !important; padding: 0 !important; opacity: 0.65; }</style></head>
+<body>
+<!-- 视口景深柔光遮罩 -->
+<div aria-hidden="true" class="viewport-ambient-light"></div>
+<!-- 地铁活动监控组件 -->
+<div class="metro-panel-container" data-purpose="metro-activities-widget" id="metroActivitiesPanel">
+<!-- 四角工控精细定位角标 -->
+<div aria-hidden="true" class="corner-marker corner-tl"></div>
+<div aria-hidden="true" class="corner-marker corner-tr"></div>
+<div aria-hidden="true" class="corner-marker corner-bl"></div>
+<div aria-hidden="true" class="corner-marker corner-br"></div>
+<div aria-hidden="true" class="top-light-edge"></div>
+<!-- 顶部标题与状态栏 -->
+<header class="metro-panel-header" data-purpose="panel-header">
+<div class="header-left">
+<!-- 工业十字星徽标 -->
+<div aria-hidden="true" class="header-crosshair">
+<div class="crosshair-axis-x"></div>
+<div class="crosshair-axis-y"></div>
+<div class="crosshair-center"></div>
+</div>
+<!-- 主标题 -->
+<h2 class="panel-title">地铁活动</h2>
+<!-- 精密科技点阵指示 -->
+<div aria-hidden="true" class="matrix-dots" title="系统点阵指示">
+<div class="matrix-dot"></div><div class="matrix-dot"></div><div class="matrix-dot"></div><div class="matrix-dot"></div>
+<div class="matrix-dot"></div><div class="matrix-dot"></div><div class="matrix-dot"></div><div class="matrix-dot"></div>
+<div class="matrix-dot"></div><div class="matrix-dot"></div><div class="matrix-dot"></div><div class="matrix-dot"></div>
+<div class="matrix-dot"></div><div class="matrix-dot"></div><div class="matrix-dot"></div><div class="matrix-dot"></div>
+</div>
+</div>
+<div class="header-right">
+<!-- 实时推流呼吸绿灯 -->
+
+<!-- 条目统计胶囊 -->
+
+</div>
+</header>
+<!-- 顶栏微光匀速扫略进度条 -->
+<div aria-hidden="true" class="sync-meter-bar">
+<div class="sync-meter-fill"></div>
+</div>
+<!-- 滚动主体视口（带上下各36px 高品质平滑渐隐Mask） -->
+<main class="metro-ticker-viewport" data-purpose="ticker-viewport" id="tickerViewport">
+<ul class="metro-ticker-list" data-purpose="ticker-list" id="tickerList" style="transform: translate3d(0px, -89.82px, 0px);">
+<!-- 列表由原生 Vanilla JS 精确装载与首尾双倍无缝克隆拼接 -->
+<li class="ticker-row is-latest" data-id="ACT-01">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="7月31日，全线20座车站主体结构顺利封顶">7月31日，全线20座车站主体结构顺利封顶</span>
+          </div>
+          <time class="ticker-date">2024-05-18</time>
+        </li><li class="ticker-row is-latest" data-id="ACT-02">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="12号线首列智慧列车顺利完成热滑试验">12号线首列智慧列车顺利完成热滑试验</span>
+          </div>
+          <time class="ticker-date">2024-05-15</time>
+        </li><li class="ticker-row" data-id="ACT-03">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="古田四路车辆段接触网全线送电一次成功">古田四路车辆段接触网全线送电一次成功</span>
+          </div>
+          <time class="ticker-date">2024-05-11</time>
+        </li><li class="ticker-row" data-id="ACT-04">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="汉正街站新型全自动安全门系统改造工程启动">汉正街站新型全自动安全门系统改造工程启动</span>
+          </div>
+          <time class="ticker-date">2024-05-08</time>
+        </li><li class="ticker-row" data-id="ACT-05">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="全网第300列自主化列车正式上线安全运营">全网第300列自主化列车正式上线安全运营</span>
+          </div>
+          <time class="ticker-date">2024-05-02</time>
+        </li><li class="ticker-row" data-id="ACT-06">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="轨道交通二期工程地下盾构区间全线双向贯通">轨道交通二期工程地下盾构区间全线双向贯通</span>
+          </div>
+          <time class="ticker-date">2024-04-28</time>
+        </li><li class="ticker-row" data-id="ACT-07">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="宗关枢纽站换乘通道客流通道智慧引导系统投用">宗关枢纽站换乘通道客流通道智慧引导系统投用</span>
+          </div>
+          <time class="ticker-date">2024-04-22</time>
+        </li><li class="ticker-row" data-id="ACT-08">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="3号线智慧巡检机器人常态化夜间检修全面启用">3号线智慧巡检机器人常态化夜间检修全面启用</span>
+          </div>
+          <time class="ticker-date">2024-04-16</time>
+        </li><li class="ticker-row" data-id="ACT-09">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="信号联锁系统全面升级第4代自主容错冗余协议">信号联锁系统全面升级第4代自主容错冗余协议</span>
+          </div>
+          <time class="ticker-date">2024-04-09</time>
+        </li><li class="ticker-row" data-id="ACT-10">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="智慧变电所数字化智能温控节能改造全线验收">智慧变电所数字化智能温控节能改造全线验收</span>
+          </div>
+          <time class="ticker-date">2024-04-03</time>
+        </li><li class="ticker-row" data-id="ACT-11">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="综合调度指挥中心应急联合防汛推演圆满完成">综合调度指挥中心应急联合防汛推演圆满完成</span>
+          </div>
+          <time class="ticker-date">2024-03-27</time>
+        </li><li class="ticker-row" data-id="ACT-12">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="车辆段全天候无人机接触网微距巡查测试成功">车辆段全天候无人机接触网微距巡查测试成功</span>
+          </div>
+          <time class="ticker-date">2024-03-20</time>
+        </li><li class="ticker-row is-latest" data-id="ACT-01" data-clone="true">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="7月31日，全线20座车站主体结构顺利封顶">7月31日，全线20座车站主体结构顺利封顶</span>
+          </div>
+          <time class="ticker-date">2024-05-18</time>
+        </li><li class="ticker-row is-latest" data-id="ACT-02" data-clone="true">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="12号线首列智慧列车顺利完成热滑试验">12号线首列智慧列车顺利完成热滑试验</span>
+          </div>
+          <time class="ticker-date">2024-05-15</time>
+        </li><li class="ticker-row" data-id="ACT-03" data-clone="true">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="古田四路车辆段接触网全线送电一次成功">古田四路车辆段接触网全线送电一次成功</span>
+          </div>
+          <time class="ticker-date">2024-05-11</time>
+        </li><li class="ticker-row" data-id="ACT-04" data-clone="true">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="汉正街站新型全自动安全门系统改造工程启动">汉正街站新型全自动安全门系统改造工程启动</span>
+          </div>
+          <time class="ticker-date">2024-05-08</time>
+        </li><li class="ticker-row" data-id="ACT-05" data-clone="true">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="全网第300列自主化列车正式上线安全运营">全网第300列自主化列车正式上线安全运营</span>
+          </div>
+          <time class="ticker-date">2024-05-02</time>
+        </li><li class="ticker-row" data-id="ACT-06" data-clone="true">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="轨道交通二期工程地下盾构区间全线双向贯通">轨道交通二期工程地下盾构区间全线双向贯通</span>
+          </div>
+          <time class="ticker-date">2024-04-28</time>
+        </li><li class="ticker-row" data-id="ACT-07" data-clone="true">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="宗关枢纽站换乘通道客流通道智慧引导系统投用">宗关枢纽站换乘通道客流通道智慧引导系统投用</span>
+          </div>
+          <time class="ticker-date">2024-04-22</time>
+        </li><li class="ticker-row" data-id="ACT-08" data-clone="true">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="3号线智慧巡检机器人常态化夜间检修全面启用">3号线智慧巡检机器人常态化夜间检修全面启用</span>
+          </div>
+          <time class="ticker-date">2024-04-16</time>
+        </li><li class="ticker-row" data-id="ACT-09" data-clone="true">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="信号联锁系统全面升级第4代自主容错冗余协议">信号联锁系统全面升级第4代自主容错冗余协议</span>
+          </div>
+          <time class="ticker-date">2024-04-09</time>
+        </li><li class="ticker-row" data-id="ACT-10" data-clone="true">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="智慧变电所数字化智能温控节能改造全线验收">智慧变电所数字化智能温控节能改造全线验收</span>
+          </div>
+          <time class="ticker-date">2024-04-03</time>
+        </li><li class="ticker-row" data-id="ACT-11" data-clone="true">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="综合调度指挥中心应急联合防汛推演圆满完成">综合调度指挥中心应急联合防汛推演圆满完成</span>
+          </div>
+          <time class="ticker-date">2024-03-27</time>
+        </li><li class="ticker-row" data-id="ACT-12" data-clone="true">
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="车辆段全天候无人机接触网微距巡查测试成功">车辆段全天候无人机接触网微距巡查测试成功</span>
+          </div>
+          <time class="ticker-date">2024-03-20</time>
+        </li></ul>
+</main>
+<!-- 底部 OCC 调度元信息栏 -->
+
+</div>
+<!-- 原生 JavaScript 无缝无限循环平滑滚动控制器 -->
+<script>
+    (function () {
+      // 真实工程级地铁重点活动及调度动态数据
+      const METRO_ACTIVITIES_DATA = [
+        { id: "ACT-01", text: "7月31日，全线20座车站主体结构顺利封顶", date: "2024-05-18", isLatest: true },
+        { id: "ACT-02", text: "12号线首列智慧列车顺利完成热滑试验", date: "2024-05-15", isLatest: true },
+        { id: "ACT-03", text: "古田四路车辆段接触网全线送电一次成功", date: "2024-05-11", isLatest: false },
+        { id: "ACT-04", text: "汉正街站新型全自动安全门系统改造工程启动", date: "2024-05-08", isLatest: false },
+        { id: "ACT-05", text: "全网第300列自主化列车正式上线安全运营", date: "2024-05-02", isLatest: false },
+        { id: "ACT-06", text: "轨道交通二期工程地下盾构区间全线双向贯通", date: "2024-04-28", isLatest: false },
+        { id: "ACT-07", text: "宗关枢纽站换乘通道客流通道智慧引导系统投用", date: "2024-04-22", isLatest: false },
+        { id: "ACT-08", text: "3号线智慧巡检机器人常态化夜间检修全面启用", date: "2024-04-16", isLatest: false },
+        { id: "ACT-09", text: "信号联锁系统全面升级第4代自主容错冗余协议", date: "2024-04-09", isLatest: false },
+        { id: "ACT-10", text: "智慧变电所数字化智能温控节能改造全线验收", date: "2024-04-03", isLatest: false },
+        { id: "ACT-11", text: "综合调度指挥中心应急联合防汛推演圆满完成", date: "2024-03-27", isLatest: false },
+        { id: "ACT-12", text: "车辆段全天候无人机接触网微距巡查测试成功", date: "2024-03-20", isLatest: false }
+      ];
+
+      const tickerList = document.getElementById('tickerList');
+      const itemCountDisplay = document.getElementById('itemCountDisplay');
+
+      // 更新条目总数展示
+      if (itemCountDisplay) {
+        itemCountDisplay.textContent = METRO_ACTIVITIES_DATA.length;
+      }
+
+      // 渲染单项节点
+      function createRowElement(item, isClone = false) {
+        const li = document.createElement('li');
+        li.className = `ticker-row ${item.isLatest ? 'is-latest' : ''}`;
+        li.setAttribute('data-id', item.id);
+        if (isClone) li.setAttribute('data-clone', 'true');
+
+        li.innerHTML = `
+          <div class="ticker-row-left">
+            <span class="node-track-icon" aria-hidden="true"></span>
+            <span class="ticker-text" title="${item.text}">${item.text}</span>
+          </div>
+          <time class="ticker-date">${item.date}</time>
+        `;
+        return li;
+      }
+
+      // 注入原始数据项
+      METRO_ACTIVITIES_DATA.forEach(item => {
+        tickerList.appendChild(createRowElement(item, false));
+      });
+
+      // 注入无缝克隆首尾接缝组
+      METRO_ACTIVITIES_DATA.forEach(item => {
+        tickerList.appendChild(createRowElement(item, true));
+      });
+
+      // 连续无限平滑滚动引擎 (基于 requestAnimationFrame)
+      const ROW_HEIGHT = 54;
+      const SINGLE_CYCLE_HEIGHT = METRO_ACTIVITIES_DATA.length * ROW_HEIGHT;
+      let currentScrollY = 0;
+      const scrollSpeed = 0.52; // 像素/标准帧，匀速无感滑行，不受鼠标悬停打断
+      let lastTimestamp = performance.now();
+
+      function updateMarquee(now) {
+        const elapsed = now - lastTimestamp;
+        lastTimestamp = now;
+
+        // 计算步长补偿，确保即使刷新率波动或切换标签页也完全平滑
+        const delta = Math.min(elapsed / 16.666, 2.2);
+        currentScrollY += scrollSpeed * delta;
+
+        if (currentScrollY >= SINGLE_CYCLE_HEIGHT) {
+          currentScrollY -= SINGLE_CYCLE_HEIGHT;
+        }
+
+        tickerList.style.transform = `translate3d(0, -${currentScrollY.toFixed(2)}px, 0)`;
+        requestAnimationFrame(updateMarquee);
+      }
+
+      requestAnimationFrame(updateMarquee);
+    })();
+  </script>
+
+
+</body></html>

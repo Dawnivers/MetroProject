@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Subway 3D Visual Control System HUD Header</title>
+<style>
+    /* Reset & Base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --hud-bg-core: rgba(4, 10, 22, 0.92);
+      --hud-cyan: #00d2ff;
+      --hud-cyan-bright: #35e8ff;
+      --hud-gold: #ffb703;
+      --hud-green: #00ffaa;
+      --hud-border-cyan: rgba(0, 210, 255, 0.45);
+      --hud-border-dim: rgba(0, 210, 255, 0.2);
+    }
+
+    body {
+      background-color: #02050b;
+      min-height: 100vh;
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Ambient Canvas for Celestial/Quantum Particle Field */
+    #hud-particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Outer Wrapper for Top Header */
+    .hud-header-container {
+      position: relative;
+      width: 100%;
+      height: 96px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      z-index: 100;
+      pointer-events: auto;
+    }
+
+    /* Top Cyan Micro Line across screen */
+    .hud-top-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent 0%, rgba(0, 210, 255, 0.2) 15%, #00d2ff 50%, rgba(0, 210, 255, 0.2) 85%, transparent 100%);
+      box-shadow: 0 0 10px rgba(0, 210, 255, 0.6);
+      z-index: 25;
+    }
+
+    /* Stepped Inverted Background Frame (SVG Polygon / Clip-path geometry) */
+    .hud-stepped-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.85));
+    }
+
+    .hud-stepped-backdrop svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Content Layout Container */
+    .hud-content-bar {
+      position: relative;
+      width: 100%;
+      max-width: 1720px;
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0 28px;
+      z-index: 10;
+    }
+
+    /* LEFT SECTION (Tier 1: Height 48px) */
+    .hud-left-meta {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    .compass-box {
+      width: 28px;
+      height: 28px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .animate-spin-slow {
+      animation: spin-slow 18s linear infinite;
+    }
+
+    @keyframes spin-slow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .city-name {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    }
+
+    /* Cyan Capsule Badge */
+    .capsule-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 9px;
+      background: linear-gradient(180deg, rgba(0, 210, 255, 0.08) 0%, rgba(0, 160, 220, 0.18) 100%);
+      border: 1px solid var(--hud-border-cyan);
+      border-radius: 3px;
+      box-shadow: inset 0 0 6px rgba(0, 210, 255, 0.3), 0 0 10px rgba(0, 210, 255, 0.2);
+    }
+
+    .capsule-text {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--hud-cyan-bright);
+    }
+
+    .capsule-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--hud-cyan);
+      box-shadow: 0 0 6px var(--hud-cyan), 0 0 10px var(--hud-cyan);
+    }
+
+    .v-divider {
+      width: 1px;
+      height: 15px;
+      background: rgba(148, 163, 184, 0.35);
+      margin: 0 2px;
+    }
+
+    /* Dynamic Clock */
+    .live-clock-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+    }
+
+    .clock-date {
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .clock-weekday {
+      color: #64748b;
+    }
+
+    .clock-time {
+      font-size: 15px;
+      font-weight: 800;
+      color: #f8fafc;
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    }
+
+    /* CENTER SECTION (Tier 3: Deepest Sunken Hull 88px) */
+    .hud-center-title-container {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      height: 86px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      pointer-events: none;
+      z-index: 12;
+      width: 580px;
+    }
+
+    .glow-cyan-title {
+      font-size: 23px;
+      font-weight: 900;
+      letter-spacing: 0.26em;
+      padding-left: 0.26em;
+      color: #ebfcff;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px rgba(0, 210, 255, 0.85), 0 0 24px rgba(0, 210, 255, 0.45);
+      line-height: 1.25;
+    }
+
+    .glow-cyan-subtitle {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      color: var(--hud-cyan);
+      text-transform: uppercase;
+      margin-top: 4px;
+      opacity: 0.95;
+      text-shadow: 0 0 8px rgba(0, 210, 255, 0.7);
+    }
+
+    /* RIGHT SECTION (Tier 1: Height 48px) */
+    .hud-right-controls {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      flex-shrink: 0;
+    }
+
+    .matrix-status-pill {
+      height: 28px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 3px;
+      background: rgba(10, 19, 36, 0.8);
+      border: 1px solid rgba(51, 65, 85, 0.7);
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.6);
+    }
+
+    .pulse-dot-green {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--hud-green);
+      box-shadow: 0 0 8px var(--hud-green), 0 0 14px rgba(0, 255, 170, 0.85);
+      animation: pulse-green 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-green {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    .matrix-label {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: #94a3b8;
+    }
+
+    .matrix-value {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      color: #ffffff;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+    }
+
+    .freq-box {
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .freq-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: #94a3b8;
+    }
+
+    .freq-num {
+      font-size: 13px;
+      font-weight: 800;
+      color: #00e1ff;
+      text-shadow: 0 0 6px rgba(0, 225, 255, 0.7);
+    }
+
+    .freq-unit {
+      font-size: 8px;
+      font-weight: 700;
+      color: #64748b;
+      margin-left: -2px;
+    }
+
+    /* Tactical Action Buttons */
+    .hud-action-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 210, 255, 0.05);
+      border: 1px solid rgba(0, 210, 255, 0.25);
+      color: #ffb703;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .hud-action-btn svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+      filter: drop-shadow(0 0 6px rgba(255, 183, 3, 0.7));
+    }
+
+    .hud-action-btn.cyan-btn {
+      color: #35e8ff;
+    }
+
+    .hud-action-btn.cyan-btn svg {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 6px rgba(0, 210, 255, 0.7));
+    }
+
+    .hud-action-btn:hover {
+      background: rgba(0, 210, 255, 0.18);
+      border-color: rgba(0, 210, 255, 0.65);
+      box-shadow: 0 0 12px rgba(0, 210, 255, 0.45);
+      transform: translateY(-1px);
+    }
+
+    /* Decorative Gold/Cyan Celestial Pulsing Nodes */
+    .node-pulse-gold {
+      animation: pulse-gold 2.2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-gold {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.65; transform: scale(0.85); }
+    }
+  </style>
+</head>
+<body>
+<!-- Ambient Canvas for Dynamic Fluid Particles & Stardust -->
+<canvas id="hud-particles-canvas"></canvas>
+<!-- BEGIN: Inverted Stepped HUD Header -->
+<header class="hud-header-container" data-purpose="hud-header">
+<!-- Top Horizontal Micro-line across full width -->
+<div class="hud-top-line"></div>
+<!-- Stepped Inverted Background Frame & Rail Layer -->
+<div class="hud-stepped-backdrop">
+<svg id="hud-backdrop-svg" preserveaspectratio="none" viewbox="0 0 1920 96">
+<defs>
+<!-- Gradient for main backdrop glass fill -->
+<lineargradient id="hudGlassGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#08142a" stop-opacity="0.94"></stop>
+<stop offset="40%" stop-color="#040a16" stop-opacity="0.92"></stop>
+<stop offset="100%" stop-color="#02050c" stop-opacity="0.96"></stop>
+</lineargradient>
+<!-- Outer border gradient from sides to center -->
+<lineargradient id="steppedBorderGrad" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#00d2ff" stop-opacity="0.3"></stop>
+<stop offset="25%" stop-color="#00d2ff" stop-opacity="0.55"></stop>
+<stop offset="42%" stop-color="#00d2ff" stop-opacity="0.9"></stop>
+<stop offset="50%" stop-color="#ffffff" stop-opacity="1"></stop>
+<stop offset="58%" stop-color="#00d2ff" stop-opacity="0.9"></stop>
+<stop offset="75%" stop-color="#00d2ff" stop-opacity="0.55"></stop>
+<stop offset="100%" stop-color="#00d2ff" stop-opacity="0.3"></stop>
+</lineargradient>
+<!-- Subtle bottom glow filter -->
+<filter height="160%" id="railGlow" width="120%" x="-10%" y="-30%">
+<fegaussianblur result="blur" stddeviation="3"></fegaussianblur>
+<fecomposite in="SourceGraphic" in2="blur" operator="over"></fecomposite>
+</filter>
+</defs>
+<polygon fill="url(#hudGlassGrad)" points="0,0 1920,0 1920,46 1400,46 1370,64 1250,64 1210,88 710,88 670,64 550,64 520,46 0,46"></polygon>
+<!-- Secondary internal contour line (Tech layer) -->
+<polyline fill="none" points="0,42 516,42 546,60 666,60 706,84 1214,84 1254,60 1374,60 1404,42 1920,42" stroke="rgba(0, 210, 255, 0.15)" stroke-width="1"></polyline>
+<!-- Main Stepped Guideway Rail Line (Follows bottom edge precisely) -->
+<polyline fill="none" filter="url(#railGlow)" points="0,46 520,46 550,64 670,64 710,88 1210,88 1250,64 1370,64 1400,46 1920,46" stroke="url(#steppedBorderGrad)" stroke-width="1.6"></polyline>
+<!-- Center Prominent Underline Highlight (Under core title plateau) -->
+<line filter="drop-shadow(0 0 6px #00d2ff)" stroke="#ffffff" stroke-linecap="round" stroke-width="2.4" x1="730" x2="1190" y1="88" y2="88"></line>
+<!-- Intermediate step neon notch trims -->
+<rect fill="#00d2ff" filter="drop-shadow(0 0 4px #00d2ff)" height="2" width="28" x="560" y="62.5"></rect>
+<rect fill="#00d2ff" filter="drop-shadow(0 0 4px #00d2ff)" height="2" width="28" x="1332" y="62.5"></rect>
+<!-- Stepped Corner Joints / Star-Station Constellation Nodes -->
+<!-- Left Wing to Step 1 corner -->
+<circle cx="520" cy="46" fill="#00d2ff" filter="drop-shadow(0 0 5px #00d2ff)" r="2.5"></circle>
+<circle class="node-pulse-gold" cx="550" cy="64" fill="#ffb703" filter="drop-shadow(0 0 7px #ffb703)" r="3" stroke="#fff8dc" stroke-width="1"></circle>
+<!-- Step 1 to Deep Sunken Center Hull corner -->
+<circle cx="670" cy="64" fill="#00d2ff" filter="drop-shadow(0 0 5px #00d2ff)" r="2.5"></circle>
+<circle class="node-pulse-gold" cx="710" cy="88" fill="#ffb703" filter="drop-shadow(0 0 8px #ffb703)" r="3.5" stroke="#fff8dc" stroke-width="1"></circle>
+<!-- Deep Center Hull to Right Step 2 corner -->
+<circle class="node-pulse-gold" cx="1210" cy="88" fill="#ffb703" filter="drop-shadow(0 0 8px #ffb703)" r="3.5" stroke="#fff8dc" stroke-width="1"></circle>
+<circle cx="1250" cy="64" fill="#00d2ff" filter="drop-shadow(0 0 5px #00d2ff)" r="2.5"></circle>
+<!-- Right Step 2 to Right Wing corner -->
+<circle class="node-pulse-gold" cx="1370" cy="64" fill="#ffb703" filter="drop-shadow(0 0 7px #ffb703)" r="3" stroke="#fff8dc" stroke-width="1"></circle>
+<circle cx="1400" cy="46" fill="#00d2ff" filter="drop-shadow(0 0 5px #00d2ff)" r="2.5"></circle>
+</svg>
+</div>
+<!-- HUD Real Content Layer -->
+<div class="hud-content-bar">
+<!-- BEGIN: Left Section (Location, Subsystem & Realtime Clock) -->
+<div class="hud-left-meta" data-purpose="hud-left-meta">
+<!-- Golden Rotating Trigram / Celestial Star Compass Badge -->
+<div class="compass-box">
+<svg class="animate-spin-slow" fill="none" height="100%" style="filter: drop-shadow(0 0 7px rgba(255,183,3,0.85));" viewbox="0 0 36 36" width="100%">
+<circle cx="18" cy="18" opacity="0.65" r="16" stroke="#ffb703" stroke-dasharray="2 3" stroke-width="1.2"></circle>
+<circle cx="18" cy="18" opacity="0.85" r="11" stroke="#ffb703" stroke-width="1.2"></circle>
+<circle cx="18" cy="18" fill="#ffb703" fill-opacity="0.95" r="5"></circle>
+<!-- 8-Axis Orbiting Rays -->
+<line stroke="#ffb703" stroke-linecap="round" stroke-width="1.8" x1="18" x2="18" y1="2" y2="5"></line>
+<line stroke="#ffb703" stroke-linecap="round" stroke-width="1.8" x1="18" x2="18" y1="31" y2="34"></line>
+<line stroke="#ffb703" stroke-linecap="round" stroke-width="1.8" x1="2" x2="5" y1="18" y2="18"></line>
+<line stroke="#ffb703" stroke-linecap="round" stroke-width="1.8" x1="31" x2="34" y1="18" y2="18"></line>
+<line stroke="#ffb703" stroke-width="1.5" x1="6.5" x2="8.8" y1="6.5" y2="8.8"></line>
+<line stroke="#ffb703" stroke-width="1.5" x1="27.2" x2="29.5" y1="27.2" y2="29.5"></line>
+<line stroke="#ffb703" stroke-width="1.5" x1="6.5" x2="8.8" y1="29.5" y2="27.2"></line>
+<line stroke="#ffb703" stroke-width="1.5" x1="27.2" x2="29.5" y1="8.8" y2="6.5"></line>
+</svg>
+</div>
+<!-- City Name -->
+<span class="city-name">武汉市</span>
+<!-- Cyan Tactical Capsule Badge -->
+<div class="capsule-badge">
+<span class="capsule-text">XULING · 01</span>
+<span class="capsule-dot"></span>
+</div>
+<!-- Vertical Divider -->
+<div class="v-divider"></div>
+<!-- High-Precision Dynamic Clock -->
+<div class="live-clock-box" data-purpose="live-clock-display">
+<span class="clock-date" id="hud-date">2026/09/25</span>
+<span class="clock-weekday" id="hud-weekday">星期五</span>
+<span class="clock-time" id="hud-time">19:17:11</span>
+</div>
+</div>
+<!-- END: Left Section -->
+<!-- BEGIN: Center Section (Inverted Sunken Deep Plateau Header) -->
+<div class="hud-center-title-container" data-purpose="hud-center-title">
+<h1 class="glow-cyan-title">地铁三维可视化管控平台</h1>
+<div class="glow-cyan-subtitle">SUBWAY 3D VISUAL CONTROL SYSTEM · VER 4.8</div>
+</div>
+<!-- END: Center Section -->
+<!-- BEGIN: Right Section (Status, FPS & Tactical Controls) -->
+<div class="hud-right-controls" data-purpose="hud-right-controls">
+<!-- Matrix Online Status Pill -->
+<div class="matrix-status-pill">
+<span class="pulse-dot-green"></span>
+<span class="matrix-label">MATRIX</span>
+<span class="matrix-value">ONLINE</span>
+</div>
+<!-- Frequency FPS Box -->
+<div class="freq-box">
+<span class="freq-tag">FREQ</span>
+<span class="freq-num">60.0</span>
+<span class="freq-unit">FPS</span>
+</div>
+<!-- Vertical Divider -->
+<div class="v-divider"></div>
+<!-- Action Button 1: Notification / Alert -->
+<button aria-label="Notifications" class="hud-action-btn" title="系统告警与通知" type="button">
+<svg viewbox="0 0 24 24">
+<path d="M12 2a6 6 0 0 0-6 6v3.586l-.707.707A1 1 0 0 0 5 13v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a1 1 0 0 0-.293-.707L18 11.586V8a6 6 0 0 0-6-6zm-2 16a2 2 0 1 0 4 0h-4z"></path>
+</svg>
+</button>
+<!-- Action Button 2: Home Overview -->
+<button aria-label="Home Overview" class="hud-action-btn" title="三维主视图" type="button">
+<svg viewbox="0 0 24 24">
+<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
+</svg>
+</button>
+<!-- Action Button 3: Fullscreen Toggle -->
+<button aria-label="Toggle Fullscreen" class="hud-action-btn cyan-btn" id="fullscreen-btn" title="全屏视界" type="button">
+<svg viewbox="0 0 24 24">
+<path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+</svg>
+</button>
+</div>
+<!-- END: Right Section -->
+</div>
+</header>
+<!-- END: Inverted Stepped HUD Header -->
+<!-- BEGIN: Multi-dimensional Fluid Stardust & Quantum Particle Engine -->
+<script data-purpose="hud-particles">
+  (function () {
+    const canvas = document.getElementById('hud-particles-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let width = 0;
+    let height = 0;
+
+    // Retina / High-DPI handling
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Mouse spring-damper state for ultra-smooth repulsion
+    const mouse = {
+      targetX: -2000,
+      targetY: -2000,
+      currX: -2000,
+      currY: -2000,
+      vx: 0,
+      vy: 0,
+      active: false,
+      radius: 170
+    };
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.targetX = e.clientX;
+      mouse.targetY = e.clientY;
+      mouse.active = true;
+    });
+
+    window.addEventListener('mouseleave', () => {
+      mouse.active = false;
+      mouse.targetX = -2000;
+      mouse.targetY = -2000;
+    });
+
+    // Multi-harmonic Continuous Vector Field (Silky Fluid Laminar-Turbulence)
+    // Continuous trigonometric harmonic field generates velvety, swirl-rich laminar flow
+    function getSmoothFluidVector(x, y, t) {
+      const s1 = 0.0016;
+      const s2 = 0.0038;
+      const s3 = 0.0007;
+
+      const a1 = Math.sin(x * s1 + t * 0.28) + Math.cos(y * s1 * 1.15 - t * 0.22);
+      const a2 = Math.sin((x + y) * s2 * 0.75 - t * 0.38) * 0.55;
+      const a3 = Math.cos(x * s3 - y * s3 * 1.4 + t * 0.15) * 0.35;
+
+      const theta = (a1 + a2 + a3) * Math.PI * 1.5;
+      const speedMagnitude = 0.55 + 0.45 * Math.sin(a1 * 1.8 + t * 0.3);
+
+      return {
+        x: Math.cos(theta) * speedMagnitude,
+        y: Math.sin(theta) * speedMagnitude
+      };
+    }
+
+    // Color definitions for ethereal cyber-celestial atmosphere
+    const COLOR_PALETTE = [
+      { r: 0,   g: 210, b: 255 }, // Cyber Cyan
+      { r: 53,  g: 232, b: 255 }, // Neon Aqua / Electric Ice
+      { r: 14,  g: 165, b: 233 }, // Deep Sky Blue
+      { r: 255, g: 183, b: 3   }, // Imperial Gold
+      { r: 255, g: 214, b: 102 }, // Pale Star Gold
+      { r: 255, g: 245, b: 200 }  // White-Gold Starlight
+    ];
+
+    class UltraSmoothFluidParticle {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(init = false) {
+        this.x = Math.random() * width;
+        this.y = init ? Math.random() * height : (Math.random() < 0.35 ? -15 : Math.random() * height);
+        
+        // Prev positions for high-precision sub-pixel velocity & trailing
+        this.prevX = this.x;
+        this.prevY = this.y;
+
+        // Kinematic state
+        this.vx = (Math.random() - 0.5) * 0.2;
+        this.vy = (Math.random() - 0.5) * 0.2;
+
+        // Layer tier (depth / parallax)
+        this.depth = Math.random(); // 0: background soft, 1: foreground crisp
+        this.baseRadius = 0.75 + this.depth * 1.85 + (Math.random() < 0.07 ? 1.4 : 0);
+        this.currentRadius = this.baseRadius;
+
+        // Color selection
+        const isGold = Math.random() < 0.28;
+        if (isGold) {
+          const goldIdx = Math.floor(3 + Math.random() * 3);
+          this.color = COLOR_PALETTE[goldIdx];
+        } else {
+          const cyanIdx = Math.floor(Math.random() * 3);
+          this.color = COLOR_PALETTE[cyanIdx];
+        }
+
+        // Particle lifecycle & smooth sine/cubic transitions
+        this.life = 0;
+        this.maxLife = 380 + Math.random() * 520;
+        this.alpha = 0;
+        this.targetAlpha = 0.25 + this.depth * 0.55 + Math.random() * 0.2;
+
+        // Fluid drifting characteristics
+        this.fluidResponsiveness = 0.038 + (1 - this.depth) * 0.032; // Lower mass follows flow easier
+        this.linearDamping = 0.965; // High-inertia velvety glide
+        this.ambientDriftSpeed = 0.45 + this.depth * 0.65;
+
+        // Harmonic breathing
+        this.pulseFreq = 0.015 + Math.random() * 0.025;
+        this.pulsePhase = Math.random() * Math.PI * 2;
+
+        // Micro gentle hover perturbation
+        this.wanderFreq = 0.01 + Math.random() * 0.02;
+        this.wanderPhaseX = Math.random() * Math.PI * 2;
+        this.wanderPhaseY = Math.random() * Math.PI * 2;
+      }
+
+      update(timeSeconds, dtNormalized) {
+        this.life += dtNormalized;
+
+        // Life fade envelope (Sine curve smoothly fades in and out)
+        const progress = Math.min(1, this.life / this.maxLife);
+        const lifecycleFade = Math.sin(progress * Math.PI); // 0 -> 1 -> 0
+        const breathing = Math.sin(this.life * this.pulseFreq + this.pulsePhase) * 0.2 + 0.8;
+        
+        const targetA = this.targetAlpha * lifecycleFade * breathing;
+        // Exponential lerp for opacity
+        this.alpha += (targetA - this.alpha) * 0.08 * dtNormalized;
+        this.alpha = Math.max(0, Math.min(1, this.alpha));
+
+        // Smooth radius breathing
+        this.currentRadius = this.baseRadius * (0.85 + 0.15 * breathing);
+
+        // 1. Sample smooth continuous vector field
+        const flow = getSmoothFluidVector(this.x, this.y, timeSeconds);
+
+        // Desired velocity guided by the fluid field
+        const targetVx = flow.x * this.ambientDriftSpeed;
+        const targetVy = flow.y * this.ambientDriftSpeed;
+
+        // 2. Velvety Inertial Acceleration (Lerp velocity gently towards flow field)
+        this.vx += (targetVx - this.vx) * this.fluidResponsiveness * dtNormalized;
+        this.vy += (targetVy - this.vy) * this.fluidResponsiveness * dtNormalized;
+
+        // 3. Gentle harmonic micro-turbulence (Never abrupt, pure sine waves)
+        const microJitterX = Math.sin(this.life * this.wanderFreq + this.wanderPhaseX) * 0.08;
+        const microJitterY = Math.cos(this.life * this.wanderFreq + this.wanderPhaseY) * 0.08;
+        this.vx += microJitterX * dtNormalized;
+        this.vy += microJitterY * dtNormalized;
+
+        // 4. Mouse Interactive Spring Repulsion
+        if (mouse.active) {
+          const dx = this.x - mouse.currX;
+          const dy = this.y - mouse.currY;
+          const distSq = dx * dx + dy * dy;
+          const r = mouse.radius;
+          if (distSq < r * r && distSq > 4) {
+            const dist = Math.sqrt(distSq);
+            // Smooth cubic hermite falloff
+            const normDist = dist / r;
+            const forceFactor = (1 - normDist * normDist) * 1.8;
+            
+            const nx = dx / dist;
+            const ny = dy / dist;
+
+            // Swirl + push deflection
+            const swirlX = -ny;
+            const swirlY = nx;
+
+            this.vx += (nx * 1.2 + swirlX * 0.6) * forceFactor * dtNormalized;
+            this.vy += (ny * 1.2 + swirlY * 0.6) * forceFactor * dtNormalized;
+          }
+        }
+
+        // 5. Apply smooth damping
+        this.vx *= Math.pow(this.linearDamping, dtNormalized);
+        this.vy *= Math.pow(this.linearDamping, dtNormalized);
+
+        // 6. Integrate sub-pixel positions
+        this.prevX = this.x;
+        this.prevY = this.y;
+        this.x += this.vx * dtNormalized;
+        this.y += this.vy * dtNormalized;
+
+        // Boundary checks with generous margin & graceful rebirth
+        const margin = 50;
+        if (this.life > this.maxLife || 
+            this.x < -margin || this.x > width + margin || 
+            this.y < -margin || this.y > height + margin) {
+          this.reset(false);
+        }
+      }
+
+      draw(ctx) {
+        if (this.alpha <= 0.005) return;
+
+        const { r, g, b } = this.color;
+        const a = this.alpha;
+
+        // Gentle sub-pixel motion streak/trail
+        ctx.beginPath();
+        ctx.moveTo(this.prevX, this.prevY);
+        ctx.lineTo(this.x, this.y);
+        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a * 0.4})`;
+        ctx.lineWidth = Math.max(0.6, this.currentRadius * 0.7);
+        ctx.lineCap = 'round';
+        ctx.stroke();
+
+        // Main particle nucleus
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.currentRadius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a * 0.95})`;
+        ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${a * 0.7})`;
+        ctx.shadowBlur = 4 + this.depth * 5;
+        ctx.fill();
+
+        // High-density stellar nucleus core (Starlight spark)
+        if (this.depth > 0.4) {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.currentRadius * 0.35, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(1, a * 1.25)})`;
+          ctx.shadowBlur = 2;
+          ctx.shadowColor = '#ffffff';
+          ctx.fill();
+        }
+      }
+    }
+
+    // Initialize Particle Pool
+    const PARTICLE_COUNT = 130;
+    const particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push(new UltraSmoothFluidParticle());
+    }
+
+    let lastTimestamp = performance.now();
+
+    function renderLoop(currentTimestamp) {
+      // Calculate delta time for seamless frame-rate independence
+      let deltaMs = currentTimestamp - lastTimestamp;
+      if (deltaMs > 64) deltaMs = 64; // Clamp extreme lag spikes
+      lastTimestamp = currentTimestamp;
+
+      // dtNormalized: 1.0 corresponds to standard 60fps frame (16.666ms)
+      const dtNormalized = deltaMs / 16.666;
+      const timeSeconds = currentTimestamp * 0.001;
+
+      // Smooth mouse spring-damper tracking
+      if (mouse.active) {
+        const ax = (mouse.targetX - mouse.currX) * 0.14;
+        const ay = (mouse.targetY - mouse.currY) * 0.14;
+        mouse.vx = (mouse.vx + ax) * 0.78;
+        mouse.vy = (mouse.vy + ay) * 0.78;
+        mouse.currX += mouse.vx * dtNormalized;
+        mouse.currY += mouse.vy * dtNormalized;
+      } else {
+        mouse.currX = -2000;
+        mouse.currY = -2000;
+      }
+
+      // 1. Gentle Phosphor Fade / Motion Trail backdrop clear
+      // Instead of completely obliterating the canvas with clearRect, 
+      // a high-ratio semi-transparent wash creates a liquid silky motion blur trail
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = 'rgba(2, 5, 11, 0.28)';
+      ctx.fillRect(0, 0, width, height);
+
+      // Subtle atmospheric celestial ripple at pointer
+      if (mouse.active && mouse.currX > 0 && mouse.currY > 0) {
+        const mouseGrad = ctx.createRadialGradient(
+          mouse.currX, mouse.currY, 0,
+          mouse.currX, mouse.currY, mouse.radius
+        );
+        mouseGrad.addColorStop(0, 'rgba(0, 210, 255, 0.055)');
+        mouseGrad.addColorStop(0.6, 'rgba(0, 210, 255, 0.015)');
+        mouseGrad.addColorStop(1, 'rgba(0, 210, 255, 0)');
+        ctx.fillStyle = mouseGrad;
+        ctx.beginPath();
+        ctx.arc(mouse.currX, mouse.currY, mouse.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 2. Render particles in Lighter / Screen Blend mode for glowing laser optics
+      ctx.globalCompositeOperation = 'lighter';
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const p = particles[i];
+        p.update(timeSeconds, dtNormalized);
+        p.draw(ctx);
+      }
+
+      // Reset composite operation & shadow parameters
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = 'transparent';
+      ctx.globalCompositeOperation = 'source-over';
+
+      requestAnimationFrame(renderLoop);
+    }
+
+    requestAnimationFrame(renderLoop);
+  })();
+</script>
+<!-- END: Multi-dimensional Fluid Stardust & Quantum Particle Engine -->
+<!-- BEGIN: Vanilla JavaScript for Clock & Fullscreen -->
+<script data-purpose="live-clock">
+    function updateHUDClock() {
+      const now = new Date();
+      
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      
+      const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+      const weekdayStr = weekdays[now.getDay()];
+      
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      
+      const dateEl = document.getElementById('hud-date');
+      const weekdayEl = document.getElementById('hud-weekday');
+      const timeEl = document.getElementById('hud-time');
+
+      if (dateEl) dateEl.textContent = `${year}/${month}/${day}`;
+      if (weekdayEl) weekdayEl.textContent = weekdayStr;
+      if (timeEl) timeEl.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    updateHUDClock();
+    setInterval(updateHUDClock, 1000);
+  </script>
+<script data-purpose="fullscreen-toggle">
+    const fsBtn = document.getElementById('fullscreen-btn');
+    if (fsBtn) {
+      fsBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(err => {
+            console.warn(`Fullscreen error: ${err.message}`);
+          });
+        } else {
+          document.exitFullscreen();
+        }
+      });
+    }
+  </script>
+<!-- END: Vanilla JavaScript -->
+</body></html>

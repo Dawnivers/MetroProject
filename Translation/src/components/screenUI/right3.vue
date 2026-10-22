@@ -1,0 +1,1342 @@
+<script setup>
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+
+/* ---------------- 数据源 ---------------- */
+
+/** 顶部点阵指示器点位数（阵列本身即数据） */
+const MATRIX_DOT_COUNT = 8;
+
+/** 视口左上角机位标识 */
+const cameraLabel = '上海地铁';
+
+/** 丁达尔体积光微尘粒子数量（数组长度即粒子总数） */
+const particleCount = 85;
+
+// 丁达尔体积光微尘粒子系统
+const particles = Array.from({ length: particleCount }, () => ({
+  x: Math.random() * 1200,
+  y: Math.random() * 600,
+  vx: (Math.random() - 0.5) * 0.4 + 0.3,
+  vy: (Math.random() - 0.5) * 0.3,
+  radius: 0.8 + Math.random() * 1.6,
+  baseAlpha: 0.15 + Math.random() * 0.45,
+}));
+
+/* ---------------- 1. 精密毫秒级时钟与码率遥测 ---------------- */
+
+const dateClockEl = ref(null);
+const msClockEl = ref(null);
+const telemetry = ref('1080P 60FPS / 8.5Mbps');
+
+let clockFrameId = null;
+let telemetryTimer = null;
+
+const updateClock = () => {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+  const ms = String(now.getMilliseconds()).padStart(3, '0');
+
+  // 逐帧直写 DOM，避免 60fps 触发响应式渲染
+  if (dateClockEl.value) {
+    dateClockEl.value.textContent = `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+  }
+  if (msClockEl.value) {
+    msClockEl.value.textContent = `.${ms}`;
+  }
+  clockFrameId = requestAnimationFrame(updateClock);
+};
+
+/* ---------------- 2. 高精列车模型与物理光效渲染引擎 ---------------- */
+
+const canvasEl = ref(null);
+const isPlaying = ref(true);
+
+let ctx = null;
+let animFrameId = null;
+
+// 运动参数
+let trainX = -460;
+let laserScanY = 0;
+const scanSpeed = 1.8;
+
+const resizeCanvas = () => {
+  const canvas = canvasEl.value;
+  if (!canvas) return;
+  canvas.width = canvas.parentElement.clientWidth;
+  canvas.height = canvas.parentElement.clientHeight;
+};
+
+const drawScene = () => {
+  if (!isPlaying.value) return;
+
+  const canvas = canvasEl.value;
+  const w = canvas.width;
+  const h = canvas.height;
+
+  // A. 基础暗场与远景隧道景深
+  ctx.fillStyle = '#020612';
+  ctx.fillRect(0, 0, w, h);
+
+  const tunnelGrad = ctx.createRadialGradient(
+    w * 0.46,
+    h * 0.45,
+    30,
+    w * 0.5,
+    h * 0.5,
+    w * 0.85,
+  );
+  tunnelGrad.addColorStop(0, 'rgba(12, 28, 55, 0.42)');
+  tunnelGrad.addColorStop(0.65, 'rgba(4, 10, 24, 0.88)');
+  tunnelGrad.addColorStop(1, '#020612');
+  ctx.fillStyle = tunnelGrad;
+  ctx.fillRect(0, 0, w, h);
+
+  // B. 工控透视网格
+  ctx.strokeStyle = 'rgba(28, 56, 92, 0.25)';
+  ctx.lineWidth = 1;
+  const gridStep = 44;
+  for (let gx = 0; gx < w; gx += gridStep) {
+    ctx.beginPath();
+    ctx.moveTo(gx, 0);
+    ctx.lineTo(gx, h);
+    ctx.stroke();
+  }
+  for (let gy = 0; gy < h; gy += gridStep) {
+    ctx.beginPath();
+    ctx.moveTo(0, gy);
+    ctx.lineTo(w, gy);
+    ctx.stroke();
+  }
+
+  // C. 轨道与站台黄线 (黄金垂直居中排布)
+  const vanishX = w * 0.44;
+  const vanishY = h * 0.36;
+  const railLevelY = h * 0.7;
+
+  // 纵向透视辐射线
+  ctx.strokeStyle = 'rgba(32, 68, 115, 0.35)';
+  for (let tx = -w * 0.3; tx < w * 1.5; tx += 95) {
+    ctx.beginPath();
+    ctx.moveTo(vanishX, vanishY);
+    ctx.lineTo(tx, h);
+    ctx.stroke();
+  }
+
+  // 轨枕微光
+  ctx.strokeStyle = 'rgba(32, 65, 105, 0.48)';
+  ctx.lineWidth = 1.2;
+  for (let r = railLevelY - 8; r < h; r += 16) {
+    const depthProgress = (r - railLevelY) / (h - railLevelY);
+    const startX = vanishX - (vanishX + 120) * (0.35 + depthProgress * 0.7);
+    const endX = vanishX + (w - vanishX + 120) * (0.35 + depthProgress * 0.7);
+    ctx.beginPath();
+    ctx.moveTo(startX, r);
+    ctx.lineTo(endX, r);
+    ctx.stroke();
+  }
+
+  // 双主钢轨
+  const railTopLeft = railLevelY - 2;
+  const railTopRight = railLevelY + 12;
+
+  ctx.strokeStyle = 'rgba(75, 125, 180, 0.7)';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(0, railTopLeft);
+  ctx.lineTo(w, railTopLeft);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(0, railTopRight);
+  ctx.lineTo(w, railTopRight);
+  ctx.stroke();
+
+  // 站台黄色防越安全警示线
+  ctx.strokeStyle = 'rgba(245, 158, 11, 0.65)';
+  ctx.lineWidth = 2;
+  ctx.shadowColor = 'rgba(245, 158, 11, 0.45)';
+  ctx.shadowBlur = 6;
+  ctx.beginPath();
+  ctx.moveTo(0, railLevelY - 26);
+  ctx.lineTo(w, railLevelY - 26);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // D. 列车动态推进
+  trainX += 3.5;
+  const trainTotalLen = 660;
+  if (trainX > w + 520) {
+    trainX = -trainTotalLen - 100;
+  }
+
+  // 黄金垂直高度定位
+  const trainY = h * 0.38;
+  const trainH = 125;
+  const noseLen = 100;
+  const noseX = trainX + trainTotalLen;
+  const headlightX = noseX - 4;
+  const headlightY = trainY + trainH - 32;
+
+  // E. 车底机械转向架与轮轨金属反光
+  const bogieY = trainY + trainH - 6;
+  const bogieCenters = [trainX + 90, trainX + 250, trainX + 480];
+
+  bogieCenters.forEach((bx) => {
+    if (bx > -100 && bx < w + 100) {
+      // 转向架横梁框架
+      ctx.fillStyle = '#0a1422';
+      ctx.fillRect(bx - 42, bogieY - 8, 84, 10);
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(bx - 42, bogieY - 8, 84, 10);
+
+      // 减震避震弹簧
+      ctx.fillStyle = '#1e3a5f';
+      ctx.fillRect(bx - 26, bogieY - 14, 10, 8);
+      ctx.fillRect(bx + 16, bogieY - 14, 10, 8);
+
+      // 双轴金属轮毂
+      [-28, 28].forEach((wheelOffset) => {
+        const wx = bx + wheelOffset;
+        ctx.fillStyle = '#060d18';
+        ctx.beginPath();
+        ctx.arc(wx, bogieY + 4, 11, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.75)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.85)';
+        ctx.beginPath();
+        ctx.arc(wx, bogieY + 4, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+  });
+
+  // F. 车身底部冷青接地漫反射环境光晕
+  const underglowGrad = ctx.createRadialGradient(
+    trainX + trainTotalLen * 0.5,
+    bogieY + 4,
+    20,
+    trainX + trainTotalLen * 0.5,
+    bogieY + 4,
+    trainTotalLen * 0.48,
+  );
+  underglowGrad.addColorStop(0, 'rgba(56, 189, 248, 0.24)');
+  underglowGrad.addColorStop(0.7, 'rgba(14, 116, 144, 0.08)');
+  underglowGrad.addColorStop(1, 'rgba(5, 12, 22, 0)');
+  ctx.fillStyle = underglowGrad;
+  ctx.fillRect(trainX, bogieY - 4, trainTotalLen + 60, 26);
+
+  // G. 高精流线型车体 (空气动力学前倾鼻锥 + 弧形导流罩 + 精密扰流唇)
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(trainX, trainY + trainH - 12);
+  ctx.lineTo(trainX, trainY + 12);
+  ctx.quadraticCurveTo(trainX, trainY, trainX + 16, trainY);
+  ctx.lineTo(trainX + trainTotalLen - noseLen, trainY);
+  // 驾驶舱导流罩下压大弧
+  ctx.bezierCurveTo(
+    trainX + trainTotalLen - noseLen * 0.35,
+    trainY + 4,
+    trainX + trainTotalLen - 12,
+    trainY + trainH * 0.42,
+    noseX,
+    headlightY - 6,
+  );
+  // 前鼻锥与下唇扰流板外凸弧
+  ctx.quadraticCurveTo(
+    noseX + 4,
+    headlightY + 6,
+    noseX - 4,
+    trainY + trainH - 6,
+  );
+  ctx.lineTo(noseX - 22, trainY + trainH - 6);
+  ctx.lineTo(trainX + 12, trainY + trainH - 6);
+  ctx.quadraticCurveTo(
+    trainX,
+    trainY + trainH - 6,
+    trainX,
+    trainY + trainH - 12,
+  );
+  ctx.closePath();
+
+  // 车体深空工控科技蓝质感渐变
+  const bodyGrad = ctx.createLinearGradient(
+    trainX,
+    trainY,
+    trainX,
+    trainY + trainH,
+  );
+  bodyGrad.addColorStop(0, '#10243c');
+  bodyGrad.addColorStop(0.3, '#152e4d');
+  bodyGrad.addColorStop(0.7, '#0d1d33');
+  bodyGrad.addColorStop(1, '#071322');
+  ctx.fillStyle = bodyGrad;
+  ctx.fill();
+
+  ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+  ctx.lineWidth = 1.4;
+  ctx.stroke();
+  ctx.restore();
+
+  // H. 科技蓝白涂装与防夹黄色警示线
+  // 1. 青蓝高亮科技流动条带
+  const stripeGrad = ctx.createLinearGradient(trainX, 0, noseX, 0);
+  stripeGrad.addColorStop(0, 'rgba(56, 189, 248, 0.65)');
+  stripeGrad.addColorStop(0.7, 'rgba(56, 189, 248, 0.95)');
+  stripeGrad.addColorStop(1, 'rgba(186, 230, 253, 0.98)');
+  ctx.fillStyle = stripeGrad;
+  ctx.fillRect(
+    trainX + 8,
+    trainY + trainH * 0.58,
+    trainTotalLen - noseLen - 12,
+    6,
+  );
+
+  // 2. 车身下缘黄色防夹安全线
+  ctx.fillStyle = 'rgba(245, 158, 11, 0.88)';
+  ctx.fillRect(
+    trainX + 8,
+    trainY + trainH - 16,
+    trainTotalLen - noseLen - 12,
+    2.5,
+  );
+
+  // 3. 车门分割线与精密工业接缝
+  ctx.strokeStyle = 'rgba(5, 15, 28, 0.85)';
+  ctx.lineWidth = 1.5;
+  for (
+    let dx = trainX + 70;
+    dx < trainX + trainTotalLen - noseLen - 40;
+    dx += 140
+  ) {
+    ctx.beginPath();
+    ctx.moveTo(dx, trainY + 16);
+    ctx.lineTo(dx, trainY + trainH - 12);
+    ctx.stroke();
+    // 车门门缝双线立体反光
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
+    ctx.beginPath();
+    ctx.moveTo(dx + 2, trainY + 16);
+    ctx.lineTo(dx + 2, trainY + trainH - 12);
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(5, 15, 28, 0.85)';
+  }
+
+  // I. 驾驶舱流线斜切挡风玻璃与内饰微光
+  ctx.save();
+  ctx.beginPath();
+  const cabStart = trainX + trainTotalLen - noseLen - 10;
+  ctx.moveTo(cabStart, trainY + 6);
+  ctx.bezierCurveTo(
+    cabStart + 40,
+    trainY + 12,
+    noseX - 22,
+    trainY + 28,
+    noseX - 10,
+    trainY + trainH * 0.44,
+  );
+  ctx.lineTo(noseX - 32, trainY + trainH * 0.45);
+  ctx.quadraticCurveTo(cabStart + 22, trainY + 24, cabStart - 4, trainY + 16);
+  ctx.closePath();
+
+  const glassGrad = ctx.createLinearGradient(
+    cabStart,
+    trainY,
+    noseX - 10,
+    trainY + trainH * 0.45,
+  );
+  glassGrad.addColorStop(0, 'rgba(14, 42, 72, 0.95)');
+  glassGrad.addColorStop(0.6, 'rgba(8, 26, 48, 0.9)');
+  glassGrad.addColorStop(1, 'rgba(56, 189, 248, 0.35)');
+  ctx.fillStyle = glassGrad;
+  ctx.fill();
+
+  ctx.strokeStyle = 'rgba(125, 211, 252, 0.75)';
+  ctx.lineWidth = 1.2;
+  ctx.stroke();
+
+  // 驾驶室控制台幽微操作灯
+  ctx.fillStyle = 'rgba(16, 185, 129, 0.75)';
+  ctx.fillRect(noseX - 26, trainY + trainH * 0.4, 6, 2);
+  ctx.fillStyle = 'rgba(56, 189, 248, 0.85)';
+  ctx.fillRect(noseX - 18, trainY + trainH * 0.39, 4, 2);
+  ctx.restore();
+
+  // J. 客舱车窗与温润内饰透光层
+  const winW = 46;
+  const winH = 26;
+  const winY = trainY + 20;
+
+  for (
+    let wx = trainX + 22;
+    wx < trainX + trainTotalLen - noseLen - 30;
+    wx += 68
+  ) {
+    // 车窗深色外框
+    ctx.fillStyle = 'rgba(6, 15, 28, 0.9)';
+    ctx.fillRect(wx - 1, winY - 1, winW + 2, winH + 2);
+
+    // 车窗镀膜玻璃内饰渐变
+    const winGrad = ctx.createLinearGradient(wx, winY, wx, winY + winH);
+    winGrad.addColorStop(0, 'rgba(254, 243, 199, 0.38)');
+    winGrad.addColorStop(0.4, 'rgba(217, 249, 157, 0.22)');
+    winGrad.addColorStop(1, 'rgba(14, 116, 144, 0.42)');
+    ctx.fillStyle = winGrad;
+    ctx.fillRect(wx, winY, winW, winH);
+
+    // 窗内乘客座椅剪影
+    ctx.fillStyle = 'rgba(10, 22, 38, 0.75)';
+    ctx.fillRect(wx + 8, winY + 13, 12, 13);
+    ctx.fillRect(wx + 26, winY + 13, 12, 13);
+
+    // 窗框高光反光条
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.fillRect(wx + 4, winY + 2, winW - 8, 1.5);
+  }
+
+  // K. 物理丁达尔立体体积光束 (Volumetric Conical Beam)
+  const beamLength = 500;
+  const beamAngleTop = -0.18;
+  const beamAngleBottom = 0.22;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(headlightX, headlightY);
+  ctx.lineTo(
+    headlightX + beamLength * Math.cos(beamAngleTop),
+    headlightY + beamLength * Math.sin(beamAngleTop),
+  );
+  ctx.lineTo(
+    headlightX + beamLength * Math.cos(beamAngleBottom),
+    headlightY + beamLength * Math.sin(beamAngleBottom),
+  );
+  ctx.closePath();
+
+  const coneGrad = ctx.createRadialGradient(
+    headlightX,
+    headlightY,
+    6,
+    headlightX + beamLength * 0.75,
+    headlightY,
+    beamLength,
+  );
+  coneGrad.addColorStop(0, 'rgba(255, 255, 240, 0.58)');
+  coneGrad.addColorStop(0.12, 'rgba(254, 240, 138, 0.38)');
+  coneGrad.addColorStop(0.45, 'rgba(56, 189, 248, 0.18)');
+  coneGrad.addColorStop(0.8, 'rgba(14, 116, 144, 0.05)');
+  coneGrad.addColorStop(1, 'rgba(5, 12, 22, 0)');
+  ctx.fillStyle = coneGrad;
+  ctx.fill();
+  ctx.restore();
+
+  // 强光束核心尖锐光柱
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(headlightX, headlightY);
+  ctx.lineTo(headlightX + 340, headlightY - 14);
+  ctx.lineTo(headlightX + 340, headlightY + 26);
+  ctx.closePath();
+  const coreBeamGrad = ctx.createLinearGradient(
+    headlightX,
+    0,
+    headlightX + 340,
+    0,
+  );
+  coreBeamGrad.addColorStop(0, 'rgba(255, 255, 255, 0.68)');
+  coreBeamGrad.addColorStop(0.3, 'rgba(254, 240, 138, 0.3)');
+  coreBeamGrad.addColorStop(1, 'rgba(56, 189, 248, 0)');
+  ctx.fillStyle = coreBeamGrad;
+  ctx.fill();
+  ctx.restore();
+
+  // L. 地面与钢轨镜面漫反射光带 (Specular Track Beam)
+  if (headlightX > -200 && headlightX < w + 300) {
+    const trackGlowGrad = ctx.createLinearGradient(
+      headlightX,
+      0,
+      headlightX + 440,
+      0,
+    );
+    trackGlowGrad.addColorStop(0, 'rgba(254, 240, 138, 0.58)');
+    trackGlowGrad.addColorStop(0.3, 'rgba(56, 189, 248, 0.38)');
+    trackGlowGrad.addColorStop(0.8, 'rgba(14, 116, 144, 0.08)');
+    trackGlowGrad.addColorStop(1, 'rgba(3, 8, 16, 0)');
+
+    ctx.fillStyle = trackGlowGrad;
+    ctx.fillRect(headlightX, railTopLeft - 2, 420, 4);
+    ctx.fillRect(headlightX, railTopRight - 2, 420, 4);
+
+    ctx.fillStyle = 'rgba(56, 189, 248, 0.08)';
+    ctx.fillRect(headlightX, railTopLeft + 3, 380, 8);
+  }
+
+  // M. 车头探照大灯核心多层透镜光晕 (Lens Flare)
+  const flareHalo = ctx.createRadialGradient(
+    headlightX,
+    headlightY,
+    2,
+    headlightX,
+    headlightY,
+    52,
+  );
+  flareHalo.addColorStop(0, 'rgba(255, 255, 255, 0.98)');
+  flareHalo.addColorStop(0.18, 'rgba(254, 240, 138, 0.75)');
+  flareHalo.addColorStop(0.5, 'rgba(56, 189, 248, 0.32)');
+  flareHalo.addColorStop(1, 'rgba(56, 189, 248, 0)');
+  ctx.fillStyle = flareHalo;
+  ctx.beginPath();
+  ctx.arc(headlightX, headlightY, 52, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.95)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(headlightX, headlightY, 7.5, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.strokeStyle = 'rgba(56, 189, 248, 0.85)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(headlightX, headlightY, 14, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // 极亮白炽光核
+  ctx.fillStyle = '#ffffff';
+  ctx.shadowColor = '#ffffff';
+  ctx.shadowBlur = 14;
+  ctx.beginPath();
+  ctx.arc(headlightX, headlightY, 4.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // 电影级横向变形星芒 (Anamorphic Lens Glare)
+  const anamorphicGrad = ctx.createLinearGradient(
+    headlightX - 85,
+    0,
+    headlightX + 85,
+    0,
+  );
+  anamorphicGrad.addColorStop(0, 'rgba(56, 189, 248, 0)');
+  anamorphicGrad.addColorStop(0.4, 'rgba(56, 189, 248, 0.65)');
+  anamorphicGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.98)');
+  anamorphicGrad.addColorStop(0.6, 'rgba(56, 189, 248, 0.65)');
+  anamorphicGrad.addColorStop(1, 'rgba(56, 189, 248, 0)');
+  ctx.fillStyle = anamorphicGrad;
+  ctx.fillRect(headlightX - 85, headlightY - 1, 170, 2);
+
+  // N. 悬浮微尘游走闪烁 (体积光锥内激活判定)
+  for (const p of particles) {
+    p.x += p.vx;
+    p.y += p.vy;
+    if (p.x > w) p.x = 0;
+    if (p.x < 0) p.x = w;
+    if (p.y > h) p.y = 0;
+    if (p.y < 0) p.y = h;
+
+    const relX = p.x - headlightX;
+    const relY = p.y - headlightY;
+    let isInLightCone = false;
+
+    if (relX > 0 && relX < beamLength) {
+      const coneHalfHeight = relX * 0.28;
+      if (Math.abs(relY) < coneHalfHeight) {
+        isInLightCone = true;
+      }
+    }
+
+    if (isInLightCone) {
+      ctx.fillStyle = `rgba(255, 255, 220, ${Math.min(1, p.baseAlpha * 2.4)})`;
+      ctx.shadowColor = 'rgba(254, 240, 138, 0.85)';
+      ctx.shadowBlur = 4;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius * 1.35, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    } else {
+      ctx.fillStyle = `rgba(56, 189, 248, ${p.baseAlpha})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // O. 全息扫描激光线
+  laserScanY += scanSpeed;
+  if (laserScanY > h) laserScanY = 0;
+
+  const beamTrail = ctx.createLinearGradient(0, laserScanY - 45, 0, laserScanY);
+  beamTrail.addColorStop(0, 'rgba(56, 189, 248, 0)');
+  beamTrail.addColorStop(0.7, 'rgba(56, 189, 248, 0.08)');
+  beamTrail.addColorStop(1, 'rgba(56, 189, 248, 0.28)');
+  ctx.fillStyle = beamTrail;
+  ctx.fillRect(0, laserScanY - 45, w, 45);
+
+  const laserPulse = Math.sin(Date.now() / 250) * 0.2 + 0.8;
+  ctx.strokeStyle = `rgba(186, 230, 253, ${0.9 * laserPulse})`;
+  ctx.lineWidth = 1.5;
+  ctx.shadowColor = 'rgba(56, 189, 248, 0.9)';
+  ctx.shadowBlur = 8;
+  ctx.beginPath();
+  ctx.moveTo(0, laserScanY);
+  ctx.lineTo(w, laserScanY);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  animFrameId = requestAnimationFrame(drawScene);
+};
+
+/* ---------------- 3. 播放 / 暂停交互控制 ---------------- */
+
+const toggleStream = () => {
+  isPlaying.value = !isPlaying.value;
+  const canvas = canvasEl.value;
+
+  if (isPlaying.value) {
+    drawScene();
+  } else {
+    cancelAnimationFrame(animFrameId);
+
+    // 挂起状态：柔和磨砂冻结
+    ctx.fillStyle = 'rgba(2, 6, 18, 0.58)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#f59e0b';
+    ctx.font = '600 13px ui-monospace, Consolas, monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(
+      '[ 画面已挂起 · 实时流中断响应 PAUSED ]',
+      canvas.width / 2,
+      canvas.height / 2 + 56,
+    );
+  }
+};
+
+onMounted(() => {
+  clockFrameId = requestAnimationFrame(updateClock);
+
+  telemetryTimer = setInterval(() => {
+    const fps = (59.6 + Math.random() * 0.7).toFixed(0);
+    const mbps = (8.4 + Math.random() * 0.4).toFixed(1);
+    telemetry.value = `1080P ${fps}FPS / ${mbps}Mbps`;
+  }, 2500);
+
+  ctx = canvasEl.value.getContext('2d');
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  drawScene();
+});
+
+onBeforeUnmount(() => {
+  cancelAnimationFrame(clockFrameId);
+  cancelAnimationFrame(animFrameId);
+  clearInterval(telemetryTimer);
+  window.removeEventListener('resize', resizeCanvas);
+  ctx = null;
+});
+</script>
+
+<template>
+  <div class="right3-page">
+    <!-- 主机箱结构组件 -->
+    <main class="occ-monitor-chassis">
+      <!-- 工业四角定位件 -->
+      <div class="corner-bracket corner-tl"></div>
+      <div class="corner-bracket corner-tr"></div>
+      <div class="corner-bracket corner-bl"></div>
+      <div class="corner-bracket corner-br"></div>
+
+      <!-- 顶部工控标头 -->
+      <header class="monitor-header">
+        <!-- 左侧：十字星标 + 琥珀金主标题 + 点阵指示器 -->
+        <div class="header-left">
+          <h1 class="header-title">概念影像</h1>
+          <div class="matrix-dots" title="总线链路运行正常">
+            <div
+              v-for="n in MATRIX_DOT_COUNT"
+              :key="n"
+              class="matrix-dot"
+            ></div>
+          </div>
+        </div>
+        <!-- 右侧：网络状态胶囊指示器与码率参数 -->
+        <div class="header-right">
+          <div class="network-capsule-badge">
+            <span class="live-dot"></span>
+            <span class="hud-meta-text">{{ telemetry }}</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- 监视视口区域 -->
+      <section class="viewport-box">
+        <!-- 物理扫描线与电影暗角 -->
+        <div class="scanlines-overlay"></div>
+        <div class="vignette-overlay"></div>
+
+        <!-- 视口四角对准准星与十字瞄准标 -->
+        <div class="reticle-corner rc-tl"></div>
+        <div class="reticle-corner rc-tr"></div>
+        <div class="reticle-corner rc-bl"></div>
+        <div class="reticle-corner rc-br"></div>
+        <div class="center-cross-aim"></div>
+
+        <!-- 高精列车与物理光效全息仿真渲染画布 -->
+        <canvas
+          ref="canvasEl"
+          class="monitor-canvas"
+          width="1038"
+          height="520"
+        ></canvas>
+
+        <!-- OSD 数据叠加层 -->
+        <div class="osd-overlay">
+          <div class="osd-bottom-row">
+            <!-- 左下角：机位标签与录制呼吸灯 -->
+            <div class="osd-left-meta">
+              <span class="osd-cam-badge">{{ cameraLabel }}</span>
+              <span class="osd-rec-badge">
+                <span class="rec-pulse-dot"></span>REC
+              </span>
+            </div>
+            <!-- 右下角：高精工业实时时间戳 -->
+            <div class="osd-timestamp-badge">
+              <span ref="dateClockEl"></span
+              ><span ref="msClockEl" class="osd-ms-highlight"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 中央发光控制按钮 -->
+        <button
+          class="center-play-wrapper"
+          :class="{ 'is-playing': isPlaying }"
+          title="播放 / 暂停监视画面"
+          @click="toggleStream"
+        >
+          <div class="glow-pulse-ring"></div>
+          <div class="center-play-button">
+            <div class="icon-holder">
+              <!-- 播放三角形 -->
+              <svg class="triangle-svg" viewBox="0 0 24 24">
+                <polygon points="6,3 20,12 6,21"></polygon>
+              </svg>
+              <!-- 暂停双竖线 -->
+              <svg class="pause-svg-bars" viewBox="0 0 24 24">
+                <rect height="16" rx="1" width="4" x="5" y="4"></rect>
+                <rect height="16" rx="1" width="4" x="15" y="4"></rect>
+              </svg>
+            </div>
+          </div>
+        </button>
+      </section>
+    </main>
+  </div>
+</template>
+
+<style scoped>
+/* 全局工控基调与主题变量（原 :root，改为组件根作用域变量以适配 scoped 样式） */
+.right3-page {
+  --bg-deep: #050a14;
+  --panel-bg: rgba(9, 18, 32, 0.94);
+  --accent-cyan: #38bdf8;
+  --accent-cyan-glow: rgba(56, 189, 248, 0.45);
+  --accent-amber: #f59e0b;
+  --accent-amber-glow: rgba(245, 158, 11, 0.45);
+  --tech-green: #10b981;
+  --tech-red: #ef4444;
+  --border-blue: rgba(56, 189, 248, 0.35);
+  --font-mono:
+    'SFMono-Regular', Consolas, 'JetBrains Mono', Menlo, 'Courier New',
+    monospace;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei',
+    'Noto Sans SC', sans-serif;
+
+  min-height: 100vh;
+  background-color: var(--bg-deep);
+  background-image:
+    radial-gradient(
+      circle at 50% 25%,
+      rgba(14, 38, 75, 0.4) 0%,
+      transparent 75%
+    ),
+    linear-gradient(rgba(14, 27, 46, 0.45) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 27, 46, 0.45) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    36px 36px,
+    36px 36px;
+  font-family: var(--font-sans);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  color: #e2e8f0;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+/* 监控主机箱外框：深海蓝工控边框、微光非均匀描线与层次阴影 */
+.occ-monitor-chassis {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  border-radius: 4px;
+  border-top: 1.5px solid rgba(56, 189, 248, 0.7);
+  border-left: 1px solid rgba(56, 189, 248, 0.3);
+  border-right: 1px solid rgba(56, 189, 248, 0.25);
+  border-bottom: 2px solid rgba(56, 189, 248, 0.5);
+  box-shadow:
+    0 0 35px rgba(6, 182, 212, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+
+/* 四个科技装配角标 */
+.corner-bracket {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  z-index: 40;
+}
+
+.corner-tl {
+  top: 0;
+  left: 0;
+  border-top: 2.5px solid var(--accent-cyan);
+  border-left: 2.5px solid var(--accent-cyan);
+}
+
+.corner-tr {
+  top: 0;
+  right: 0;
+  border-top: 2.5px solid var(--accent-cyan);
+  border-right: 2.5px solid var(--accent-cyan);
+}
+
+.corner-bl {
+  bottom: 0;
+  left: 0;
+  border-bottom: 2.5px solid var(--accent-cyan);
+  border-left: 2.5px solid var(--accent-cyan);
+}
+
+.corner-br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2.5px solid var(--accent-cyan);
+  border-right: 2.5px solid var(--accent-cyan);
+}
+
+/* 顶部标头栏 (OCC 交互条) */
+.monitor-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  flex-shrink: 0;
+  padding: 0 20px;
+  background: transparent;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.monitor-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 15%;
+  width: 35%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(56, 189, 248, 0.8),
+    transparent
+  );
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* 主标题：单行不换行。与其余五个大屏标题统一：21px / 700 / 2px */
+.header-title {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  color: var(--accent-amber);
+  text-shadow:
+    0 0 8px rgba(0, 0, 0, 0.75),
+    0 2px 10px rgba(0, 0, 0, 0.6),
+    0 0 10px rgba(245, 158, 11, 0.45);
+  line-height: 1;
+}
+
+/* 金色点阵阵列微光 */
+.matrix-dots {
+  display: grid;
+  grid-template-columns: repeat(8, 3px);
+  gap: 3px;
+  opacity: 0.85;
+  margin-left: 4px;
+}
+
+.matrix-dot {
+  width: 3px;
+  height: 3px;
+  background: var(--accent-amber);
+  border-radius: 0.5px;
+  box-shadow: 0 0 3px rgba(245, 158, 11, 0.4);
+  animation: matrix-pulse 3s infinite alternate ease-in-out;
+}
+
+.matrix-dot:nth-child(even) {
+  animation-delay: 0.5s;
+}
+
+.matrix-dot:nth-child(3n) {
+  animation-delay: 1.1s;
+}
+
+@keyframes matrix-pulse {
+  0% {
+    opacity: 0.35;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* 顶部右侧：网络状态胶囊指示器 */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.network-capsule-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  background: transparent;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 20px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--tech-green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--tech-green);
+  animation: live-pulse 1.6s infinite ease-in-out;
+}
+
+@keyframes live-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.45;
+  }
+}
+
+.hud-meta-text {
+  color: #cbd5e1;
+  letter-spacing: 0.04em;
+}
+
+/* 监视核心视口 */
+.viewport-box {
+  position: relative;
+  width: 100%;
+  flex: 1 1 0;
+  min-height: 0;
+  background: transparent;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 物理交错扫描线 & 电影暗角滤镜 */
+.scanlines-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.4)
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 12;
+  opacity: 0.6;
+}
+
+.vignette-overlay {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+  z-index: 14;
+}
+
+/* 视口四角对准瞄准标 */
+.reticle-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  z-index: 16;
+}
+
+.rc-tl {
+  top: 14px;
+  left: 16px;
+  border-top: 1.5px solid rgba(56, 189, 248, 0.65);
+  border-left: 1.5px solid rgba(56, 189, 248, 0.65);
+}
+
+.rc-tr {
+  top: 14px;
+  right: 16px;
+  border-top: 1.5px solid rgba(56, 189, 248, 0.65);
+  border-right: 1.5px solid rgba(56, 189, 248, 0.65);
+}
+
+.rc-bl {
+  bottom: 14px;
+  left: 16px;
+  border-bottom: 1.5px solid rgba(56, 189, 248, 0.65);
+  border-left: 1.5px solid rgba(56, 189, 248, 0.65);
+}
+
+.rc-br {
+  bottom: 14px;
+  right: 16px;
+  border-bottom: 1.5px solid rgba(56, 189, 248, 0.65);
+  border-right: 1.5px solid rgba(56, 189, 248, 0.65);
+}
+
+/* 视口中央十字测距弱光标 */
+.center-cross-aim {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  z-index: 15;
+  opacity: 0.3;
+}
+
+.center-cross-aim::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent-cyan);
+  transform: translateY(-50%);
+}
+
+.center-cross-aim::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--accent-cyan);
+  transform: translateX(-50%);
+}
+
+/* 动态渲染画布 */
+.monitor-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+/* OSD 工控屏显层 */
+.osd-overlay {
+  position: absolute;
+  inset: 0;
+  padding: 16px 20px;
+  pointer-events: none;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  font-family: var(--font-mono);
+}
+
+.osd-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95);
+}
+
+/* 左下角机位与 REC 呼吸指示灯 */
+.osd-left-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.osd-cam-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #e0f2fe;
+  background: transparent;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 2px;
+}
+
+.osd-rec-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  border-radius: 2px;
+  backdrop-filter: blur(6px);
+}
+
+.rec-pulse-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--tech-red);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--tech-red);
+  animation: rec-blink 1s infinite alternate ease-in-out;
+}
+
+@keyframes rec-blink {
+  0% {
+    opacity: 0.2;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* 右下角高精度实时时间戳 */
+.osd-timestamp-badge {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #f8fafc;
+  background: transparent;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 4px 12px;
+  border-radius: 2px;
+}
+
+.osd-ms-highlight {
+  color: var(--accent-amber);
+  font-size: 12px;
+  margin-left: 1px;
+}
+
+/*
+  【中央发光控制按钮】
+  绝对几何居中、半透明磨砂圆角矩形/胶囊卡片、微光投影与平滑悬停
+*/
+.center-play-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 30;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 64px;
+  background: transparent;
+  outline: none;
+  border: none;
+}
+
+.glow-pulse-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 20px;
+  background: radial-gradient(
+    circle,
+    rgba(56, 189, 248, 0.3) 0%,
+    rgba(56, 189, 248, 0.06) 60%,
+    transparent 75%
+  );
+  opacity: 0.7;
+  animation: ring-pulse 3s infinite ease-in-out;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+@keyframes ring-pulse {
+  0%,
+  100% {
+    transform: scale(0.96);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.95;
+  }
+}
+
+.center-play-button {
+  position: relative;
+  width: 76px;
+  height: 50px;
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.85),
+    0 0 22px rgba(56, 189, 248, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.45),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.6);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.center-play-wrapper:hover .center-play-button {
+  transform: scale(1.06);
+  background: rgba(22, 38, 64, 0.95);
+  border-color: var(--accent-cyan);
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.9),
+    0 0 30px rgba(56, 189, 248, 0.7),
+    inset 0 1px 3px rgba(255, 255, 255, 0.65),
+    inset 0 0 12px rgba(56, 189, 248, 0.3);
+}
+
+.center-play-wrapper:hover .glow-pulse-ring {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.center-play-wrapper:active .center-play-button {
+  transform: scale(0.94);
+}
+
+/* 内部纯净向右三角形几何绝对居中 */
+.icon-holder {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.triangle-svg {
+  width: 17px;
+  height: 17px;
+  fill: #ffffff;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+  transition:
+    transform 0.25s ease,
+    fill 0.25s ease;
+  display: block;
+  margin-left: 2px; /* 光学居中微调 */
+}
+
+.center-play-wrapper:hover .triangle-svg {
+  fill: #e0f2fe;
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.85));
+}
+
+.pause-svg-bars {
+  display: none;
+  width: 16px;
+  height: 16px;
+  fill: #ffffff;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+/* 播放中状态：微缩半透、悬停显现 */
+.center-play-wrapper.is-playing {
+  opacity: 0.22;
+  transform: translate(-50%, -50%) scale(0.92);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.viewport-box:hover .center-play-wrapper.is-playing,
+.center-play-wrapper.is-playing:hover {
+  opacity: 0.95;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.center-play-wrapper.is-playing .triangle-svg {
+  display: none;
+}
+
+.center-play-wrapper.is-playing .pause-svg-bars {
+  display: block;
+}
+/* 大屏装配适配：填满侧栏单元格，不再撑满整屏 */
+.right3-page {
+  position: relative;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+</style>

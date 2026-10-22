@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./src/assets/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vite App</title>
+  </head>
+  <body>
+    <!-- Vue 挂载前的静态底色：避免 JS 下载那 100~300ms 出现白屏。
+         createApp().mount('#app') 会清空容器内容，挂载后这里自动消失，
+         随后由 SciFiLoader.vue 的完整开屏动画接管（同一套深色底，衔接不突兀）。 -->
+    <div id="app">
+      <div class="boot-splash">
+        <div class="boot-splash__hex"></div>
+        <div class="boot-splash__text">智慧地铁</div>
+      </div>
+    </div>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #040c18;
+      }
+      .boot-splash {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        background: radial-gradient(120% 90% at 50% 42%, #071a2e 0%, #040c18 46%, #01050b 100%);
+      }
+      .boot-splash__hex {
+        width: 34px;
+        height: 38px;
+        background: linear-gradient(160deg, rgba(17, 239, 227, 0.3), rgba(4, 18, 34, 0.9));
+        border: 1px solid rgba(17, 239, 227, 0.7);
+        clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+        animation: boot-splash-pulse 1.6s ease-in-out infinite;
+      }
+      .boot-splash__text {
+        font-family: 'Rajdhani', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 15px;
+        letter-spacing: 0.4em;
+        text-indent: 0.4em;
+        color: rgba(143, 233, 255, 0.55);
+      }
+      @keyframes boot-splash-pulse {
+        0%,
+        100% {
+          opacity: 0.55;
+          box-shadow: 0 0 0 rgba(17, 239, 227, 0);
+        }
+        50% {
+          opacity: 1;
+          box-shadow: 0 0 18px rgba(17, 239, 227, 0.55);
+        }
+      }
+    </style>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
